@@ -1,7 +1,6 @@
 {
   "name": "english-teacher-website",
   "private": true,
-  "proxy": "http://127.0.0.10:8888",
   "version": "0.0.0",
   "homepage": "https://gitname.github.io/english-teacher-website",
   "type": "module",

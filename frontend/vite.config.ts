@@ -5,4 +5,9 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   base: "/english-teacher-website",
   plugins: [react()],
+  server: {
+    proxy: {
+      "/api": "http://127.0.0.10:8888",
+    },
+  },
 });
