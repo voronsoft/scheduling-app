@@ -1,25 +1,21 @@
 from fastapi import FastAPI
-from .models import create_database
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
-from api_fast_api.routes_admin import router_admin
-from api_fast_api.routes_calendar import router_calendar
-from api_fast_api.config import ORIGINS, STATIC_FOLDER_PATH
+from backend.api_fast_api.models import create_database
+from backend.api_fast_api.routers_html import router_html
+from backend.api_fast_api.routes_admin import router_admin
+from backend.api_fast_api.routes_calendar import router_calendar
+from backend.api_fast_api.config import STATIC_FOLDER_PATH, ORIGINS
 
 # Создаем экземпляр FastAPI приложения
 app = FastAPI()
 
 # Подключаем маршруты из APIRouter
-app.include_router(router_admin)
-app.include_router(router_calendar)
-
+app.include_router(router_admin)  # Маршруты администрирования
+app.include_router(router_calendar)  # Маршруты календаря
+app.include_router(router_html)  # Маршруты страниц HTML
 # Подключаем статические файлы из папки "static"
 app.mount("/static", StaticFiles(directory=STATIC_FOLDER_PATH), name="static")
-
-#
-# Путь к директории с шаблонами
-templates = Jinja2Templates(directory="templates")
 
 # Добавляем CORS middleware
 app.add_middleware(

@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+    <div class="px-4 py-1 my-1">
+        <img class="d-block mx-auto mb-4" src="{{ url_for('static', path='img/favicon.svg') }}" alt="" width="92" height="77">
+        <div class="display-5 fw-bold text-body-emphasis text-center mb-3">{{ title }}</div>
+
+        <form action="{{ url_for('register_user') }}" method="post" class="row g-2">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <!-- Поле имя -->
+            <div class="row ">
+                <div class="col-sm-6">
+                    <label class="form-label">Username</label>
+                    <input class="form-control" name="username" placeholder="your name">
+                </div>
+            </div>
+
+            <!-- Поле пароль -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="password">
+                </div>
+            </div>
+
+            <!-- Поле почта -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="form-label">Mail</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                        <input class="form-control" name="email" placeholder="your mail">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопка -->
+            <div class="row">
+                <div class="col-12 py-2">
+                    <button class="btn btn-secondary" type="submit">Сonfirm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% block content %}
+
+<div class="card text-center">
+    <div class="card-header">
+        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <h4>Расписание занятий</h4>
+        </button>
+    </div>
+    <div class="collapse" id="collapseExample">
+        <div class="card-body">
+            <p class="card-text">
+
+                <!-- Генерация календаря -->
+                {{ calendar | safe }}
+                <!-- Генерация календаря -->
+
+            </p>
+            <a href="#" class="btn btn-primary">Отправить</a>
+        </div>
+    </div>
+    <div class="card-footer text-body-secondary">
+        подвал
+    </div>
+</div>
+
+{% endblock content %}
