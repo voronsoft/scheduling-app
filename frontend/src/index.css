@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200;400;600;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Noto+Serif+TC:wght@200;400;600;700;900&display=swap");
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+  font-family: Raleway, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: rgba(0, 0, 0, 1);
+  background-color: #ffffff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+.diagonal {
+  z-index: 20;
+  position: relative;
+  isolation: isolate;
+}
+
+.diagonal::after {
+  content: "";
+  background-image: linear-gradient(to bottom, #d69bd2 0%, #8865a9 100%);
+  /*  background-image: linear-gradient(to bottom, #d69bd2 0%, #6157ff 100%); */
+  position: absolute;
+  inset: 0;
+  transform: skewY(-5deg);
+  z-index: -1;
+}
+
+.hero-bkg {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.hero-bkg picture img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.circle {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.circle:hover {
+  -webkit-box-shadow: 0px 0px 3px 5px rgb(255, 254, 175),
+    0px 0px 20px 5px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 0px 20px 5px rgba(255, 254, 175),
+    0px 0px 20px 5px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 20px 5px rgba(255, 254, 175),
+    0px 0px 20px 5px rgba(255, 255, 255, 1);
+}
+
+.circle:active {
+  background-color: rgb(218, 165, 31);
+}
+
+.day {
+  cursor: pointer;
+  text-align: center;
+  padding: 4px;
+}
+
+.day:hover {
+  color: black;
+}
+
+.today {
+  cursor: pointer;
+  text-align: center;
+  padding: 4px;
+  background-color: #d69bd2;
+  border-radius: 50%;
+}
