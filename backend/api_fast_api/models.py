@@ -1,9 +1,11 @@
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
-from .config import SQLALCHEMY_DATABASE_URL
 from sqlalchemy_utils import database_exists
 from sqlalchemy.ext.declarative import declarative_base
+from backend.api_fast_api.config import SQLALCHEMY_DATABASE_URL
 from sqlalchemy import Column, Integer, String, Date, create_engine, extract
+
+
 
 # Создаем экземпляр класса Engine для соединения с базой данных
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
