@@ -1,30 +1,48 @@
-import { FormEvent, useState } from "react";
-import FormInput from "./FormInput";
-import { april } from "../constants";
+import { useEffect, useState } from "react";
+//import FormInput from "./FormInput";
+import { may } from "../constants";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type FormFields = {
+  name: string;
+  surname: string;
+  phone: string;
+  email: string;
+  selectedDate: string;
+  time: string;
+};
 
 const Schedule = () => {
+  const {
+    register,
+    reset,
+    setValue,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>();
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
   const today = currentDate.getDate();
   const months = [
-    "Январь",
-    "Февраль",
-    "Март",
-    "Апрель",
-    "Май",
-    "Июнь",
-    "Июль",
-    "Август",
-    "Сентябрь",
-    "Октябрь",
-    "Ноябрь",
-    "Декабрь",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const [month, setMonth] = useState(currentMonth);
   const [year, setYear] = useState(currentYear);
-  const [selectedDate, setSelectedDate] = useState(""); // Состояние для выбранной даты
+  const [selectedDate, setSelectedDate] = useState("← Select a date"); // Состояние для выбранной даты
 
   const currentMonthName = months[month];
   const firstDayOfMonth = new Date(year, month, 1).getDay();
@@ -50,23 +68,28 @@ const Schedule = () => {
     if (dayCounter > daysInMonth) break;
   }
 
+  useEffect(() => {
+    setValue("selectedDate", selectedDate, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  }, [selectedDate]);
+
+  /*   const handleSetValue = () => {
+    setValue("selectedDate", selectedDate, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  }; */
+
   const handleDateSelect = (day: number | string) => {
     setSelectedDate(`${year}-${month + 1}-${day}`); // Форматирование даты в формат "гггг-мм-дд"
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const newClassRequest = Object.fromEntries(formData);
-
-    // Это старый код формирования объекта для отправки. На всякий случай пока оставила:
-    /* const formData = new FormData(event.currentTarget);
-    const requestData = {};
-    formData.forEach((value, key) => {
-      const index = parseInt(key);
-      requestData[index] = value; 
-    });
-    requestData["selectedDate"] = selectedDate; // Добавление выбранной даты в объект данных */
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    console.log(data);
 
     try {
       const response = await fetch(
@@ -76,23 +99,26 @@ const Schedule = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newClassRequest),
+          body: JSON.stringify(data),
         }
       );
-
       if (response.ok) {
         // Обработка успешного ответа от сервера
         console.log("Request sent successfully!");
         // Очистить значения ввода в форме
-        event.currentTarget.reset();
-        setSelectedDate(""); // Сбросить выбранную дату
+        reset();
+        //setSelectedDate(""); // Сбросить форму
       } else {
         // Обработка ошибки от сервера
         console.error("Request failed:", response.statusText);
+        throw new Error();
       }
     } catch (error) {
       // Обработка ошибок при выполнении запроса
       console.error("Request error:", error);
+      setError("root", {
+        message: "Something went wrong, please refresh the page and try again",
+      });
     }
   };
 
@@ -129,19 +155,19 @@ const Schedule = () => {
               <th
                 colSpan={7}
                 id="monthYear"
-                className="w-[40px] h-[40px] text-center text-black"
+                className="w-[60px] h-[60px] text-center text-black"
               >
                 {currentMonthName} {year}
               </th>
             </tr>
             <tr>
-              <th className="w-[40px] h-[40px] text-center text-black">Пн</th>
-              <th className="w-[40px] h-[40px] text-center text-black">Вт</th>
-              <th className="w-[40px] h-[40px] text-center text-black">Ср</th>
-              <th className="w-[40px] h-[40px] text-center text-black">Чт</th>
-              <th className="w-[40px] h-[40px] text-center text-black">Пт</th>
-              <th className="w-[40px] h-[40px] text-center text-black">Сб</th>
-              <th className="w-[40px] h-[40px] text-center text-black">Вс</th>
+              <th className="w-[60px] h-[60px] text-center text-black">Mon</th>
+              <th className="w-[60px] h-[60px] text-center text-black">Tue</th>
+              <th className="w-[60px] h-[60px] text-center text-black">Wed</th>
+              <th className="w-[60px] h-[60px] text-center text-black">Thur</th>
+              <th className="w-[60px] h-[60px] text-center text-black">Fr</th>
+              <th className="w-[60px] h-[60px] text-center text-black">St</th>
+              <th className="w-[60px] h-[60px] text-center text-black">Sn</th>
             </tr>
           </thead>
           <tbody id="days">
@@ -150,7 +176,7 @@ const Schedule = () => {
                 <tr>
                   {week.map((day) => {
                     const currentDay = `${year}-${month + 1}-${day}`;
-                    const isDayBooked = april.some(
+                    const isDayBooked = may.some(
                       (element) => element.date === currentDay
                     );
 
@@ -184,47 +210,69 @@ const Schedule = () => {
           id="appointmentForm"
           className="flex flex-col gap-5"
           autoComplete="off"
-          onSubmit={(event) => {
-            handleSubmit(event);
-          }}
+          onSubmit={handleSubmit(onSubmit)}
         >
-          <FormInput
-            id="name"
+          <input
+            {...register("name", { required: "Please enter your name" })}
             type="text"
-            name="firstName"
-            placeholder="Имя"
-            required
+            placeholder="Name"
+            className="p-2 rounded-md text-black w-full"
           />
-          <FormInput
-            id="surname"
+          {errors.name && (
+            <div className="text-red-500">{errors.name.message}</div>
+          )}
+          <input
+            {...register("surname", { required: "Please enter your surname" })}
             type="text"
-            name="lastName"
-            placeholder="Фамилия"
-            required
+            placeholder="Surname"
+            className="p-2 rounded-md text-black w-full"
           />
-          <FormInput
-            id="phone"
+          {errors.surname && (
+            <div className="text-red-500">{errors.surname.message}</div>
+          )}
+          <input
+            {...register("phone", {
+              required: "Please enter a valid phone number",
+              pattern: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,
+            })}
             type="tel"
-            name="phone"
-            placeholder="Телефон"
-            required
+            placeholder="Phone"
+            className="p-2 rounded-md text-black w-full"
           />
-          <FormInput
-            id="email"
+          {errors.phone && (
+            <div className="text-red-500">{errors.phone.message}</div>
+          )}
+          <input
+            {...register("email", {
+              required: "Please enter a valid email",
+              pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+            })}
             type="email"
-            name="email"
-            placeholder="Почта"
-            required
+            placeholder="Email"
+            className="p-2 rounded-md text-black w-full"
           />
-          <FormInput
-            /* type="hidden" */
+          {errors.email && (
+            <div className="text-red-500">{errors.email.message}</div>
+          )}
+          <input
+            {...register("selectedDate", {
+              required: "Please choose a preferable date in the calendar",
+            })}
+            readOnly
             name="selectedDate"
-            id="selectedDate"
-            value={selectedDate}
-            required
+            type="text"
+            placeholder="Select a date"
+            className="p-2 rounded-md text-black w-full"
           />
+          {errors.selectedDate && (
+            <div className="text-red-500">{errors.selectedDate.message}</div>
+          )}
+
           <label htmlFor="time">Choose suitable time:</label>
           <select
+            {...register("time", {
+              required: "Please choose your most suitable time",
+            })}
             id="time"
             name="time"
             className="p-2 rounded-md text-black w-full"
@@ -234,8 +282,15 @@ const Schedule = () => {
             <option value="17">5 pm</option>
             <option value="18">6 pm</option>
           </select>
-          <button type="submit" className="bg-amber-400 p-2 rounded-md">
-            Записаться
+          {errors.time && (
+            <div className="text-red-500">{errors.time.message}</div>
+          )}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-amber-400 p-2 rounded-md"
+          >
+            {isSubmitting ? "Loading" : "Submit"}
           </button>
         </form>
       </div>
