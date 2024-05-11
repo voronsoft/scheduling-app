@@ -76,14 +76,6 @@ const Schedule = () => {
     });
   }, [selectedDate]);
 
-  /*   const handleSetValue = () => {
-    setValue("selectedDate", selectedDate, {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
-  }; */
-
   const handleDateSelect = (day: number | string) => {
     setSelectedDate(`${year}-${month + 1}-${day}`); // Форматирование даты в формат "гггг-мм-дд"
   };
