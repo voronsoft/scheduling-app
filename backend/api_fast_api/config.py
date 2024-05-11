@@ -19,6 +19,8 @@ SQLALCHEMY_DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db_api', 'api_d
 
 # Путь к папке статических файлов static
 STATIC_FOLDER_PATH = os.path.join(BASE_DIR, 'static')
+# Путь к папке с шаблонами html(jinja2)
+TEMPLATES_FOLDER_PATH = os.path.join(BASE_DIR, 'templates')
 
 
 if __name__ == "__main__":
@@ -27,3 +29,4 @@ if __name__ == "__main__":
     print('BASE_DIR', BASE_DIR)
     print('SQLALCHEMY_DATABASE_URI', SQLALCHEMY_DATABASE_URL)
     print('STATIC_FOLDER_PATH', STATIC_FOLDER_PATH)
+    print('TEMPLATES_FOLDER_PATH', TEMPLATES_FOLDER_PATH)
