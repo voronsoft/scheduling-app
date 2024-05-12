@@ -5,7 +5,7 @@ from sqlalchemy_utils import database_exists
 from sqlalchemy.orm import sessionmaker, attributes, declarative_base
 from sqlalchemy import Column, Integer, Date, Boolean, String, create_engine, extract, or_, and_, inspect, func, UUID
 
-from api_fast_api.config import SQLALCHEMY_DATABASE_URL
+from backend.api_fast_api.config import SQLALCHEMY_DATABASE_URL
 
 # Создаем экземпляр класса Engine для соединения с базой данных
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -16,16 +16,6 @@ Base = declarative_base()
 
 
 # Модель зарегистрированных пользователей
-# class UsersSql(Base):
-#     __tablename__ = 'users'
-#
-#     id = Column(Integer, primary_key=True)
-#     username = Column(String(50), unique=True, nullable=False)
-#     last_name = Column(String(50), default=None)
-#     email = Column(String(100), unique=True, nullable=False)
-#     hashed_password = Column(String, nullable=False)
-#     uuid = Column(String, default=None)
-#     disabled = Column(Boolean, default=False)
 class UsersSql(Base):
     __tablename__ = 'users'
 
@@ -125,7 +115,7 @@ def lesson_dates_for_the_month_db(date: str):
     except Exception as e:
         return 422, {"error": str(e)}  # Все типы ошибок (возврат)
 
-        # Создаем словарь для хранения результатов
+    # Создаем словарь для хранения результатов
     results_dict = dict()
 
     # Выполняем запрос к базе данных

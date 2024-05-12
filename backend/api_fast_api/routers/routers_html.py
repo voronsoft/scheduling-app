@@ -5,10 +5,10 @@ from fastapi import Request, APIRouter, Depends, Response
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
-from api_fast_api.auth.authentication import get_current_user, oauth2_scheme
-from api_fast_api.config import TEMPLATES_FOLDER_PATH
-from api_fast_api.func.functions import generate_calendar, current_date, headers_scheck_auth
-from api_fast_api.models.models_pydantic import UserPydantic
+from backend.api_fast_api.auth.authentication import get_current_user, oauth2_scheme
+from backend.api_fast_api.config import TEMPLATES_FOLDER_PATH
+from backend.api_fast_api.func.functions import generate_calendar, current_date, headers_scheck_auth
+from backend.api_fast_api.models.models_pydantic import UserPydantic
 
 # Создаем экземпляр APIRouter с префиксом
 router_html = APIRouter(prefix="")

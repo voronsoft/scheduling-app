@@ -4,18 +4,17 @@
 
         <div class="card-header">
             <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                <h4>Расписание занятий</h4><h4>Timetable of classes</h4>
+                Timetable of classes
             </button>
         </div>
 
         <div class="collapse" id="collapseExample">
             <div class="card-body">
-                <p class="card-text">{{ calendar | safe }}</p><!-- Генерация календаря -->
+                <p class="card-text">{{ calendar | safe }}</p>{# Генерация календаря #}
             </div>
         </div>
 
         <div class="card-footer text-body-secondary">Тестовая надпись заглушка</div>
-
 
     </div>
 

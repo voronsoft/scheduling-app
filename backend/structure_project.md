@@ -4,7 +4,6 @@ backend/
 ├── api_fast_api/
 │   ├── auth/
 │   │   ├── authentication.py
-│   │   ├── auth_main.py
 │   │   
 │   ├── config.py
 │   ├── db_api/
@@ -19,16 +18,12 @@ backend/
 │   │   ├── models_sql.py
 │   │   ├── __init__.py
 │   │   
-│   ├── models.py
 │   ├── routers/
 │   │   ├── routers_html.py
 │   │   ├── routes_admin.py
 │   │   ├── routes_calendar.py
 │   │   ├── __init__.py
 │   │   
-│   ├── routers_html.py
-│   ├── routes_admin.py
-│   ├── routes_calendar.py
 │   ├── static/
 │   │   ├── css/
 │   │   │   ├── bootstrap.css
