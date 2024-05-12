@@ -1,38 +1,65 @@
-# **Структура проекта**
+```markdown
+backend/
+├── .env
+├── api_fast_api/
+│   ├── auth/
+│   │   ├── authentication.py
+│   │   ├── auth_main.py
+│   │   
+│   ├── config.py
+│   ├── db_api/
+│   │   ├── api_data.db
+│   │   
+│   ├── func/
+│   │   ├── create_project_structure_file.py
+│   │   ├── functions.py
+│   │   
+│   ├── models/
+│   │   ├── models_pydantic.py
+│   │   ├── models_sql.py
+│   │   ├── __init__.py
+│   │   
+│   ├── models.py
+│   ├── routers/
+│   │   ├── routers_html.py
+│   │   ├── routes_admin.py
+│   │   ├── routes_calendar.py
+│   │   ├── __init__.py
+│   │   
+│   ├── routers_html.py
+│   ├── routes_admin.py
+│   ├── routes_calendar.py
+│   ├── static/
+│   │   ├── css/
+│   │   │   ├── bootstrap.css
+│   │   │   ├── bootstrap.css.map
+│   │   │   ├── navbar-fixed.css
+│   │   │   
+│   │   ├── img/
+│   │   │   ├── favicon.svg
+│   │   │   ├── newspaper.svg
+│   │   │   ├── vite.svg
+│   │   │   
+│   │   ├── js/
+│   │   │   ├── bootstrap.bundle.js
+│   │   │   ├── bootstrap.bundle.js.map
+│   │   │   
+│   │   
+│   ├── templates/
+│   │   ├── authorization.html
+│   │   ├── index.html
+│   │   ├── registration.html
+│   │   ├── test.html
+│   │   ├── timetable.html
+│   │   
+│   ├── __init__.py
+│   
+├── example_request.py
+├── example_request2.py
+├── example_request3.py
+├── notes_project.txt
+├── requirements.txt
+├── run_fapi.py
+├── structure_project.md
 
-```
-backedn/                   # Корневая папка проекта    
-│  
-├── api_fast_api/           # Пакет для API на FastAPI  
-│   │  
-│   ├── auth/               # Папка аутентификации  
-│   │   └── ...             # (перечислины не все)
-│   │ 
-│   ├── db_api/             # Папка базы данных  
-│   │   └── app_data.db     # Файл базы данных  
-│   │  
-│   ├── func/               # Папка различных функций
-│   │   └── functions.py    # Файл с функций проекта
-│   │  
-│   ├── static/             # Папка статических файлов  
-│   │   ├── css/            # Стили  
-│   │   ├── img/            # Изображения  
-│   │   └── js/             # Скрипты js  
-│   │  
-│   ├── templates/          # Папка шаблонов html 
-│   │   └── ...             # (перечислины не все)
-│   │  
-│   ├── __init__.py         # Файл инициализации пакета с приложением
-│   ├── config.py           # Файл с конфигурацией приложения  
-│   ├── models.py           # Файл с моделями данных
-│   ├── routes_html.py      # Файл с маршрутами (энд-поинтами) API html (исключены из /docs)
-│   ├── routes_admin.py     # Файл с маршрутами (энд-поинтами) API административные 
-│   └── routes_calendar.py  # Файл с маршрутами (энд-поинтами) API календаря 
-│  
-│  
-├── .env                    # Файл переменных окружения
-├── notes_project.txt       # Файл с заметками по проекту   
-├── requirements.txt        # Файл для установки зависимостей Python  
-├── run_fapi.py             # Файл для запуска всего приложения  
-└── structure_project.txt   # Структура проекта (этот файл)  
 ```
