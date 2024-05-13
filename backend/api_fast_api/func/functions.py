@@ -1,11 +1,12 @@
-from datetime import datetime, timedelta
+from datetime import datetime
+from fastapi import Request
 
 
 # Функция генерации календарного месяца в админ панели
 def generate_calendar(date_dict: dict, year: int, month: int) -> str:
     """
     Функция генерации календаря по датам которые зарезервированы под уроки
-    :param date_dict: dict
+    :param date_dict: {'2024-05-12': true, '2024-05-13': 'await', '2024-05-22': true}
     :param year: int
     :param month: int
     :return: str(html cod)
@@ -25,7 +26,7 @@ def generate_calendar(date_dict: dict, year: int, month: int) -> str:
     # Начинаем формирование HTML для календаря
     calendar_html = f'''
     <div class="container">
-        <h2>Календарь на {first_day_of_month.strftime("%B %Y")}</h2>
+        <h2>{first_day_of_month.strftime("%B %Y")}</h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -94,6 +95,7 @@ def generate_calendar(date_dict: dict, year: int, month: int) -> str:
     return calendar_html
 
 
+# Функция для текущего года и текущего месяца.
 def current_date() -> tuple:
     """
     Функция для текущего года и текущего месяца.
@@ -118,21 +120,31 @@ def current_date() -> tuple:
     return current_year, current_month
 
 
-if __name__ == "__main__":
-    ...
-    # # Пример использования функции
-    # date_dict_test = {
-    #     '2024-05-3': 'true',
-    #     '2024-05-7': 'true',
-    #     '2024-05-10': 'await',
-    #     '2024-05-15': 'true',
-    #     '2024-05-20': 'await',
-    #     '2024-05-23': 'true',
-    #     '2024-05-30': 'await',
-    # }
-    #
-    # year_test = 2024
-    # month_test = 5  # Май
-    # calendar_html = generate_calendar(date_dict_test, year_test, month_test)
-    # print(calendar_html)  # Это можно подставить в ваш HTML-шаблон
-    print(current_date())
+# Функция проверки есть ли в запросе заголовок Authorization
+def headers_scheck_auth(request: Request):
+    answer = False
+    # Получаем все заголовки
+    headers = request.headers
+
+    # Проверяем наличие заголовка 'authorization'
+    if 'authorization' in headers:
+        # Получаем значение заголовка "Authorization" из запроса
+        auth_header = request.headers.get('authorization')
+        # Проверяем, что заголовок начинается с 'Bearer '
+        if auth_header.startswith('Bearer '):
+            # Извлекаем токен, отбросив 'Bearer ', и пробельные символы в начале строки
+            token = auth_header[len('Bearer '):].strip()
+            # В этой переменной 'token' у вас будет содержаться код токена
+            answer = True
+
+    return answer
+
+
+# Функция получения даты на момент вызова функции
+def date_at_the_time_the_function_was_called():
+    """Функция генерации даты на момент вызова функции
+
+    :return str 2024-05-24
+    """
+    date = datetime.now().date()
+    return str(date)

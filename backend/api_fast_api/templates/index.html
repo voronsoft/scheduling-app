@@ -2,69 +2,59 @@
 <html lang="ru" data-bs-theme="auto">
 <head>
     <script src="{{ url_for('static', path='/js/bootstrap.bundle.js') }}"></script>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Some description text">
     <meta name="author" content="Poli">
     <meta name="generator" content="FastApi">
     <title>{% block title %}{{ title }}{% endblock %}</title>
-
     <link href="{{ url_for('static', path='/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', path='css/navbar-fixed.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', path='img/vite.svg') }}" type="image/x-icon">
 </head>
 <body>
 
-
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('html_index') }}">ADMINpanel</a>
+        <a class="navbar-brand" href="{{ url_for('html_index_get') }}">ADMINpanel</a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-
-                <!-- IF БЛОК УСЛОВИЙ-->
-                {% if user_group == 1 %}
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('logout_user') }}">{{ user_name }} (Logout)</a>
-                </li>
-
-                <!--ELIF-->
-                {% elif user_group == 0 %}
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('html_registration') }}">Registration</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ url_for('html_authorization') }}">Login</a>
-                </li>
+                {# IF БЛОК УСЛОВИЙ #}
+                {% if user_group == 1 %} {# если администратор #}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('logout_user') }}">{{ user_name }}(Logout)</a>
+                    </li>
+                {% elif user_group == 0 %} {# если неизвестный #}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('html_authorization') }}">{{ user_name }}(LogIN)</a>
+                    </li>
                 {% endif %}
-                <!--end IF/ELIF-->
+                {# end IF/ELIF #}
             </ul>
         </div>
+
     </div>
 </nav>
 
 <main class="container border py-2">
-    <!--  CONTENT  -->
+    {# CONTENT #}
     {% block content %}
+        {% if user_group == 0 %} {# если неизвестный #}
+            <div class="alert alert-danger my-2" role="alert">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('html_authorization') }}">Access denied. Please log in.</a>
+            </div>
 
-    {% if user_group == 0 %}
-    <div class="alert alert-danger my-2" role="alert">
-        Please log in or register
-    </div>
-    {% elif user_group == 1 %}
-    <!-- Код шаблона расписания занятий-->
-    {% include 'timetable.html' %}
-    {% endif %}
-
+        {% elif user_group == 1 %} {# если администратор #}
+            {% include 'timetable.html' %} {# Код шаблона расписания занятий #}
+        {% endif %}
     {% endblock content %}
-    <!--  end CONTENT  -->
+    {# end CONTENT #}
 </main>
-
 
 </body>
 </html>

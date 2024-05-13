@@ -7,45 +7,65 @@
     <div class="px-4 py-1 my-1">
         <img class="d-block mx-auto mb-4" src="{{ url_for('static', path='img/favicon.svg') }}" alt="" width="92" height="77">
         <div class="display-5 fw-bold text-body-emphasis text-center mb-3">{{ title }}</div>
+        <!-- Форма -->
+        <form class="row g-3 was-validated" method="post" id="registrationForm" action="{{ url_for('register_user') }}">
 
-        <form action="{{ url_for('register_user') }}" method="post" class="row g-2">
-
-            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-
-            <!-- Поле имя -->
-            <div class="row ">
-                <div class="col-sm-6">
-                    <label class="form-label">Username</label>
-                    <input class="form-control" name="username" placeholder="your name">
-                </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">User name</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+                <div class="invalid-feedback">Example: Jon or Eni</div>
             </div>
 
-            <!-- Поле пароль -->
-            <div class="row">
-                <div class="col-sm-6">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password" placeholder="password">
-                </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+                <div class="invalid-feedback">Example: example@mail.com</div>
             </div>
 
-            <!-- Поле почта -->
-            <div class="row">
-                <div class="col-sm-6">
-                    <label class="form-label">Mail</label>
-                    <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input class="form-control" name="email" placeholder="your mail">
-                    </div>
-                </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+                <div class="invalid-feedback">Example: hj_45AA-werty</div>
             </div>
 
-            <!-- Кнопка -->
-            <div class="row">
-                <div class="col-12 py-2">
-                    <button class="btn btn-secondary" type="submit">Сonfirm</button>
-                </div>
-            </div>
+            <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+
         </form>
+
     </div>
+
+    <script>
+        // Функция для отправки данных формы на сервер и обработки ответа
+        async function submitForm(event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение отправки формы
+
+            // Создаем объект FormData для сбора данных формы
+            const formData = new FormData(event.target);
+            // Используем функцию url_for для получения пути к маршруту в FastAPI
+            const url = '{{ url_for("register_user") }}';
+
+            // Отправляем POST-запрос на сервер с данными формы
+            const response = await fetch(url, {
+                method: 'POST', // Метод запроса
+                headers: {
+                    'Content-Type': 'application/json' // Устанавливаем заголовок Content-Type для отправки JSON
+                },
+                body: JSON.stringify({ // Преобразуем данные формы в JSON-строку
+                    username: formData.get('username'), // Получаем значение поля username
+                    email: formData.get('email'), // Получаем значение поля email
+                    password: formData.get('password') // Получаем значение поля password
+                })
+            });
+
+            // Получаем JSON-ответ от сервера
+            const responseData = await response.json();
+
+            // Выводим ответ сервера в консоль для отладки
+            console.log(responseData);
+        }
+
+        // Добавляем обработчик события submit на форму с id="registrationForm"
+        document.getElementById('registrationForm').addEventListener('submit', submitForm);
+    </script>
 
 {% endblock content %}

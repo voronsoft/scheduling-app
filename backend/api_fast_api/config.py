@@ -11,7 +11,10 @@ ORIGINS = os.getenv('ALLOWED_ORIGINS').split(',')
 # Секретный ключ
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# Получаем абсолютный путь к корню сайта
+# Главная директория расположения проекта
+ROOT_DIR = ...
+
+# Получаем абсолютный путь к базовой папке проекта
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Подключение к базе данных SQLite
@@ -22,6 +25,10 @@ STATIC_FOLDER_PATH = os.path.join(BASE_DIR, 'static')
 # Путь к папке с шаблонами html(jinja2)
 TEMPLATES_FOLDER_PATH = os.path.join(BASE_DIR, 'templates')
 
+# Время жизни токена
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
+# Алгоритм кодирования
+ALGORITHM = os.environ.get('ALGORITHM')
 
 if __name__ == "__main__":
     print("ORIGINS", ORIGINS)
@@ -30,3 +37,5 @@ if __name__ == "__main__":
     print('SQLALCHEMY_DATABASE_URI', SQLALCHEMY_DATABASE_URL)
     print('STATIC_FOLDER_PATH', STATIC_FOLDER_PATH)
     print('TEMPLATES_FOLDER_PATH', TEMPLATES_FOLDER_PATH)
+    print('ACCESS_TOKEN_EXPIRE_MINUTES', ACCESS_TOKEN_EXPIRE_MINUTES)
+    print('ALGORITHM', ALGORITHM)
