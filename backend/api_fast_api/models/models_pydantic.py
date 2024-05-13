@@ -5,8 +5,8 @@ from pydantic import BaseModel, EmailStr, conint, Field, SecretStr
 
 class ReceivingDataFromCalendarPydantic(BaseModel):
     """Модель данных при заявке на урок с календаря"""
-    firstName: str = Field(..., description="First name of the applicant", example="Name")
-    lastName: str = Field(..., description="Last name of the applicant", example="Last")
+    name: str = Field(..., description="First name of the applicant", example="Name")
+    surname: str = Field(..., description="Last name of the applicant", example="Last")
     email: EmailStr = Field(..., description="Email address of the applicant")
     phone: str = Field(..., description="Only numbers", example="123456789")
     selectedDate: str = Field(..., description="Selected date in the format YYYY-MM-DD", example="2024-07-20")

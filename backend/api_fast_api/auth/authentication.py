@@ -7,7 +7,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 
 from backend.api_fast_api.config import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
-from backend.api_fast_api.models.models_sql import sqlachemy_obj_to_dict, search_user_database
+from backend.api_fast_api.models.models_sql import sqlalchemy_obj_to_dict, search_user_database
 from backend.api_fast_api.models.models_pydantic import UserInDBPydantic, TokenDataPydantic, UserPydantic
 
 # Схема аутентификации OAuth2.
@@ -23,7 +23,7 @@ def get_user(username: str):
 
     if user:
         # Преобразуем объект user в словарь и передаем его в конструктор UserInDBPydantic
-        user_dict = sqlachemy_obj_to_dict(user)
+        user_dict = sqlalchemy_obj_to_dict(user)
         return UserInDBPydantic(**user_dict)
 
 

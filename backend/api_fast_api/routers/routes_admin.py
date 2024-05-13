@@ -124,13 +124,11 @@ async def get_lesson_dates_for_the_month(date_in: str, response: Response):
     Примеры использования:
     - http://example.com/api_admin/lesson_dates_for_the_month/2024-9-24
     - http://example.com/api_admin/lesson_dates_for_the_month/2024-09-24
+
     Пример ответа:
     - 200: {"2024-4-24": "true","2024-4-30": "await"}
-
     - 404: {"Not found"} Даты на этот месяц не найдены.
-
     - 422:{"detail": "Invalid date format"}
-
     - 500:{"detail": "Internal Server Error: Something went wrong"}
     """
 
@@ -160,7 +158,7 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response):
     """
     **Метод: GET**
 
-    **Маршрут получения занятий на запрашиваемый месяц**
+    **Маршрут получения занятий на запрашиваемый месяц (полные данные о заявке)**
 
     Параметры:
     - date_in: Дата в формате YYYY-MM-DD. Тип строка.

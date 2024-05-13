@@ -7,8 +7,9 @@ from fastapi.templating import Jinja2Templates
 
 from backend.api_fast_api.auth.authentication import get_current_user, oauth2_scheme
 from backend.api_fast_api.config import TEMPLATES_FOLDER_PATH
-from backend.api_fast_api.func.functions import generate_calendar, current_date, headers_scheck_auth
+from backend.api_fast_api.func.functions import generate_calendar, current_date, headers_scheck_auth, date_at_the_time_the_function_was_called
 from backend.api_fast_api.models.models_pydantic import UserPydantic
+from backend.api_fast_api.models.models_sql import lesson_dates_for_the_month_db
 
 # Создаем экземпляр APIRouter с префиксом
 router_html = APIRouter(prefix="")
@@ -23,29 +24,17 @@ templates = Jinja2Templates(directory=TEMPLATES_FOLDER_PATH)
 async def html_index_get(request: Request):
 # async def html_index_get(request: Request, token: Annotated[str, Depends(oauth2_scheme)]):
     """ В разработке !!! """
-    # if headers_scheck_auth(request):
-    #     user_group = 1  # Группа пользователя: 1 админ, 0 посторонний
-    #     user = "admin"  # Имя пользователя
-    #     # Получаем список зарезервированных дат из БД
-    #     dict_days = {'2024-05-12': False, '2024-05-13': 'await', '2024-05-22': False}
-    #     # Получаем дату для генерации календаря (дата формируется на момент вызова кода)
-    #     year, month = current_date()
-    #     # Генерируем календарь передав: 1 список занятий из БД / 2 год / 3 месяц
-    #     calendar = generate_calendar(dict_days, year, month)
-    #
-    #     return templates.TemplateResponse(request=request, name="index.html", context={"user_group": user_group, "user_name": user, "calendar": calendar})
-    #
-    # else:
-    #     print("get НЕТ заголовка authorization !!!!!!")
-    #     await sleep(3)
-    #     return RedirectResponse('/authorizatio
 
     user_group = 1  # Группа пользователя: 1 админ, 0 посторонний
     user = "admin"  # Имя пользователя
-    # Получаем список зарезервированных дат из БД
-    dict_days = {'2024-05-09': "true",'2024-05-12': "await", '2024-05-13': 'await', '2024-05-22': "true"}
+    # TODO необходимо доделать автоматическую генерацию отмеченных дней из БД
+    # Получаем дату в момент вызова функции
+    data = date_at_the_time_the_function_was_called()
+    # Получаем список зарезервированных дат из БД на текущий месяц
+    dict_days = lesson_dates_for_the_month_db(data)[1]
+    print("dict_days", dict_days)
     # Получаем дату для генерации календаря (дата формируется на момент вызова кода)
-    year, month = current_date()
+    year, month, _ = map(int, data.split("-"))
     # Генерируем календарь передав: 1 список занятий из БД / 2 год / 3 месяц
     calendar = generate_calendar(dict_days, year, month)
 

@@ -6,7 +6,7 @@ from fastapi import Request
 def generate_calendar(date_dict: dict, year: int, month: int) -> str:
     """
     Функция генерации календаря по датам которые зарезервированы под уроки
-    :param date_dict: {'2024-05-12': False, '2024-05-13': 'await', '2024-05-22': False}
+    :param date_dict: {'2024-05-12': true, '2024-05-13': 'await', '2024-05-22': true}
     :param year: int
     :param month: int
     :return: str(html cod)
@@ -138,3 +138,13 @@ def headers_scheck_auth(request: Request):
             answer = True
 
     return answer
+
+
+# Функция получения даты на момент вызова функции
+def date_at_the_time_the_function_was_called():
+    """Функция генерации даты на момент вызова функции
+
+    :return str 2024-05-24
+    """
+    date = datetime.now().date()
+    return str(date)

@@ -161,7 +161,6 @@ def get_lessons_for_month(date_month: str):
             print(lessons)
             # Если нет записей возвращаем
 
-
             # Формируем список уроков в требуемом формате
             lessons_list = []
             for lesson in lessons:
@@ -187,6 +186,7 @@ def get_lessons_for_month(date_month: str):
         return 500, str(e)
 
 
+# TODO не реализовано
 # Получение уроков из БД на конкретный день определенного месяца (полные данные записи)
 def get_lessons_for_day(date_dey: str):
     """Получение уроков из БД на конкретный день определенного месяца"""
@@ -231,7 +231,7 @@ def save_user_registration(username: str, email: str, hashed_password: str) -> t
 
 
 # Функция преобразования объекта SQLAlchemy в словарь.
-def sqlachemy_obj_to_dict(obj) -> Dict:
+def sqlalchemy_obj_to_dict(obj) -> Dict:
     """
     Преобразование объекта SQLAlchemy в словарь.
 
@@ -262,3 +262,7 @@ def search_user_database(username: str) -> Union[UsersSql, None]:
         except Exception as e:
             print("Ошибка БД:", e)
             return {"error": str(e)}
+
+# Функция получения всех записей уроков в виде словаря на момент даты вызова функции
+def all_lesson_records_from_the_database():
+    ...
