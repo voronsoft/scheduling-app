@@ -7,10 +7,11 @@ class ReceivingDataFromCalendarPydantic(BaseModel):
     """Модель данных при заявке на урок с календаря"""
     name: str = Field(..., description="First name of the applicant", example="Name")
     surname: str = Field(..., description="Last name of the applicant", example="Last")
-    email: EmailStr = Field(..., description="Email address of the applicant")
     phone: str = Field(..., description="Only numbers", example="123456789")
-    selectedDate: str = Field(..., description="Selected date in the format YYYY-MM-DD", example="2024-07-20")
-    time: conint(ge=1, le=24) = Field(..., description="Time of the lesson (1-24)", example=14)
+    email: EmailStr = Field(..., description="Email address of the applicant")
+    selectedDate: str = Field(..., description="Selected date in the format YYYY-MM-DD", example="2024-05-20")
+    time: str = Field(..., description="Time of the lesson", example=14)
+    # confirmed: bool = Field(..., description="lesson status", example=False)
 
 
 class RegistrationUserPydantic(BaseModel):

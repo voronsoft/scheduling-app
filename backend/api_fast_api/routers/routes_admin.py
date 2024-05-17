@@ -112,8 +112,8 @@ async def get_lesson_dates_for_the_month(date_in: str, response: Response):
 
     Возвращаемые данные:
     - Словарь с данными о бронировании на указанную дату.
-      Пример: {"2024-04-24": "true", "2024-04-30": "await"}
-      true - дата одобрена, await - дата в ожидании.
+      Пример: {"2024-04-24": True, "2024-04-30": False}
+      True - дата одобрена, False - дата в ожидании.
 
     Возможные статусы ответа:
     - 200: Успешный запрос. Возвращается словарь с данными о бронировании.
@@ -126,7 +126,7 @@ async def get_lesson_dates_for_the_month(date_in: str, response: Response):
     - http://example.com/api_admin/lesson_dates_for_the_month/2024-09-24
 
     Пример ответа:
-    - 200: {"2024-4-24": "true","2024-4-30": "await"}
+    - 200: {"2024-4-24": True,"2024-4-30": False}
     - 404: {"Not found"} Даты на этот месяц не найдены.
     - 422:{"detail": "Invalid date format"}
     - 500:{"detail": "Internal Server Error: Something went wrong"}
@@ -160,22 +160,25 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response):
 
     **Маршрут получения занятий на запрашиваемый месяц (полные данные о заявке)**
 
-    Параметры:
-    - date_in: Дата в формате YYYY-MM-DD. Тип строка.
+    Параметры принимает:
+    - date_in: Дата в формате YYYY-MM-DD. Тип строка. (2024-05-16)
 
     Возвращаемые данные:
-    - Словарь с данными о бронировании на указанную дату месяца.\n
-            {"lessons": [{
+    - Словарь с данными о бронировании на указанную дату месяца.
+
+            {"lessons": [
+                            {
                             "id": 1,
-                            "username": "Name1",
-                            "last_name": "1",
                             "email": "er@er.com",
+                            "firstName": "Name1",
+                            "lastName": "1",
                             "phone": "123-45-67",
-                            "selected_date": "2024-04-25",
-                            "selected_time": "15",
-                            "confirmed_state": "false"
+                            "selectedDate": "2024-04-25",
+                            "selectedTime": "15",
+                            "confirmed": false
                             },
-                            ]}
+                        ]
+            }
 
     Возможные статусы ответа:
     - 200: Вернет список дат связанных с запрашиваемым месяцем.
@@ -191,26 +194,28 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response):
 
     - 200:
 
-            {"lessons": [{
-                      "id": 1,
-                      "username": "Name1",
-                      "last_name": "1",
-                      "email": "er@er.com",
-                      "phone": "123-45-67",
-                      "selected_date": "2024-04-25",
-                      "selected_time": "15",
-                      "confirmed_state": "false"
-                    },
-                    {
-                      "id": 6,
-                      "username": "Name6",
-                      "last_name": "Last",
-                      "email": "user@exa1mple.com",
-                      "phone": "123456789",
-                      "selected_date": "2024-04-25",
-                      "selected_time": "14",
-                      "confirmed_state": "false"
-                    }]
+            {"lessons": [
+                            {
+                                "id": 1,
+                                "email": "er@er.com",
+                                "firstName": "Name1",
+                                "lastName": "1",
+                                "phone": "123-45-67",
+                                "selectedDate": "2024-04-25",
+                                "selectedTime": "15",
+                                "confirmed": false
+                            },
+                            {
+                                "id": 2,
+                                "email": "2er@er.com",
+                                "firstName": "Name2",
+                                "lastName": "2",
+                                "phone": "222-22-22",
+                                "selectedDate": "2024-02-22",
+                                "selectedTime": "15",
+                                "confirmed": false
+                            }
+                        ]
             }
 
     - 404:{"lessons": "Not found"}

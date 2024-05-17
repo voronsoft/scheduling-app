@@ -38,13 +38,14 @@ backend/
 │   │   ├── js/
 │   │   │   ├── bootstrap.bundle.js
 │   │   │   ├── bootstrap.bundle.js.map
+│   │   │   ├── functions.js
 │   │   │   
 │   │   
 │   ├── templates/
 │   │   ├── authorization.html
+│   │   ├── error_modal_window.html
 │   │   ├── index.html
 │   │   ├── registration.html
-│   │   ├── test.html
 │   │   ├── timetable.html
 │   │   
 │   ├── __init__.py
@@ -56,5 +57,6 @@ backend/
 ├── requirements.txt
 ├── run_fapi.py
 ├── structure_project.md
+├── tst.py
 
 ```

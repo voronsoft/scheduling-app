@@ -1,12 +1,15 @@
 from datetime import datetime
 from fastapi import Request
 
+from backend.api_fast_api.models.models_sql import get_lessons_for_day
 
-# Функция генерации календарного месяца в админ панели
+
+# TODO Необходимо дополнить функцию что бы при нажатии на дату появлялись данные о пользователе, так же нужно добавить кнопку подтверждения занятия
+# Функция для текущего года и текущего месяца.
 def generate_calendar(date_dict: dict, year: int, month: int) -> str:
     """
     Функция генерации календаря по датам которые зарезервированы под уроки
-    :param date_dict: {'2024-05-12': true, '2024-05-13': 'await', '2024-05-22': true}
+    :param date_dict: {'2024-05-12': True, '2024-05-13': False, '2024-05-22': True}
     :param year: int
     :param month: int
     :return: str(html cod)
@@ -25,20 +28,19 @@ def generate_calendar(date_dict: dict, year: int, month: int) -> str:
 
     # Начинаем формирование HTML для календаря
     calendar_html = f'''
-    <div class="container">
-        <h2>{first_day_of_month.strftime("%B %Y")}</h2>
+        <h4>{first_day_of_month.strftime("%B %Y")}</h4>
         <table class="table table-bordered">
-            <thead>
+
                 <tr>
-                    <th>Пн</th>
-                    <th>Вт</th>
-                    <th>Ср</th>
-                    <th>Чт</th>
-                    <th>Пт</th>
-                    <th>Сб</th>
-                    <th>Вс</th>
+                    <th class="table-light text-center">Mon</th>
+                    <th class="table-light text-center">Tue</th>
+                    <th class="table-light text-center">Wed</th>
+                    <th class="table-light text-center">Thu</th>
+                    <th class="table-light text-center">Fri</th>
+                    <th class="table-danger text-center">Sat</th>
+                    <th class="table-danger text-center">Sun</th>
                 </tr>
-            </thead>
+
             <tbody>
     '''
 
@@ -51,25 +53,37 @@ def generate_calendar(date_dict: dict, year: int, month: int) -> str:
         current_day = datetime(year, month, day)
         cell_style = ''
         modal_id = f'modal-{day}'
+        # TODO Добавить данные о пользователе в календарь из бд
+        # Если дата есть в списке
         if current_day.strftime('%Y-%m-%d') in date_dict:
-            if date_dict[current_day.strftime('%Y-%m-%d')] == 'true':
-                cell_style = 'btn-success'
-            elif date_dict[current_day.strftime('%Y-%m-%d')] == 'await':
-                cell_style = 'btn-primary'
+            # Получаем данные об уроке/уроках
+            sts, lessons = get_lessons_for_day(current_day.strftime('%Y-%m-%d'))
+            # Проверяем значение метки (одобрено:True, ожидает:False)
+            if date_dict[current_day.strftime('%Y-%m-%d')] is True:
+                cell_style = 'text-success'  # отметка одобрено True
+                bg_style = 'table-success'
+            elif date_dict[current_day.strftime('%Y-%m-%d')] is False:
+                cell_style = 'text-danger'  # отметка ожидает False
+                bg_style = 'table-danger'
+
             calendar_html += f'''
-                <td>
-                    <button type="button" class="btn {cell_style}" data-bs-toggle="modal" data-bs-target="#{modal_id}">
-                        {day}
-                    </button>
+                <td class="{bg_style} text-center">
+                    <a href="#" class="text-decoration-none {cell_style}" data-bs-toggle="modal" data-bs-target="#{modal_id}"><b><h3>{day}</h3></b></a>
                     <div class="modal fade" id="{modal_id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
+                      <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Дата {current_day.strftime('%Y-%m-%d')}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
-                            <p>Данные пользователя из бд</p>
+                            <div class="card">
+                              <h5 class="card-header">Featured</h5>
+                              <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">{lessons}</p>
+                              </div>
+                            </div>
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
@@ -80,7 +94,7 @@ def generate_calendar(date_dict: dict, year: int, month: int) -> str:
                 </td>
             '''
         else:
-            calendar_html += f'<td>{day}</td>'
+            calendar_html += f'<td class="text-center">{day}</td>'
 
         if (start_day_of_week + day) % 7 == 0:
             calendar_html += '</tr><tr>'
@@ -90,12 +104,11 @@ def generate_calendar(date_dict: dict, year: int, month: int) -> str:
         calendar_html += '<td></td>'
         days_in_month += 1
 
-    calendar_html += '</tr></tbody></table></div>'
+    calendar_html += '</tr></tbody></table>'
 
     return calendar_html
 
 
-# Функция для текущего года и текущего месяца.
 def current_date() -> tuple:
     """
     Функция для текущего года и текущего месяца.
