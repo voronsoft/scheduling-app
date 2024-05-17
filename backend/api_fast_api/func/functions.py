@@ -1,7 +1,7 @@
 from datetime import datetime
 from fastapi import Request
 
-from backend.api_fast_api.models.models_sql import get_lessons_for_day
+from api_fast_api.models.models_sql import get_lessons_for_day
 
 
 # TODO Необходимо дополнить функцию что бы при нажатии на дату появлялись данные о пользователе, так же нужно добавить кнопку подтверждения занятия

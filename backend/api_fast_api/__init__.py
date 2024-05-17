@@ -2,12 +2,12 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.api_fast_api.routers.routers_html import router_html
-from backend.api_fast_api.models.models_sql import create_database
-from backend.api_fast_api.routers.routes_admin import router_admin
-from backend.api_fast_api.config import STATIC_FOLDER_PATH, ORIGINS
-from backend.api_fast_api.routers.routes_calendar import router_calendar
-from backend.api_fast_api.func.create_project_structure_file import create_project_structure
+from api_fast_api.routers.routers_html import router_html
+from api_fast_api.models.models_sql import create_database
+from api_fast_api.routers.routes_admin import router_admin
+from api_fast_api.config import STATIC_FOLDER_PATH, ORIGINS
+from api_fast_api.routers.routes_calendar import router_calendar
+from api_fast_api.func.create_project_structure_file import create_project_structure
 
 # Создаем экземпляр FastAPI приложения
 app = FastAPI(title="Backend calendar")

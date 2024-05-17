@@ -6,7 +6,7 @@ from sqlalchemy_utils import database_exists
 from sqlalchemy.orm import sessionmaker, attributes, declarative_base
 from sqlalchemy import Column, Integer, Date, Boolean, String, create_engine, extract, or_, and_, inspect, func, UUID
 
-from backend.api_fast_api.config import SQLALCHEMY_DATABASE_URL
+from api_fast_api.config import SQLALCHEMY_DATABASE_URL
 
 # Создаем экземпляр класса Engine для соединения с базой данных
 engine = create_engine(SQLALCHEMY_DATABASE_URL)

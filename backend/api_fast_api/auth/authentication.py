@@ -6,9 +6,9 @@ from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 
-from backend.api_fast_api.config import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
-from backend.api_fast_api.models.models_sql import sqlalchemy_obj_to_dict, search_user_database
-from backend.api_fast_api.models.models_pydantic import UserInDBPydantic, TokenDataPydantic, UserPydantic
+from api_fast_api.config import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
+from api_fast_api.models.models_sql import sqlalchemy_obj_to_dict, search_user_database
+from api_fast_api.models.models_pydantic import UserInDBPydantic, TokenDataPydantic, UserPydantic
 
 # Схема аутентификации OAuth2.
 # Указываем страницу для авторизации/аутентификации
