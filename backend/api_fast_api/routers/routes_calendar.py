@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response, status
-from backend.api_fast_api.models.models_sql import add_lesson_data_to_db
-from backend.api_fast_api.models.models_pydantic import ReceivingDataFromCalendarPydantic
+from api_fast_api.models.models_sql import add_lesson_data_to_db
+from api_fast_api.models.models_pydantic import ReceivingDataFromCalendarPydantic
 
 # Создаем экземпляр APIRouter с префиксом
 router_calendar = APIRouter(prefix="/api_calendar")
