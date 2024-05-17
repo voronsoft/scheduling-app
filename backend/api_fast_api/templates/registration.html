@@ -35,37 +35,8 @@
     </div>
 
     <script>
-        // Функция для отправки данных формы на сервер и обработки ответа
-        async function submitForm(event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение отправки формы
-
-            // Создаем объект FormData для сбора данных формы
-            const formData = new FormData(event.target);
-            // Используем функцию url_for для получения пути к маршруту в FastAPI
-            const url = '{{ url_for("register_user") }}';
-
-            // Отправляем POST-запрос на сервер с данными формы
-            const response = await fetch(url, {
-                method: 'POST', // Метод запроса
-                headers: {
-                    'Content-Type': 'application/json' // Устанавливаем заголовок Content-Type для отправки JSON
-                },
-                body: JSON.stringify({ // Преобразуем данные формы в JSON-строку
-                    username: formData.get('username'), // Получаем значение поля username
-                    email: formData.get('email'), // Получаем значение поля email
-                    password: formData.get('password') // Получаем значение поля password
-                })
-            });
-
-            // Получаем JSON-ответ от сервера
-            const responseData = await response.json();
-
-            // Выводим ответ сервера в консоль для отладки
-            console.log(responseData);
-        }
-
         // Добавляем обработчик события submit на форму с id="registrationForm"
-        document.getElementById('registrationForm').addEventListener('submit', submitForm);
+        document.getElementById('registrationForm').addEventListener('submit', submitFormRegistration);
     </script>
 
 {% endblock content %}

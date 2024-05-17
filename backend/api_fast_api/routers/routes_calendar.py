@@ -16,13 +16,14 @@ async def receiving_data_calendar(lesson_data: ReceivingDataFromCalendarPydantic
 
     **Маршрут приема заявок на уроки из компонента календарь.**
 
-    - Принимает:\n
+    - Принимает:
+
             {
-                "firstName": "Name",
-                "lastName": "Last",
-                "email": "user@example.com",
+                "name": "Name",
+                "surname": "Last",
                 "phone": "123456789",
-                "selectedDate": "2024-02-20",
+                "email": "user@example.com",
+                "selectedDate": "2024-05-14",
                 "time": 14
             }
 
@@ -41,8 +42,8 @@ async def receiving_data_calendar(lesson_data: ReceivingDataFromCalendarPydantic
     status_code = add_lesson_data_to_db(
         lesson_data.name,
         lesson_data.surname,
-        lesson_data.email,
         lesson_data.phone,
+        lesson_data.email,
         lesson_data.selectedDate,
         lesson_data.time
     )
