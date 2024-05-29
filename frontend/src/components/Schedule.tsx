@@ -98,8 +98,7 @@ const Schedule = () => {
         // Обработка успешного ответа от сервера
         console.log("Request sent successfully!");
         // Очистить значения ввода в форме
-        reset();
-        //setSelectedDate(""); // Сбросить форму
+        reset(); // Сбросить форму
       } else {
         // Обработка ошибки от сервера
         console.error("Request failed:", response.statusText);
