@@ -173,6 +173,7 @@ const Schedule = () => {
 
                     return (
                       <td
+                        key={day}
                         className={`${
                           day === today && month === currentMonth
                             ? "today"

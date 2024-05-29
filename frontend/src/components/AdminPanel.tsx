@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { may } from "../constants";
+import { Fragment } from "react/jsx-runtime";
 
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth();
@@ -63,9 +64,9 @@ const AdminPanel = () => {
           </thead>
           <tbody>
             {may.map((day)=>(
-              <>
+              <Fragment key={day.id}>
                 {day.lessons.map((lesson)=>(
-                  <tr className="gradient-bg">
+                  <tr className="gradient-bg" key={lesson.id}>
                     <td className="w-[150px] h-[50px] text-center text-black">{day.date}</td>
                     <td className="w-[150px] h-[50px] text-center text-black">{lesson.selectedTime}</td>
                     <td className="w-[150px] h-[50px] text-center text-black">{lesson.lastName} {lesson.firstName}</td>
@@ -74,9 +75,9 @@ const AdminPanel = () => {
                     <td className="w-[150px] h-[50px] text-center text-black">{lesson.confirmed ? "Yes" : "No"}</td>
                   </tr>                  
                 ))}               
-              </>
-            ))}
-          </tbody>          
+              </Fragment> 
+            ))}  
+          </tbody>                   
         </table>
       </div>
     </section>
