@@ -268,10 +268,10 @@ const Schedule = () => {
             name="time"
             className="p-2 rounded-md text-black w-full"
           >
-            <option value="15">3 pm</option>
-            <option value="16">4 pm</option>
-            <option value="17">5 pm</option>
-            <option value="18">6 pm</option>
+            <option value="15">8 am</option>
+            <option value="16">9 am</option>
+            <option value="17">10 am</option>
+            <option value="18">11 am</option>
           </select>
           {errors.time && (
             <div className="text-red-500">{errors.time.message}</div>

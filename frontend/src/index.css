@@ -98,3 +98,7 @@ body {
   background-color: #d69bd2;
   border-radius: 50%;
 }
+
+.gradient-bg:nth-child(odd) {
+  background-image: linear-gradient(to bottom, #ffffff3f 0%, #ffffff86 100%);
+}
