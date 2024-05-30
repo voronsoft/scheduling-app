@@ -2,15 +2,18 @@ import { Link } from "react-router-dom";
 import { may } from "../constants";
 import { Fragment } from "react/jsx-runtime";
 
+//const AUTH_URL = 'http://example.com/api_admin/authorization'
+
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth();
 const currentYear = currentDate.getFullYear();
 const today = currentDate.getDate();
-const currentDay = `${currentYear}-${currentMonth}-${today}`
+const currentDay = `${currentYear}-${currentMonth + 1}-${today}`
 
 const getCurrentMonthLessonsUrl = `/api_admin/get_lessons_for_a_month/${currentDay}`;
 
 const AdminPanel = () => {
+  
 
   const getCurrentMonthLessons = async () => {
     try {
