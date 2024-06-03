@@ -11,18 +11,17 @@ backend/
 │   │   
 │   ├── func/
 │   │   ├── create_project_structure_file.py
+│   │   ├── csrf_functions.py
 │   │   ├── functions.py
 │   │   
 │   ├── models/
 │   │   ├── models_pydantic.py
 │   │   ├── models_sql.py
-│   │   ├── __init__.py
 │   │   
 │   ├── routers/
 │   │   ├── routers_html.py
 │   │   ├── routes_admin.py
 │   │   ├── routes_calendar.py
-│   │   ├── __init__.py
 │   │   
 │   ├── static/
 │   │   ├── css/
@@ -32,7 +31,6 @@ backend/
 │   │   │   
 │   │   ├── img/
 │   │   │   ├── favicon.svg
-│   │   │   ├── newspaper.svg
 │   │   │   ├── vite.svg
 │   │   │   
 │   │   ├── js/
@@ -42,21 +40,17 @@ backend/
 │   │   │   
 │   │   
 │   ├── templates/
-│   │   ├── authorization.html
 │   │   ├── error_modal_window.html
 │   │   ├── index.html
+│   │   ├── login.html
 │   │   ├── registration.html
 │   │   ├── timetable.html
 │   │   
 │   ├── __init__.py
 │   
-├── example_request.py
-├── example_request2.py
-├── example_request3.py
 ├── notes_project.txt
 ├── requirements.txt
 ├── run_fapi.py
 ├── structure_project.md
-├── tst.py
 
 ```

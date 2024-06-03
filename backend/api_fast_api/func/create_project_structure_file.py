@@ -4,7 +4,7 @@ import os
 current_file = os.path.abspath(__file__)
 
 
-# Создание файла со структурой проекта тип .md
+# ======================== Создание файла со структурой проекта тип .md
 def create_project_structure(root_folder=None, output_file=None):
     """Создание файла со структурой проекта
     

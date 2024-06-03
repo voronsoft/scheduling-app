@@ -1,5 +1,6 @@
 # Файл конфигурации приложения
 import os
+import secrets
 from dotenv import load_dotenv
 
 # Загрузка переменных окружения из файла .env
@@ -8,8 +9,8 @@ load_dotenv()
 # Список разрешенных адресов
 ORIGINS = os.getenv('ALLOWED_ORIGINS').split(',')
 
-# Секретный ключ
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# Секретный ключ (автоматическая генерация)
+SECRET_KEY = secrets.token_hex(32)
 
 # Главная директория расположения проекта
 ROOT_DIR = ...
@@ -29,13 +30,3 @@ TEMPLATES_FOLDER_PATH = os.path.join(BASE_DIR, 'templates')
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 # Алгоритм кодирования
 ALGORITHM = os.environ.get('ALGORITHM')
-
-if __name__ == "__main__":
-    print("ORIGINS", ORIGINS)
-    print("SECRET_KEY", SECRET_KEY)
-    print('BASE_DIR', BASE_DIR)
-    print('SQLALCHEMY_DATABASE_URI', SQLALCHEMY_DATABASE_URL)
-    print('STATIC_FOLDER_PATH', STATIC_FOLDER_PATH)
-    print('TEMPLATES_FOLDER_PATH', TEMPLATES_FOLDER_PATH)
-    print('ACCESS_TOKEN_EXPIRE_MINUTES', ACCESS_TOKEN_EXPIRE_MINUTES)
-    print('ALGORITHM', ALGORITHM)
