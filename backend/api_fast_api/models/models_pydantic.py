@@ -1,8 +1,11 @@
-from typing import Optional
+import re
 from uuid import UUID
-from pydantic import BaseModel, EmailStr, conint, Field, SecretStr
+from datetime import date
+from typing import Optional, Any
+from pydantic import BaseModel, EmailStr, Field, SecretStr, field_validator
 
 
+# -------------- Модель приема данных с формы календаря для записи занятия в бд
 class ReceivingDataFromCalendarPydantic(BaseModel):
     """Модель данных при заявке на урок с календаря"""
     name: str = Field(..., description="First name of the applicant", example="Name")
@@ -14,35 +17,36 @@ class ReceivingDataFromCalendarPydantic(BaseModel):
     # confirmed: bool = Field(..., description="lesson status", example=False)
 
 
+# -------------- Модель данных для регистрации пользователя
 class RegistrationUserPydantic(BaseModel):
-    """Модель данных при регистрации пользователя"""
+    """Модель данных для регистрации пользователя"""
     username: str = Field(..., description="Name user", example="jon")
     email: EmailStr = Field(..., description="Email address user", example="jon@jon.jon")
     password: SecretStr = Field(..., description="Password user", example="jon")
 
 
+# -------------- Модель данных для авторизации пользователя
 class AuthorizationUserPydantic(BaseModel):
-    """Модель данных при авторизации пользователя"""
+    """Модель данных для авторизации пользователя"""
     username: str = Field(..., description="Name user", example="jon")
     email: str | None = Field(None, description="Email address user", example="jon@jon.jon")
     password: SecretStr = Field(..., description="Password user", example="jon")
     uuid: Optional[UUID] = None
 
 
-# --------------------------------------------
-# Модель токена для ответа на запрос аутентификации.
+# -------------- Модель токена для ответа на запрос аутентификации.
 class TokenPydantic(BaseModel):
     """Модель токена"""
     access_token: str
     token_type: str
 
 
-# Модель данных токена.
+# -------------- Модель данных токена.
 class TokenDataPydantic(BaseModel):
     username: str | None = None
 
 
-# Модель пользователя.
+# -------------- Модель пользователя.
 class UserPydantic(BaseModel):
     """Модель пользователя """
     username: str
@@ -52,6 +56,12 @@ class UserPydantic(BaseModel):
     disabled: bool | None = None
 
 
-# Модель пользователя в базе данных.
+# -------------- Модель пользователя в базе данных.
 class UserInDBPydantic(UserPydantic):
     hashed_password: str
+
+
+# -------------- Модель проверки даты
+class DateModelPydantic(BaseModel):
+    """Проверка даты (2024-1-24)"""
+    date: str

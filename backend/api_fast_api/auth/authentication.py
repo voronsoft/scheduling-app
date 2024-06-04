@@ -12,10 +12,11 @@ from api_fast_api.models.models_pydantic import UserInDBPydantic, TokenDataPydan
 
 # Схема аутентификации OAuth2.
 # Указываем страницу для авторизации/аутентификации
+# Создаем экземпляр OAuth2PasswordBearer для аутентификации с использованием JWT токена
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api_admin/authorization")
 
 
-# Функция для получения пользователя из базы данных по имени пользователя.
+# ======================== Функция для получения пользователя из базы данных по имени пользователя.
 def get_user(username: str):
     """Функция для получения пользователя из базы данных по имени пользователя."""
     # Ищем пользователя в БД
@@ -27,7 +28,7 @@ def get_user(username: str):
         return UserInDBPydantic(**user_dict)
 
 
-# Функция аутентификация пользователя.
+# ======================== Функция аутентификация пользователя.
 def authenticate_user(username: str, password: str):
     """
     Функция для аутентификации пользователя.
@@ -43,7 +44,7 @@ def authenticate_user(username: str, password: str):
     return user
 
 
-# Функция для создания JWT-токена доступа.
+# ======================== Функция для создания JWT-токена.
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     """Функция для создания JWT-токена доступа."""
     to_encode = data.copy()
@@ -56,7 +57,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
-# Функция для получения текущего пользователя на основе JWT-токена.
+# ======================== Функция для получения текущего пользователя на основе JWT-токена.
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     """Функция для получения текущего пользователя на основе JWT-токена."""
     credentials_exception = HTTPException(
@@ -78,7 +79,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     return user
 
 
-# Функция для получения текущего активного пользователя.
+# ======================== Функция для получения текущего активного пользователя.
 async def get_current_active_user(current_user: Annotated[UserPydantic, Depends(get_current_user)], ):
     """Функция для получения текущего активного пользователя."""
     if current_user.disabled:
@@ -86,7 +87,7 @@ async def get_current_active_user(current_user: Annotated[UserPydantic, Depends(
     return current_user
 
 
-# Функция для проверки валидности токена
+# ======================== Функция для проверки валидности токена
 def validate_token(token: str) -> bool:
     try:
         # Декодируем токен и проверяем его подпись
@@ -100,7 +101,7 @@ def validate_token(token: str) -> bool:
     return False
 
 
-# Функция для проверки пароля.
+# ======================== Функция для проверки пароля.
 def verify_password(plain_password, hashed_password) -> bool:
     """
     Функция для проверки пароля.
@@ -117,7 +118,7 @@ def verify_password(plain_password, hashed_password) -> bool:
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 
-# Функция для хеширования пароля (шифрование пароля)
+# ======================== Функция для хеширования пароля (шифрование пароля)
 def get_password_hash(password: str) -> str:
     """
     Функция для хеширования пароля (шифрование пароля)
@@ -131,29 +132,3 @@ def get_password_hash(password: str) -> str:
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
     # Возвращаем хэшированный пароль как строку
     return hashed_password.decode('utf-8')
-
-
-# Функция генерации токена JWT для пользователя
-def generate_token(user_id: int):
-    """
-    Генерация JWT токена для пользователя.
-
-    Args:
-        user_id (int): Идентификатор пользователя.
-
-    Returns:
-        str: Сгенерированный JWT токен.
-    """
-    # Подготовка данных для токена
-
-    utc_timezone = timezone.utc  # Создаем timezone-aware объект для UTC
-    # Получаем текущее время в UTC с использованием timezone-aware объекта
-    current_time = datetime.now(utc_timezone)
-
-    payload = {
-        "user_id": user_id,
-        "exp": current_time + ACCESS_TOKEN_EXPIRE_MINUTES
-    }
-    # Генерация JWT токена с использованием секретного ключа
-    token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-    return token

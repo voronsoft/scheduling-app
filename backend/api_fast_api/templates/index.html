@@ -1,66 +1,118 @@
 <!doctype html>
 <html lang="ru" data-bs-theme="auto">
 <head>
-    <script src="{{ url_for('static', path='/js/bootstrap.bundle.js') }}"></script>
-    <script src="{{ url_for('static', path='/js/functions.js') }}"></script>
+    {# Подключаем скрипты #}
+    <script src="{{ url_for('static', path='js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ url_for('static', path='js/functions.js') }}"></script>
 
+    {# Метаданные #}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Some description text">
     <meta name="author" content="Poli">
     <meta name="generator" content="FastApi">
+
+    {# Заголовок страницы #}
     <title>{% block title %}{{ title }}{% endblock %}</title>
-    <link href="{{ url_for('static', path='/css/bootstrap.css') }}" rel="stylesheet">
+
+    {# Подключаем стили #}
+    <link href="{{ url_for('static', path='css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', path='css/navbar-fixed.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', path='img/vite.svg') }}" type="image/x-icon">
 </head>
 <body>
 
+{# Навигационная панель #}
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url_for('html_index_get') }}">ADMINpanel</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        {# navbar #}
+
+        {# Условия для показа пунктов навигации #}
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                {# IF БЛОК УСЛОВИЙ #}
                 {% if user_group == 1 %} {# если администратор #}
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('logout_user') }}">{{ user_name }}(Logout)</a>
-                </li>
+                    <li class="nav-item">
+                        <form id="logout-form" action="{{ url_for('logout_user') }}" method="post">
+                            <button type="submit" class="btn btn-link nav-link active" aria-current="page">{{ user_name }}
+                                (Logout)
+                            </button>
+                        </form>
+                    </li>
                 {% elif user_group == 0 %} {# если неизвестный #}
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('html_authorization') }}">{{ user_name }}(LogIN)</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('html_authorization') }}">{{ user_name }}(LogIN)</a>
+                    </li>
                 {% endif %}
-                {# end IF/ELIF #}
             </ul>
         </div>
-        {# end navbar #}
     </div>
 </nav>
 
+{# Основной контент #}
 <main class="container">
-
-    {# content #}
     {% block content %}
+        {% if user_group == 0 %}
+            <div class="alert alert-danger my-0" role="alert">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('html_authorization') }}">Access denied.
+                    Please log in.</a>
+            </div>
+        {% elif user_group == 1 %}
+            {{ calendar | safe }} {# Генерация календаря #}
 
-    {% if user_group == 0 %} {# если неизвестный #}
-    <div class="alert alert-danger my-2" role="alert">
-        <a class="nav-link active" aria-current="page" href="{{ url_for('html_authorization') }}">Access denied. Please log in.</a>
-    </div>
-    {% elif user_group == 1 %} {# если администратор #}
+            {# Символы для SVG #}
+            <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+                <symbol id="check-circle-fill" viewBox="0 0 16 16" width="48" height="48">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </symbol>
+                <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16" width="48" height="48">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </symbol>
+            </svg>
 
-    {{ calendar | safe }} {# Генерация календаря #}
+            {# Список уроков #}
+            {% if list_data_lessons %}
+                {% for lesson in list_data_lessons %}
+                    <div class="alert alert-{{ 'success' if lesson.confirmed else 'danger' }} d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-4" width="48" height="48" role="img" aria-label="{{ 'Success' if lesson.confirmed else 'Danger' }}:">
+                            <use xlink:href="#{{ 'check-circle-fill' if lesson.confirmed else 'exclamation-triangle-fill' }}" fill="{{ 'green' if lesson.confirmed else 'red' }}"/>
+                        </svg>
 
-    {% endif %}
+                        <div class="row w-100">
+                            <div class="col-md-6">
+                                <h4>{{ lesson.selected_date }} / Time: {{ lesson.time }}</h4>
+                                Name: {{ lesson.username }} {{ lesson.last_name }}<br>
+                                Phone: {{ lesson.phone }}<br>
+                                Email: {{ lesson.email }}<br>
+                            </div>
 
+                            <div class="col-md-6 d-flex flex-column align-items-start">
+                                <button type="button" onclick="changeLessonStatus({{ lesson.id }})" class="btn btn-success mt-2" data-bs-dismiss="modal" {% if lesson.confirmed %}disabled{% endif %}>
+                                    Confirmed
+                                </button>
+                                <button type="button" onclick="deleteLesson({{ lesson.id }})" class="btn btn-danger mt-2" data-bs-dismiss="modal">
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-4" width="48" height="48" role="img" aria-label="{{ 'Danger' }}:">
+                        <use xlink:href="#{{ 'exclamation-triangle-fill' }}" fill="{{ 'red' }}"/>
+                    </svg>
+                    No classes found in the database for the current month.
+                </div>
+            {% endif %}
+        {% endif %}
     {% endblock content %}
-    {# end content #}
-
 </main>
 
 </body>

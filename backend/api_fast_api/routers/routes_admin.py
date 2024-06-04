@@ -5,19 +5,15 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from fastapi import APIRouter, Depends, Request, Response, status, HTTPException
 
 from api_fast_api.config import ACCESS_TOKEN_EXPIRE_MINUTES
-from api_fast_api.auth.authentication import create_access_token, authenticate_user, get_current_active_user, get_password_hash
-from api_fast_api.models.models_pydantic import RegistrationUserPydantic, TokenPydantic, UserPydantic
+from api_fast_api.auth.authentication import create_access_token, authenticate_user, get_password_hash
+from api_fast_api.models.models_pydantic import RegistrationUserPydantic, TokenPydantic
 from api_fast_api.models.models_sql import get_lessons_for_month, lesson_dates_for_the_month_db, save_user_registration
 
-# Создаем экземпляр APIRouter с префиксом
-router_admin = APIRouter(prefix="/api_admin")
+router_admin = APIRouter(prefix="/api_admin")  # Создаем экземпляр APIRouter с префиксом
 tags_metadata_admin = [{"name": "ADMINpanel", "description": "Маршруты админ панели"}, ]
-# Создаем экземпляр OAuth2PasswordBearer для аутентификации с использованием JWT токена
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api_admin/authorization")
 
 
-# -----------------------------------------------------------------------------------------------------------------
-# Маршрут регистрации пользователя
+# ======================== Маршрут регистрации пользователя ========================
 @router_admin.post("/registration", include_in_schema=False, tags=["ADMINpanel"])
 async def register_user(user_data: RegistrationUserPydantic, response: Response, request: Request):
     """
@@ -74,17 +70,50 @@ async def register_user(user_data: RegistrationUserPydantic, response: Response,
         return {"message": "The user has successfully registered!"}
     elif sts == 409:
         response.status_code = status.HTTP_409_CONFLICT
-        return {"message": "A user with this email already exists!"}
+        return {"message": "A user with this email already exists! / The user limit is limited!"}
     elif sts == 500:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {"Error": result}
 
 
-# -----------------------------------------------------------------------------------------------------------------
-# Маршрут для получения JWT-токена доступа.
-@router_admin.post("/authorization", include_in_schema=False, tags=["ADMINpanel"])
-async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], request: Request) -> TokenPydantic:
-    """Маршрут для получения JWT-токена доступа."""
+# ======================== Маршрут для получения JWT-токена доступа. ========================
+@router_admin.post("/authorization", include_in_schema=True, tags=["ADMINpanel"])
+async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], request: Request
+                                 ) -> TokenPydantic:
+    """
+    **Метод POST**
+
+    **Маршрут для получения JWT-токена доступа.**
+    Параметры:
+    - username: str
+    - email: str
+    - password: str
+
+    Возвращаемые данные:
+
+        {
+          "access_token": "string",
+          "token_type": "string"
+        }
+
+
+    Возможные статусы ответа:
+
+    - 200: Успешный запрос. Возвращается словарь с токеном.
+    - 401: Incorrect username or password
+    - 500: Внутренняя ошибка сервера. Возвращается описание ошибки.
+
+    Ссылка для запроса:
+
+    - http://example.com/api_admin/authorization
+
+    Пример ответа:
+
+    - 200: {"access_token": "bearer", "token_type": "som_token_string"}
+    - 401: {"detail": "Incorrect username or password"}
+    - 500: {"error": description error}
+
+    """
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -98,9 +127,7 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     return TokenPydantic(access_token=access_token, token_type="bearer")
 
 
-# -----------------------------------------------------------------------------------------------------------------
-
-# Маршрут получение списка дат уроков на запрашиваемый месяц.
+# ========================  ========================
 @router_admin.get("/lesson_dates_for_the_month/{date_in}", tags=["ADMINpanel"], status_code=200)
 async def get_lesson_dates_for_the_month(date_in: str, response: Response):
     """
@@ -134,10 +161,7 @@ async def get_lesson_dates_for_the_month(date_in: str, response: Response):
 
     code, data = lesson_dates_for_the_month_db(date_in)
 
-    if code == 500:
-        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return data
-    elif code == 200:
+    if code == 200:
         response.status_code = status.HTTP_200_OK
         return data
     elif code == 404:
@@ -146,14 +170,13 @@ async def get_lesson_dates_for_the_month(date_in: str, response: Response):
     elif code == 422:
         response.status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
         return data
+    elif code == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return data
 
 
-# -----------------------------------------------------------------------------------------------------------------
-
-# TODO Защищенный маршрут, требующий аутентификации На момент разработки отключено
-# Маршрут получения занятий на запрашиваемый месяц
+# ======================== Маршрут получения занятий на запрашиваемый месяц ========================
 @router_admin.get("/get_lessons_for_a_month/{date_y_m_d}", tags=["ADMINpanel"], status_code=200)
-# async def get_lessons_for_a_month(date_y_m_d: str, response: Response, current_user: Annotated[UserPydantic, Depends(get_current_active_user)]):
 async def get_lessons_for_a_month(date_y_m_d: str, response: Response):
     """
     **Метод: GET**
@@ -238,31 +261,3 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response):
     elif sts == 500:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return lessons
-
-
-# -----------------------------------------------------------------------------------------------------------------
-
-# TODO в разработке /logout
-# Маршрут выхода пользователя
-@router_admin.post("/logout", include_in_schema=False, tags=["ADMINpanel"])
-async def logout_user(request: Request):
-    """
-    **Метод: POST**
-
-    **Маршрут выхода пользователя**
-    В разработке !!!
-
-    - Принимает:
-
-        token: str
-
-        flag: False or True (str)
-
-    - Возвращает: json
-
-        {status: status, message: message}
-    """
-    ...
-    # print("--------------------")
-    # pprint(request.__dict__)
-    return "Вы попытались выйти из системы но этот метод еще не реализован !!!"
