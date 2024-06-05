@@ -184,24 +184,24 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response):
     **Маршрут получения занятий на запрашиваемый месяц (полные данные о заявке)**
 
     Параметры принимает:
-    - date_in: Дата в формате YYYY-MM-DD. Тип строка. (2024-05-16)
+    - date_in: Дата в формате YYYY-MM-DD. Тип строка. (2024-06-16)
 
     Возвращаемые данные:
     - Словарь с данными о бронировании на указанную дату месяца.
 
-            {"lessons": [
-                            {
-                            "id": 1,
-                            "email": "er@er.com",
-                            "firstName": "Name1",
-                            "lastName": "1",
-                            "phone": "123-45-67",
-                            "selectedDate": "2024-04-25",
-                            "selectedTime": "15",
-                            "confirmed": false
-                            },
-                        ]
-            }
+            [
+                {
+                "id": 1,
+                "email": "er@er.com",
+                "firstName": "Name1",
+                "lastName": "1",
+                "phone": "123-45-67",
+                "selectedDate": "2024-04-25",
+                "selectedTime": "15",
+                "confirmed": false
+                },
+            ]
+
 
     Возможные статусы ответа:
     - 200: Вернет список дат связанных с запрашиваемым месяцем.
@@ -217,29 +217,28 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response):
 
     - 200:
 
-            {"lessons": [
-                            {
-                                "id": 1,
-                                "email": "er@er.com",
-                                "firstName": "Name1",
-                                "lastName": "1",
-                                "phone": "123-45-67",
-                                "selectedDate": "2024-04-25",
-                                "selectedTime": "15",
-                                "confirmed": false
-                            },
-                            {
-                                "id": 2,
-                                "email": "2er@er.com",
-                                "firstName": "Name2",
-                                "lastName": "2",
-                                "phone": "222-22-22",
-                                "selectedDate": "2024-02-22",
-                                "selectedTime": "15",
-                                "confirmed": false
-                            }
-                        ]
-            }
+                [
+                    {
+                        "id": 1,
+                        "email": "er@er.com",
+                        "firstName": "Name1",
+                        "lastName": "1",
+                        "phone": "123-45-67",
+                        "selectedDate": "2024-04-25",
+                        "selectedTime": "15",
+                        "confirmed": false
+                    },
+                    {
+                        "id": 2,
+                        "email": "2er@er.com",
+                        "firstName": "Name2",
+                        "lastName": "2",
+                        "phone": "222-22-22",
+                        "selectedDate": "2024-02-22",
+                        "selectedTime": "15",
+                        "confirmed": false
+                    }
+                ]
 
     - 404:{"lessons": "Not found"}
 
@@ -247,10 +246,11 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response):
 
     - 500: {"detail": error description}
     """
+    # Запрашиваем из БД список занятий
     sts, lessons = get_lessons_for_month(date_y_m_d)
     if sts == 200:
         response.status_code = status.HTTP_200_OK
-        return {"lessons": lessons}
+        return lessons
 
     elif sts == 404:
         response.status_code = status.HTTP_404_NOT_FOUND
