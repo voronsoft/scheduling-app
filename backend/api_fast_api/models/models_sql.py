@@ -232,7 +232,7 @@ def get_lessons_for_month(date_in: str):
             return 404, str("Not found")
         elif len(search_data_month) > 0:
             print(len(search_data_month))
-            return 200, {month_name.lower(): search_data_month}
+            return 200, search_data_month
 
     except Exception as e:
         return 500, str(e)
