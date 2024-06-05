@@ -1,57 +1,64 @@
 import { Link } from "react-router-dom";
-import { may } from "../constants";
+import { june } from "../constants";
 import { Fragment } from "react/jsx-runtime";
+import { useState } from "react";
 
-const AUTH_URL = '/api_admin/authorization'
-const AUTH_DATA = {
+//const AUTH_URL = '/api_admin/authorization'
+/* const AUTH_DATA = {
   username: 'qq@qq.qq',
   mail: 'qq@qq.qq',
   password: 'qq@qq.qq'
 }
-
+ */
 const currentDate = new Date();
-const currentMonth = currentDate.getMonth();
+const currentMonth = currentDate.getMonth() + 1;
 const currentYear = currentDate.getFullYear();
 const today = currentDate.getDate();
-const currentDay = `${currentYear}-${currentMonth + 1}-${today}`
+const currentDay = `${currentYear}-${currentMonth}-${today}`
 
 
 const getCurrentMonthLessonsUrl = `/api_admin/get_lessons_for_a_month/${currentDay}`;
 
+interface lesson {
+  id: number,
+  email: string,
+  firstName: string,
+  lastName: string,
+  phone: string,
+  selectedDate: string,
+  selectedTime: string,
+  confirmed: boolean,
+}
 
+interface month {
+  id: number,
+  date: string,
+  lessons:lesson[],
+}
+
+//Запрос на бэк на получение данных об уроках на месяц
 const AdminPanel = () => {
-
-  const getTokenFromServer = async () => {
-    try {
-      const response = await fetch (AUTH_URL, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(AUTH_DATA),
-      })
-      const result = await response.json();
-      console.log('Success:', result);
-    }
-    catch(e) {
-      console.log(e);
-    }
-  }
-  getTokenFromServer();
-
+  //устанавливаю состояние для "текущего месяца". При получении ответа от сервера, сюда будет подставляться инфа от сервера
+  const [currentMonthLessons, setCurrentMonthLessons] = useState<month[]>(june);
 
   const getCurrentMonthLessons = async () => {
     try {
       const request = new Request(getCurrentMonthLessonsUrl, {
         method: "GET",
         headers: {
-          'Authorization': 'string',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmcm9udEBmcm9udC5mcm9udCIsImV4cCI6MTcxNzQzNDA2M30.F05xtGoPaBwRkzBXlb67thgYpyyTT2TcyqWjTPEAAUE',
         }
       })
       const response = await fetch(request)
       const data = await response.json()
+
       if (response.ok) {
         console.log(data)
+
+        const valOfFirstObjFirstKey = Object.values(data)[0]; 
+        const valOfSecondObjFirstKey:month[] = Object.values(valOfFirstObjFirstKey)[0];
+        //setCurrentMonthLessons(valOfsecondElofObj)
+        console.log(valOfSecondObjFirstKey)
       } else {
         // Обработка ошибки от сервера
         console.error("Request failed:", response.statusText);
@@ -61,7 +68,7 @@ const AdminPanel = () => {
       console.error("Request error:", error);
     }
   }
-  //getCurrentMonthLessons();
+  getCurrentMonthLessons();
 
   return (
     <section id="reviews" className="px-4 md:px-10 lg:px-32 py-28">
@@ -91,7 +98,7 @@ const AdminPanel = () => {
             </tr>
           </thead>
           <tbody>
-            {may.map((day)=>(
+            {currentMonthLessons.map((day)=>(
               <Fragment key={day.id}>
                 {day.lessons.map((lesson)=>(
                   <tr className="gradient-bg" key={lesson.id}>

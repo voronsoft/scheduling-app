@@ -125,7 +125,8 @@ export const advantages = [
       "照音拼字，並知道那些單字無法對應中文，在學習中可大幅降低被中文干擾的狀況",
   },
 ];
-
+//Вот так структурировать данные НЕ НАДО. 
+//Эта старая версия и она не актуальнаиспользуется просто для копипаста. Актуальный вариант ниже
 export const lessons: {
   id: number;
   email: string;
@@ -188,10 +189,14 @@ export const lessons: {
   },
 ];
 
-export const may = [
+
+//Вот так структурировать ответ от сервера надо. На основе такой структуры работает сейчас весь фронтенд.
+//По запросу с главной страницы сайта я буду проверять длинну массива month.lessons.length и на основе результата отрисовывать день, три варианта: занят, частично занят, свободен.
+//Это UI, который будет доступен любому посетителю сайта.
+export const june  = [
   {
     id: 1,
-    date: "2024-5-28",
+    date: '2024-5-28',
     lessons: [
       {
         id: 1,
@@ -199,7 +204,7 @@ export const may = [
         firstName: "Hongjoong",
         lastName: "Kim",
         phone: "89111111111",
-        selectedDate: "2024-5-28",
+        selectedDate: "2024-6-28",
         selectedTime: "15:00",
         confirmed: true,
       },
@@ -209,7 +214,7 @@ export const may = [
         firstName: "San",
         lastName: "Choi",
         phone: "89112222222",
-        selectedDate: "2024-5-28",
+        selectedDate: "2024-6-28",
         selectedTime: "17:00",
         confirmed: true,
       },
@@ -225,7 +230,7 @@ export const may = [
         firstName: "Wooyoung",
         lastName: "Jung",
         phone: "89117777777",
-        selectedDate: "2024-5-29",
+        selectedDate: "2024-6-29",
         selectedTime: "18:00",
         confirmed: true,
       },
@@ -241,7 +246,7 @@ export const may = [
         firstName: "Felix",
         lastName: "Lee",
         phone: "89115555555",
-        selectedDate: "2024-5-30",
+        selectedDate: "2024-6-30",
         selectedTime: "16:00",
         confirmed: false,
       },
@@ -251,7 +256,7 @@ export const may = [
         firstName: "Hyunjin",
         lastName: "Hwang",
         phone: "89110000000",
-        selectedDate: "2024-5-30",
+        selectedDate: "2024-6-30",
         selectedTime: "17:00",
         confirmed: true,
       },

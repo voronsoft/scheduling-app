@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 //import FormInput from "./FormInput";
-import { may } from "../constants";
+import { june } from "../constants";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type FormFields = {
@@ -168,7 +168,7 @@ const Schedule = () => {
                 <tr>
                   {week.map((day) => {
                     const currentDay = `${year}-${month + 1}-${day}`;
-                    const isDayBooked = may.some(
+                    const isDayBooked = june.some(
                       (element) => element.date === currentDay
                     );
 
