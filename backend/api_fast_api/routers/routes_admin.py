@@ -5,7 +5,9 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from fastapi import APIRouter, Depends, Request, Response, status, HTTPException
 
 from api_fast_api.config import ACCESS_TOKEN_EXPIRE_MINUTES
-from api_fast_api.auth.authentication import create_access_token, authenticate_user, get_password_hash
+from api_fast_api.auth.authentication import (create_access_token, authenticate_user, get_password_hash, oauth2_scheme,
+                                              validate_token
+                                              )
 from api_fast_api.models.models_pydantic import RegistrationUserPydantic, TokenPydantic
 from api_fast_api.models.models_sql import get_lessons_for_month, lesson_dates_for_the_month_db, save_user_registration
 
@@ -177,7 +179,7 @@ async def get_lesson_dates_for_the_month(date_in: str, response: Response):
 
 # ======================== Маршрут получения занятий на запрашиваемый месяц ========================
 @router_admin.get("/get_lessons_for_a_month/{date_y_m_d}", tags=["ADMINpanel"], status_code=200)
-async def get_lessons_for_a_month(date_y_m_d: str, response: Response):
+async def get_lessons_for_a_month(date_y_m_d: str, response: Response, token: Annotated[str, Depends(oauth2_scheme)]):
     """
     **Метод: GET**
 
@@ -246,6 +248,12 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response):
 
     - 500: {"detail": error description}
     """
+
+    print("token: ", token)
+
+    if not validate_token(str(token)):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
     # Запрашиваем из БД список занятий
     sts, lessons = get_lessons_for_month(date_y_m_d)
     if sts == 200:

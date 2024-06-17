@@ -48,6 +48,7 @@ backend/
 │   │   
 │   ├── __init__.py
 │   
+├── frontend_structure_administrative_part.md
 ├── notes_project.txt
 ├── requirements.txt
 ├── run_fapi.py
