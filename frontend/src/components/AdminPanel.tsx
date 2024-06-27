@@ -125,10 +125,11 @@ const AdminPanel = () => {
           </h2>
         </div>
       </div>
-      <Link to="/english-teacher-website" className="cursor-pointer my-5">
-        ← Back to home page
-      </Link>
-      <div className="max-w-[90rem] mx-auto diagonal flex justify-center py-20">
+      
+      <div className="max-w-[90rem] mx-auto diagonal flex flex-col justify-center py-32 px-20 gap-10">
+        <Link to="/english-teacher-website" className="cursor-pointer text-white">
+        Return to home page
+        </Link>
         <table>
           <thead>
             <tr>
@@ -138,6 +139,9 @@ const AdminPanel = () => {
               <th className="w-[150px] h-[100px] text-center text-black">Email</th>
               <th className="w-[150px] h-[100px] text-center text-black">Phone</th>
               <th className="w-[150px] h-[100px] text-center text-black">Confirmation</th>
+              <th className="w-[150px] h-[100px] text-center text-black">Confirm</th>
+              <th className="w-[150px] h-[100px] text-center text-black">Edit</th>
+              <th className="w-[150px] h-[100px] text-center text-black">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -151,6 +155,9 @@ const AdminPanel = () => {
                     <td className="w-[150px] h-[50px] text-center text-black">{lesson.email}</td>
                     <td className="w-[150px] h-[50px] text-center text-black">{lesson.phone}</td>
                     <td className="w-[150px] h-[50px] text-center text-black">{lesson.confirmed ? "Yes" : "No"}</td>
+                    <td className="w-[150px] h-[50px] text-center text-black">{lesson.confirmed ? null : <button className="button_admin">Confirm</button>}</td>
+                    <td className="w-[150px] h-[50px] text-center text-black"><button className="button_admin">Edit</button></td>
+                    <td className="w-[150px] h-[50px] text-center text-black"><button className="button_delete">Delete</button></td>
                   </tr>                  
                 ))}              
               </Fragment>
