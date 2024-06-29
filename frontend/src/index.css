@@ -39,7 +39,6 @@ body {
 .diagonal::after {
   content: "";
   background-image: linear-gradient(to bottom, #d69bd2 0%, #8865a9 100%);
-  /*  background-image: linear-gradient(to bottom, #d69bd2 0%, #6157ff 100%); */
   position: absolute;
   inset: 0;
   transform: skewY(-5deg);
@@ -115,4 +114,25 @@ body {
   cursor: pointer;
   border-radius: 4px;
   color: #ffffff;
+}
+
+.modal-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background-color:rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px;
+  z-index: 1000;
+  border-radius: 12px;
 }

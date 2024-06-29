@@ -79,11 +79,11 @@ const AdminPanel = () => {
             控制面板
           </h2>
         </div>
-      </div>
-      <Link to="/english-teacher-website" className="cursor-pointer my-5">
-        ← Back to home page
-      </Link>
+      </div>      
       <div className="max-w-[90rem] mx-auto diagonal flex justify-center py-20">
+        <Link to="/english-teacher-website" className="cursor-pointer my-5">
+          Back to home page
+        </Link>
         <div>Content is Loading...</div>
       </div>
     </section>
@@ -103,10 +103,11 @@ const AdminPanel = () => {
           </h2>
         </div>
       </div>
-      <Link to="/english-teacher-website" className="cursor-pointer my-5">
-        ← Back to home page
-      </Link>
+      
       <div className="max-w-[90rem] mx-auto diagonal flex justify-center py-20">
+        <Link to="/english-teacher-website" className="cursor-pointer my-5">
+          Back to home page
+        </Link>
         <div>Something went wrong, please reload the page</div>
       </div>
     </section>

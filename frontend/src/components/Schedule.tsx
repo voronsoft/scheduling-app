@@ -23,6 +23,7 @@ const Schedule = () => {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
+  
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
