@@ -8,6 +8,10 @@ type FormFields = {
   password: string;
 };
 
+type ResponseToken = {
+  access_token: string;
+  token_type: string;
+}
 const GET_TOKEN_URL = `/api_admin/authorization`;
 
 export default function Modal({open, onCloseClick}){
@@ -21,21 +25,27 @@ export default function Modal({open, onCloseClick}){
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     console.log(data);
+
     try {
+      const formData = new URLSearchParams();
+        formData.append('username', data.username);
+        formData.append('password', data.password);
       const response = await fetch(
         GET_TOKEN_URL,
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: JSON.stringify(data),
+          body: formData.toString(),
         }
       );
       if (response.ok) {
         // Обработка успешного ответа от сервера
         console.log("Request sent successfully!");
         console.log(response)
+        const token = (await response.json()) as ResponseToken;
+        console.log(token);
         // Очистить значения ввода в форме
         reset();
         //setSelectedDate(""); // Сбросить форму
