@@ -350,7 +350,7 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response, token: An
 
 # ======================== Маршрут УДАЛЕНИЯ ЗАПИСИ О УРОКЕ =========================
 # TODO добавить документацию
-@router_admin.delete("/delete-lesson_frontend/{lesson_id}", include_in_schema=True, tags=["ADMINpanel"])
+@router_admin.delete("/delete_lesson_frontend/{lesson_id}", include_in_schema=True, tags=["ADMINpanel"])
 async def deleting_a_lesson_frontend(lesson_id: int, response: Response, token: Annotated[str, Depends(oauth2_scheme)]):
     """
     Удаление записи урока из бд
@@ -379,7 +379,7 @@ async def deleting_a_lesson_frontend(lesson_id: int, response: Response, token: 
 
 # ======================== Маршрут изменения данных в записи урока =========================
 # TODO добавить документацию
-@router_admin.patch("/change-lesson-data/{lesson_id}", include_in_schema=True, tags=["ADMINpanel"])
+@router_admin.patch("/change_lesson_data/{lesson_id}", include_in_schema=True, tags=["ADMINpanel"])
 async def change_lesson_data(lesson_id: int,
                              lesson_data: UpdateLessonDataPydantic,
                              response: Response,
