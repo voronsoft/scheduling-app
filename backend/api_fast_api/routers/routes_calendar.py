@@ -15,8 +15,7 @@ tags_metadata_calendar = [
 
 # Маршрут приема заявок на уроки из компонента календарь.
 @router_calendar.post("/receiving-data-from-the-calendar", tags=['CALENDAR'], status_code=200)
-async def receiving_data_calendar(
-        lesson_data: ReceivingDataFromCalendarPydantic, response: Response):
+async def receiving_data_calendar(lesson_data: ReceivingDataFromCalendarPydantic, response: Response):
     """
     **Метод: POST**
 

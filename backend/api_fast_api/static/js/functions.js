@@ -35,7 +35,7 @@ async function changeLessonStatus(lesson_id) {
         // Создаем тело запроса с данными занятия
         const requestBody = JSON.stringify({lesson_id: lesson_id});
         // Отправляем POST-запрос на сервер для изменения статуса урока
-        const response = await fetch(`/change-lesson-status`, {
+        const response = await fetch(`/change-lesson-status_backend`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: requestBody
@@ -64,7 +64,7 @@ async function deleteLesson(lesson_id) {
         // Создаем тело запроса с данными занятия
         const requestBody = JSON.stringify({lesson_id: lesson_id});
         // Отправляем DELETE-запрос на сервер для удаления урока
-        const response = await fetch(`/delete-lesson`, {
+        const response = await fetch(`/delete-lesson_backend`, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
             body: requestBody

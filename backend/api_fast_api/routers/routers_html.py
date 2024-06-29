@@ -7,8 +7,8 @@ from api_fast_api.auth.authentication import validate_token
 from api_fast_api.config import TEMPLATES_FOLDER_PATH
 from api_fast_api.func.csrf_functions import generate_csrf_token, checking_csrf_token
 from api_fast_api.func.functions import generate_calendar, date_at_the_time_the_function_was_called
-from api_fast_api.models.models_sql import (lesson_dates_for_the_month_db, change_lesson_status_db, delete_lesson_db,
-                                            get_lessons_for_month_one_dimensional_list
+from api_fast_api.models.models_sql import (lesson_dates_for_the_month_db_backend, change_lesson_status_db,
+                                            delete_lesson_db, get_lessons_for_month_one_dimensional_list
                                             )
 from api_fast_api.routers.routes_admin import login_for_access_token
 
@@ -46,7 +46,7 @@ async def html_index_get(request: Request):
             crnt_date = date_at_the_time_the_function_was_called()
 
             # Получаем список зарезервированных дат из БД на текущий месяц
-            lst_date_lesns = lesson_dates_for_the_month_db(crnt_date)[1]
+            lst_date_lesns = lesson_dates_for_the_month_db_backend(crnt_date)[1]
 
             # Получаем дату для генерации календаря (дата формируется на момент вызова кода)
             year, month, _ = map(int, crnt_date.split("-"))
@@ -56,12 +56,13 @@ async def html_index_get(request: Request):
             # Получаем список занятий на месяц с полными данными в одномерный словарь
             _, list_data_lessons = get_lessons_for_month_one_dimensional_list(crnt_date)
 
-            response = templates.TemplateResponse(request=request, name="index.html",
+            response = templates.TemplateResponse(request=request,
+                                                  name="index.html",
                                                   context={
-                                                      "user_group": user_group,
-                                                      "user_name": user,
-                                                      "calendar": calendar,
-                                                      "list_data_lessons": list_data_lessons,
+                                                          "user_group": user_group,
+                                                          "user_name": user,
+                                                          "calendar": calendar,
+                                                          "list_data_lessons": list_data_lessons,
                                                   }
                                                   )
             print("Раздел - Этап вывода шаблона")
@@ -95,10 +96,12 @@ async def html_login_get(request: Request, error_message: str = None):
     # Сохраняем токен в сессии
     request.session["csrf_token"] = csrf_token
 
-    response = templates.TemplateResponse(request=request, name="login.html",
+    response = templates.TemplateResponse(request=request,
+                                          name="login.html",
                                           context={
-                                              "title": title, "csrf_token": csrf_token,
-                                              "error_message": error_message
+                                                  "title": title,
+                                                  "csrf_token": csrf_token,
+                                                  "error_message": error_message
                                           }
                                           )
     return response
@@ -169,12 +172,17 @@ async def html_registration(request: Request):
     В разработке !!!
     """
     title = "Registration user"
-    return templates.TemplateResponse(request=request, name="registration.html", context={"title": title})
+    return templates.TemplateResponse(request=request,
+                                      name="registration.html",
+                                      context={
+                                              "title": title
+                                      }
+                                      )
 
 
 # ======================== Маршрут ИЗМЕНЕНИЯ СТАТУСА УРОКА =========================
-@router_html.post("/change-lesson-status", include_in_schema=False, tags=["ADMINpanelHTML"])
-async def change_lesson_status(request: Request):
+@router_html.post("/change-lesson-status_backend", include_in_schema=False, tags=["ADMINpanelHTML"])
+async def change_lesson_status_backend(request: Request):
     """
     Изменение статуса урока
     """
@@ -200,29 +208,39 @@ async def change_lesson_status(request: Request):
 
 # ======================== Маршрут УДАЛЕНИЯ ЗАПИСИ О УРОКЕ =========================
 # TODO добавить документацию
-@router_html.delete("/delete-lesson", include_in_schema=False, tags=["ADMINpanelHTML"])
-async def deleting_a_lesson(request: Request):
+@router_html.delete("/delete-lesson_backend", include_in_schema=False, tags=["ADMINpanelHTML"])
+async def deleting_a_lesson_backend(request: Request):
     """
     Удаление записи урока из бд
     """
     try:
         request_body = await request.json()  # Получаем данные JSON из запроса
         lesson_id = request_body.get('lesson_id')  # Получаем значение lesson_id
-        print("delete-lesson=======delete-lesson", lesson_id)
+        print("delete-lesson=======delete-lesson",
+              lesson_id
+              )
 
-        # Вызываем функцию для изменения статуса урока
+        # Вызываем функцию для удаления записи урока
         sts, result = delete_lesson_db(lesson_id)
 
         # Проверяем результат выполнения функции
         if sts == 200:
             # Если операция выполнена успешно, возвращаем HTTP-статус 200 (OK)
-            return {'status_code': 200, 'message': 'Lesson status changed successfully.'}
+            return {
+                    'status_code': 200,
+                    'message': 'Lesson delete successfully.'
+            }
         elif sts == 404:
             # Если не найдено урока в бд
-            return {'status_code': sts, 'message': result}
+            return {
+                    'status_code': sts,
+                    'message': result
+            }
     except Exception as e:
         # Если возникла ошибка
-        return 500, {"error": str(e)}  # Все типы ошибок (возврат)
+        return 500, {
+                "error": str(e)
+        }  # Все типы ошибок (возврат)
 
 
 # ======================== Маршрут ВЫХОДА ПОЛЬЗОВАТЕЛЯ post =========================
@@ -244,8 +262,12 @@ async def html_error_get(request: Request, text_error: str = None):
     # Заглушка
     error_message = text_error
 
-    return templates.TemplateResponse(request=request, name="error_modal_window.html",
-                                      context={"error_message": error_message, "title": title}
+    return templates.TemplateResponse(request=request,
+                                      name="error_modal_window.html",
+                                      context={
+                                              "error_message": error_message,
+                                              "title": title
+                                      }
                                       )
 
 
@@ -259,4 +281,6 @@ async def html_error_post(request: Request, response: Response):
     error_message = error_data.get("error_message")
     # error_message = "(POST) Текст сообщения об ошибке"
 
-    await html_error_get(request, error_data)
+    await html_error_get(request,
+                         error_data
+                         )
