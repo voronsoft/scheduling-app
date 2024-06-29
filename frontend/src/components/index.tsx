@@ -9,6 +9,7 @@ import Footer from "./Footer";
 import Schedule from "./Schedule";
 import FormInput from "./FormInput";
 import AdminPanel from "./AdminPanel";
+import Modal from "./Modal";
 
 export {
   Navbar,
@@ -22,4 +23,5 @@ export {
   Schedule,
   AdminPanel,
   FormInput,
+  Modal,
 };

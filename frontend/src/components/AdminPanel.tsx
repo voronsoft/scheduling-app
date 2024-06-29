@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { june } from "../constants";
 import { Fragment } from "react/jsx-runtime";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //const AUTH_URL = '/api_admin/authorization'
 /* const AUTH_DATA = {
@@ -38,37 +38,81 @@ interface month {
 
 //Запрос на бэк на получение данных об уроках на месяц
 const AdminPanel = () => {
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   //устанавливаю состояние для "текущего месяца". При получении ответа от сервера, сюда будет подставляться инфа от сервера
   const [currentMonthLessons, setCurrentMonthLessons] = useState<month[]>(june);
 
-  const getCurrentMonthLessons = async () => {
-    try {
-      const request = new Request(getCurrentMonthLessonsUrl, {
-        method: "GET",
-        headers: {
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmcm9udEBmcm9udC5mcm9udCIsImV4cCI6MTcxNzQzNDA2M30.F05xtGoPaBwRkzBXlb67thgYpyyTT2TcyqWjTPEAAUE',
-        }
-      })
-      const response = await fetch(request)
-      const data = await response.json()
-
-      if (response.ok) {
-        console.log(data)
-
-        const valOfFirstObjFirstKey = Object.values(data)[0]; 
-        const valOfSecondObjFirstKey:month[] = Object.values(valOfFirstObjFirstKey)[0];
-        //setCurrentMonthLessons(valOfsecondElofObj)
-        console.log(valOfSecondObjFirstKey)
-      } else {
-        // Обработка ошибки от сервера
-        console.error("Request failed:", response.statusText);
-        throw new Error();
-      }    
-    } catch (error) {
-      console.error("Request error:", error);
+  useEffect(()=>{
+    const getCurrentMonthLessons = async () => {
+      setIsLoading(true);
+      try {
+        const request = new Request(getCurrentMonthLessonsUrl, {
+          method: "GET",
+          headers: {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmcm9udEBmcm9udC5mcm9udCIsImV4cCI6MTcxNzQzNDA2M30.F05xtGoPaBwRkzBXlb67thgYpyyTT2TcyqWjTPEAAUE',
+          }
+        })
+        const response = await fetch(request)
+        const data = await response.json() as month[];
+        getCurrentMonthLessons();
+        setCurrentMonthLessons(data);   
+      } catch (e: any) {
+        console.error("Request error:", e);
+        setError(e);        
+      } finally {
+        setIsLoading(false);
+      }
     }
+  }, [])
+
+  
+  if (isLoading) {
+    return (
+      <section id="reviews" className="px-4 md:px-10 lg:px-32 py-28">
+      <div className="max-w-[80rem] mx-auto mb-24">
+        <div className="relative">
+          <p className="text-3xl md:text-6xl text-[#c8b0c9] text-right">
+            Admin's Panel
+          </p>
+          <h2 className="text-4xl md:text-5xl text-[#754444] font-bold text-right mr-28 md:mr-[280px] mt-[-10px] z-20">
+            控制面板
+          </h2>
+        </div>
+      </div>      
+      <div className="max-w-[90rem] mx-auto diagonal flex justify-center py-20">
+        <Link to="/english-teacher-website" className="cursor-pointer my-5">
+          Back to home page
+        </Link>
+        <div>Content is Loading...</div>
+      </div>
+    </section>
+    )
   }
-  getCurrentMonthLessons();
+
+  if (error) {
+    return (
+      <section id="reviews" className="px-4 md:px-10 lg:px-32 py-28">
+      <div className="max-w-[80rem] mx-auto mb-24">
+        <div className="relative">
+          <p className="text-3xl md:text-6xl text-[#c8b0c9] text-right">
+            Admin's Panel
+          </p>
+          <h2 className="text-4xl md:text-5xl text-[#754444] font-bold text-right mr-28 md:mr-[280px] mt-[-10px] z-20">
+            控制面板
+          </h2>
+        </div>
+      </div>
+      
+      <div className="max-w-[90rem] mx-auto diagonal flex justify-center py-20">
+        <Link to="/english-teacher-website" className="cursor-pointer my-5">
+          Back to home page
+        </Link>
+        <div>Something went wrong, please reload the page</div>
+      </div>
+    </section>
+    )
+  }
 
   return (
     <section id="reviews" className="px-4 md:px-10 lg:px-32 py-28">
@@ -82,10 +126,11 @@ const AdminPanel = () => {
           </h2>
         </div>
       </div>
-      <Link to="/english-teacher-website" className="cursor-pointer my-5">
-        ← Back to home page
-      </Link>
-      <div className="max-w-[90rem] mx-auto diagonal flex justify-center py-20">
+      
+      <div className="max-w-[90rem] mx-auto diagonal flex flex-col justify-center py-32 px-20 gap-10">
+        <Link to="/english-teacher-website" className="cursor-pointer text-white">
+        Return to home page
+        </Link>
         <table>
           <thead>
             <tr>
@@ -95,6 +140,9 @@ const AdminPanel = () => {
               <th className="w-[150px] h-[100px] text-center text-black">Email</th>
               <th className="w-[150px] h-[100px] text-center text-black">Phone</th>
               <th className="w-[150px] h-[100px] text-center text-black">Confirmation</th>
+              <th className="w-[150px] h-[100px] text-center text-black">Confirm</th>
+              <th className="w-[150px] h-[100px] text-center text-black">Edit</th>
+              <th className="w-[150px] h-[100px] text-center text-black">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -108,6 +156,9 @@ const AdminPanel = () => {
                     <td className="w-[150px] h-[50px] text-center text-black">{lesson.email}</td>
                     <td className="w-[150px] h-[50px] text-center text-black">{lesson.phone}</td>
                     <td className="w-[150px] h-[50px] text-center text-black">{lesson.confirmed ? "Yes" : "No"}</td>
+                    <td className="w-[150px] h-[50px] text-center text-black">{lesson.confirmed ? null : <button className="button_admin">Confirm</button>}</td>
+                    <td className="w-[150px] h-[50px] text-center text-black"><button className="button_admin">Edit</button></td>
+                    <td className="w-[150px] h-[50px] text-center text-black"><button className="button_delete">Delete</button></td>
                   </tr>                  
                 ))}              
               </Fragment>

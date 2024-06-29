@@ -1,4 +1,4 @@
-//import { navLinks } from "../constants/index";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Links from "./Links";

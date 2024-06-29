@@ -12,6 +12,8 @@ type FormFields = {
   time: string;
 };
 
+const getCurrentMonthLessonsUrl = `/api_admin/lesson_dates_for_the_month`;
+
 const Schedule = () => {
   const {
     register,
@@ -21,6 +23,7 @@ const Schedule = () => {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
+  
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
@@ -43,6 +46,7 @@ const Schedule = () => {
   const [month, setMonth] = useState(currentMonth);
   const [year, setYear] = useState(currentYear);
   const [selectedDate, setSelectedDate] = useState("← Select a date"); // Состояние для выбранной даты
+  const [lessons, setLessons] = useState();
 
   const currentMonthName = months[month];
   const firstDayOfMonth = new Date(year, month, 1).getDay();
@@ -76,12 +80,29 @@ const Schedule = () => {
     });
   }, [selectedDate]);
 
+  useEffect(()=>{
+    const fetchLessons = async () => {
+      try {
+        const response = await fetch(`${getCurrentMonthLessonsUrl}/${year}-${month + 1}-01`);
+        const lessonsFromServer = (await response.json());
+        if (response.ok) {
+          setLessons(lessonsFromServer);
+          console.log(lessons);
+        }
+      } catch(e) {
+        console.log(e);
+      }
+    }
+
+    fetchLessons();    
+  }, [])
+
   const handleDateSelect = (day: number | string) => {
     setSelectedDate(`${year}-${month + 1}-${day}`); // Форматирование даты в формат "гггг-мм-дд"
   };
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
+   // console.log(data);
 
     try {
       const response = await fetch(
@@ -269,10 +290,10 @@ const Schedule = () => {
             name="time"
             className="p-2 rounded-md text-black w-full"
           >
-            <option value="15">3 pm</option>
-            <option value="16">4 pm</option>
-            <option value="17">5 pm</option>
-            <option value="18">6 pm</option>
+            <option value="15">8 am</option>
+            <option value="16">9 am</option>
+            <option value="17">10 am</option>
+            <option value="18">11 am</option>
           </select>
           {errors.time && (
             <div className="text-red-500">{errors.time.message}</div>
