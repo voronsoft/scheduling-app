@@ -95,6 +95,9 @@ def validate_token(token: str) -> bool:
         # В данном примере мы просто проверяем, что в токене есть поле 'sub'
         # Это может быть более сложная проверка в реальном приложении
         if 'sub' in payload:
+            print("====================")
+            print("JWT payload", payload.get('sub'))
+            print("====================")
             return True
     except JWTError:
         return False
@@ -106,7 +109,7 @@ def verify_password(plain_password, hashed_password) -> bool:
     """
     Функция для проверки пароля.
 
-    - plain_password - это незахэшированный (сырой) пароль
+    - plain_password - это не хэшированный (сырой) пароль
     - hashed_password - это хэшированный пароль из БД
 
     Вернет:
@@ -115,7 +118,8 @@ def verify_password(plain_password, hashed_password) -> bool:
     - False пароли не совпадают
     """
     # Сравниваем хэшированный пароль из базы данных с хэшем введённым пользователем
-    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    result = bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    return result
 
 
 # ======================== Функция для хеширования пароля (шифрование пароля)

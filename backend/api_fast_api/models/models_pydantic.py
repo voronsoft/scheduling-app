@@ -69,6 +69,7 @@ class DateModelPydantic(BaseModel):
 
 # -------------- Модель данных изменения полей записи урока
 class UpdateLessonDataPydantic(BaseModel):
+    """Модель данных изменения полей записи урока"""
     username: Optional[str] = None
     last_name: Optional[str] = None
     phone: Optional[str] = None
@@ -76,4 +77,3 @@ class UpdateLessonDataPydantic(BaseModel):
     selected_date: Optional[str] = None
     time: Optional[str] = None
     confirmed: Optional[bool] = None
-

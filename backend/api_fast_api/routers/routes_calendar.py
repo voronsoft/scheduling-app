@@ -5,12 +5,7 @@ from api_fast_api.models.models_pydantic import ReceivingDataFromCalendarPydanti
 # Создаем экземпляр APIRouter с префиксом
 router_calendar = APIRouter(prefix="/api_calendar")
 
-tags_metadata_calendar = [
-    {
-        "name": "CALENDAR",
-        "description": "Маршруты для календаря"
-    },
-]
+tags_metadata_calendar = [{"name": "CALENDAR", "description": "Маршруты для календаря"}, ]
 
 
 # Маршрут приема заявок на уроки из компонента календарь.
@@ -47,7 +42,8 @@ async def receiving_data_calendar(lesson_data: ReceivingDataFromCalendarPydantic
     status_code = add_lesson_data_to_db(lesson_data.name, lesson_data.surname,
                                         lesson_data.phone, lesson_data.email,
                                         lesson_data.selectedDate,
-                                        lesson_data.time)
+                                        lesson_data.time
+                                        )
 
     if status_code is True:
         response.status_code = status.HTTP_201_CREATED

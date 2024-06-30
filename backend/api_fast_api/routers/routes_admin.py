@@ -11,14 +11,12 @@ from api_fast_api.auth.authentication import (create_access_token, authenticate_
 from api_fast_api.models.models_pydantic import RegistrationUserPydantic, TokenPydantic, UpdateLessonDataPydantic
 from api_fast_api.models.models_sql import (get_lessons_for_month, lesson_dates_for_the_month_db_backend,
                                             lesson_dates_for_the_month_db_frontend,
-                                            save_user_registration, delete_lesson_db, change_lesson_data_db
+                                            save_user_registration, delete_lesson_db, change_lesson_data_db,
+                                            get_lesson_data_db
                                             )
 
 router_admin = APIRouter(prefix="/api_admin")  # Создаем экземпляр APIRouter с префиксом
-tags_metadata_admin = [{
-        "name": "ADMINpanel",
-        "description": "Маршруты админ панели"
-}, ]
+tags_metadata_admin = [{"name": "ADMINpanel", "description": "Маршруты админ панели"}, ]
 
 
 # ======================== Маршрут регистрации пользователя ========================
@@ -60,50 +58,26 @@ async def register_user(user_data: RegistrationUserPydantic, response: Response,
     # Используем get_secret_value() для получения значения пароля в понятном читаемом виде.
     password = user_data.password.get_secret_value()
 
-    print("username",
-          username
-          )
-    print("email",
-          email
-          )
-    print("password",
-          password
-          )
-
     # Хешируем полученный пароль из запроса на регистрацию
     hashed_password = get_password_hash(password)
-    # Сохраняем данные нового пользователя в базе данных
-    print("hashed_password",
-          hashed_password
-          )
-    print("-----------")
-    print()
 
     # Передаем данные в функцию для записи нового пользователя в БД
-    sts, result = save_user_registration(username,
-                                         email,
-                                         hashed_password
-                                         )
+    sts, result = save_user_registration(username, email, hashed_password)
     if sts == 201:
         response.status_code = status.HTTP_201_CREATED
-        return {
-                "message": "The user has successfully registered!"
-        }
+        return {"message": "The user has successfully registered!"}
     elif sts == 409:
         response.status_code = status.HTTP_409_CONFLICT
-        return {
-                "message": "A user with this email already exists! / The user limit is limited!"
-        }
+        return {"message": "A user with this email already exists! / The user limit is limited!"}
     elif sts == 500:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return {
-                "Error": result
-        }
+        return {"Error": result}
 
 
 # ======================== Маршрут для получения JWT-токена доступа. ========================
 @router_admin.post("/authorization", include_in_schema=True, tags=["ADMINpanel"])
-async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], request: Request
+async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+                                 request: Request
                                  ) -> TokenPydantic:
     """
     **Метод POST**
@@ -141,13 +115,9 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     """
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
-        raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect username or password",
-                headers={
-                        "WWW-Authenticate": "Bearer"
-                },
-        )
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Incorrect username or password",
+                            headers={"WWW-Authenticate": "Bearer"}, )
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"sub": user.username}, expires_delta=access_token_expires)
@@ -155,12 +125,14 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
 
 
 # ======================== Маршрут получение списка ДАТ уроков на запрашиваемый месяц ========================
-@router_admin.get("/lesson_dates_for_the_month_backend/{date_month}", include_in_schema=False, tags=["ADMINpanel"],
+@router_admin.get("/lesson_dates_for_the_month_backend/{date_month}",
+                  include_in_schema=False,
+                  tags=["ADMINpanel"],
                   status_code=200
                   )
 async def get_lesson_dates_for_the_month_backend(date_month: str, response: Response):
     """
-    **Метод: GET**
+    **Метод GET**
 
     **Маршрут получение списка дат уроков на запрашиваемый месяц (внутренняя админ панель)**
     Параметры:
@@ -211,7 +183,7 @@ async def get_lesson_dates_for_the_month_backend(date_month: str, response: Resp
                   )
 async def get_lesson_dates_for_the_month_frontend(date_month: str, response: Response):
     """
-    **Метод: GET**
+    **Метод GET**
 
     **Маршрут получение списка дат уроков на запрашиваемый месяц (фронтенд админ панель)**
     Параметры:
@@ -258,7 +230,7 @@ async def get_lesson_dates_for_the_month_frontend(date_month: str, response: Res
 @router_admin.get("/get_lessons_for_a_month/{date_y_m_d}", tags=["ADMINpanel"], status_code=200)
 async def get_lessons_for_a_month(date_y_m_d: str, response: Response, token: Annotated[str, Depends(oauth2_scheme)]):
     """
-    **Метод: GET**
+    **Метод GET - Endpoint protected**
 
     **Маршрут получения занятий на запрашиваемый месяц (полные данные о заявке)**
 
@@ -329,23 +301,23 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response, token: An
     print("token: ", token)
 
     if not validate_token(str(token)):
-        raise HTTPException(status_code=401, detail="Not authenticated")
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return {'message': 'Not authenticated'}
 
     # Запрашиваем из БД список занятий
-    sts, lessons = get_lessons_for_month(date_y_m_d)
+    sts, result = get_lessons_for_month(date_y_m_d)
     if sts == 200:
         response.status_code = status.HTTP_200_OK
-        return lessons
-
+        return result
     elif sts == 404:
         response.status_code = status.HTTP_404_NOT_FOUND
-        return lessons
+        return {'message': 'Not found'}
     elif sts == 422:
         response.status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
-        return lessons
+        return result
     elif sts == 500:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return lessons
+        return {'message': result}
 
 
 # ======================== Маршрут УДАЛЕНИЯ ЗАПИСИ О УРОКЕ =========================
@@ -353,12 +325,25 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response, token: An
 @router_admin.delete("/delete_lesson_frontend/{lesson_id}", include_in_schema=True, tags=["ADMINpanel"])
 async def deleting_a_lesson_frontend(lesson_id: int, response: Response, token: Annotated[str, Depends(oauth2_scheme)]):
     """
-    Удаление записи урока из бд
+    **Метод DELETE - Endpoint protected**
+
+    **Удаление записи урока из бд**
+
+    Ссылка для запроса:
+
+    - http://example.com/api_admin/delete_lesson_frontend/10
+
+    Варианты ответов:
+
+    - 200 {'message': 'Lesson delete successfully.'}
+    - 404 {'message': 'Not found'}
+    - 500 {'message': 'Error server'}
     """
     print("token: ", token)
 
     if not validate_token(str(token)):
-        raise HTTPException(status_code=401, detail="Not authenticated")
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return {'message': 'Not authenticated'}
 
     # Вызываем функцию для удаления записи урока
     sts, result = delete_lesson_db(lesson_id)
@@ -374,7 +359,7 @@ async def deleting_a_lesson_frontend(lesson_id: int, response: Response, token: 
         return {'message': 'Not found'}
     elif sts == 500:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return result
+        return {'message': result}
 
 
 # ======================== Маршрут изменения данных в записи урока =========================
@@ -387,11 +372,36 @@ async def change_lesson_data(lesson_id: int,
                              token: Annotated[str, Depends(oauth2_scheme)]
                              ):
     """
-    Изменение данных в записи урока
+    **Метод PATH - Endpoint protected**
+
+    **Изменение данных в записи урока**
+
+    Принимает id записи как параметр пути.
+    - http://example.com/api_admin/change_lesson_data/10
+
+    А в POST запросе передается json c названием полей которые будут изменены
+
+        {
+            username: str,
+            last_name: str,
+            phone: str,
+            email: str,
+            selected_date: str,
+            time: str,
+            confirmed: str,
+        }
+
+    Варианты ответов:
+
+    - 200 {'message': 'Lesson update data successfully.'}
+    - 400 {'message': 'Invalid date format - 22100-01-100'}
+    - 404 {'message': 'Not found lesson'}
+    - 500 {'message': 'Error server'}
     """
 
     if not validate_token(str(token)):
-        raise HTTPException(status_code=401, detail="Not authenticated")
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return {'message': 'Not authenticated'}
 
     request_data = dict(lesson_data)  # Получаем данные JSON из запроса
     print("request_data: ", request_data)
@@ -406,6 +416,46 @@ async def change_lesson_data(lesson_id: int,
         return {'message': 'Lesson update data successfully.'}
     elif sts == 400:
         response.status_code = status.HTTP_400_BAD_REQUEST
+        return {'message': result}
+    elif sts == 404:
+        # Если не найдено урока в бд
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {'message': 'Not found lesson'}
+    elif sts == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'message': result}
+
+
+# ======================== Маршрут получения данных записи урока по id =========================
+@router_admin.get("/get_lesson_data/{lesson_id}", include_in_schema=True, tags=["ADMINpanel"])
+async def get_lesson_data_frontend(lesson_id: int,
+                                   response: Response,
+                                   token: Annotated[str, Depends(oauth2_scheme)]
+                                   ):
+    """
+    **Метод GET - Endpoint protected**
+
+    **Маршрут получения данных записи урока по id**
+
+    Принимает id записи как параметр пути.
+    - http://example.com/api_admin/get_lesson_data/10
+
+    Варианты ответов:
+
+    - 200 {'username': 'Jon Doe', "phone": "123456789", ...}
+    - 404 {'message': 'Not found lesson'}
+    - 500 {'message': 'Error server'}
+    """
+    if not validate_token(str(token)):
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return {'message': 'Not authenticated'}
+
+    sts, result = get_lesson_data_db(lesson_id)
+
+    # Проверяем результат выполнения функции
+    if sts == 200:
+        # Если операция выполнена успешно, возвращаем HTTP-статус 200 (OK)
+        response.status_code = status.HTTP_200_OK
         return result
     elif sts == 404:
         # Если не найдено урока в бд
@@ -413,4 +463,4 @@ async def change_lesson_data(lesson_id: int,
         return {'message': 'Not found lesson'}
     elif sts == 500:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return result
+        return {'message': result}

@@ -1,4 +1,4 @@
-from fastapi import Request, APIRouter, Response, Form
+from fastapi import Request, APIRouter, Response, status, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
@@ -172,75 +172,62 @@ async def html_registration(request: Request):
     В разработке !!!
     """
     title = "Registration user"
-    return templates.TemplateResponse(request=request,
-                                      name="registration.html",
-                                      context={
-                                              "title": title
-                                      }
-                                      )
+    return templates.TemplateResponse(request=request, name="registration.html", context={"title": title})
 
 
 # ======================== Маршрут ИЗМЕНЕНИЯ СТАТУСА УРОКА =========================
 @router_html.post("/change-lesson-status_backend", include_in_schema=False, tags=["ADMINpanelHTML"])
-async def change_lesson_status_backend(request: Request):
+async def change_lesson_status_backend(request: Request, response: Response):
     """
     Изменение статуса урока
     """
-    try:
-        request_body = await request.json()  # Получаем данные JSON из запроса
-        lesson_id = request_body.get('lesson_id')  # Получаем значение lesson_id
-        print("lesson_id=======lesson_id", lesson_id)
+    request_body = await request.json()  # Получаем данные JSON из запроса
+    lesson_id = request_body.get('lesson_id')  # Получаем значение lesson_id
+    print("lesson_id=======lesson_id", lesson_id)
 
-        # Вызываем функцию для изменения статуса урока
-        sts, result = change_lesson_status_db(lesson_id)
+    # Вызываем функцию для изменения статуса урока
+    sts, result = change_lesson_status_db(lesson_id)
 
-        # Проверяем результат выполнения функции
-        if sts == 200:
-            # Если операция выполнена успешно, возвращаем HTTP-статус 200 (OK)
-            return {'status_code': 200, 'message': 'Lesson status changed successfully.'}
-        elif sts == 404:
-            # Если не найдено урока в бд
-            return {'status_code': sts, 'message': result}
-    except Exception as e:
-        # Если возникла ошибка
-        return 500, {"error": str(e)}  # Все типы ошибок (возврат)
-
+    # Проверяем результат выполнения функции
+    if sts == 200:
+        # Если операция выполнена успешно, возвращаем HTTP-статус 200 (OK)
+        response.status_code = status.HTTP_200_OK
+        return {'message': 'Lesson status changed successfully.'}
+    elif sts == 404:
+        # Если не найдено урока в бд
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {'message': 'Not found lesson'}
+    elif sts == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'message': result}
 
 # ======================== Маршрут УДАЛЕНИЯ ЗАПИСИ О УРОКЕ =========================
 # TODO добавить документацию
 @router_html.delete("/delete-lesson_backend", include_in_schema=False, tags=["ADMINpanelHTML"])
-async def deleting_a_lesson_backend(request: Request):
+async def deleting_a_lesson_backend(request: Request, response: Response):
     """
     Удаление записи урока из бд
     """
-    try:
-        request_body = await request.json()  # Получаем данные JSON из запроса
-        lesson_id = request_body.get('lesson_id')  # Получаем значение lesson_id
-        print("delete-lesson=======delete-lesson",
-              lesson_id
-              )
 
-        # Вызываем функцию для удаления записи урока
-        sts, result = delete_lesson_db(lesson_id)
+    request_body = await request.json()  # Получаем данные JSON из запроса
+    lesson_id = request_body.get('lesson_id')  # Получаем значение lesson_id
+    print("delete-lesson=======delete-lesson", lesson_id)
 
-        # Проверяем результат выполнения функции
-        if sts == 200:
-            # Если операция выполнена успешно, возвращаем HTTP-статус 200 (OK)
-            return {
-                    'status_code': 200,
-                    'message': 'Lesson delete successfully.'
-            }
-        elif sts == 404:
-            # Если не найдено урока в бд
-            return {
-                    'status_code': sts,
-                    'message': result
-            }
-    except Exception as e:
-        # Если возникла ошибка
-        return 500, {
-                "error": str(e)
-        }  # Все типы ошибок (возврат)
+    # Вызываем функцию для удаления записи урока
+    sts, result = delete_lesson_db(lesson_id)
+
+    # Проверяем результат выполнения функции
+    if sts == 200:
+        # Если операция выполнена успешно, возвращаем HTTP-статус 200 (OK)
+        response.status_code = status.HTTP_200_OK
+        return {'message': 'Lesson delete successfully.'}
+    elif sts == 404:
+        # Если не найдено урока в бд
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {'message': 'Not found lesson'}
+    elif sts == 500:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'message': result}
 
 
 # ======================== Маршрут ВЫХОДА ПОЛЬЗОВАТЕЛЯ post =========================
@@ -264,10 +251,7 @@ async def html_error_get(request: Request, text_error: str = None):
 
     return templates.TemplateResponse(request=request,
                                       name="error_modal_window.html",
-                                      context={
-                                              "error_message": error_message,
-                                              "title": title
-                                      }
+                                      context={"error_message": error_message, "title": title}
                                       )
 
 
@@ -281,6 +265,4 @@ async def html_error_post(request: Request, response: Response):
     error_message = error_data.get("error_message")
     # error_message = "(POST) Текст сообщения об ошибке"
 
-    await html_error_get(request,
-                         error_data
-                         )
+    await html_error_get(request, error_data)
