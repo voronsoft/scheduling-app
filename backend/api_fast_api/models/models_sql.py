@@ -2,6 +2,8 @@ import calendar
 import uuid
 from datetime import datetime
 from typing import Dict, List, Union
+
+from fastapi import HTTPException
 from sqlalchemy_utils import database_exists
 from sqlalchemy.orm import sessionmaker, attributes, declarative_base
 from sqlalchemy import Column, Integer, Date, Boolean, String, create_engine, extract, or_, and_, inspect, func, UUID
@@ -20,7 +22,7 @@ Base = declarative_base()
 
 # Модель зарегистрированных пользователей
 class UsersSql(Base):
-    __tablename__ = 'users'
+    __tablename__: str = 'users'
 
     id = Column(Integer, primary_key=True)
     username = Column(String(50), unique=True, nullable=False)
@@ -33,7 +35,7 @@ class UsersSql(Base):
 
 # Модель зарезервированных пользователем уроков
 class LessonsDaysSql(Base):
-    __tablename__ = 'lessons_days'
+    __tablename__: str = 'lessons_days'
 
     id = Column(Integer, primary_key=True)  # Будет назначено автоматически в БД (уникальное)
     username = Column(String(50), nullable=False)  # Обязательно
@@ -45,10 +47,7 @@ class LessonsDaysSql(Base):
     confirmed = Column(Boolean, default=False)  # По умолчанию всегда будет default='false'
 
 
-# ===================================================
-
-
-# ======================== Функция создание БД ========================
+# ======================== Функция создание БД
 def create_database():
     """Функция создание БД"""
     if not database_exists(engine.url):
@@ -76,7 +75,7 @@ def create_database():
         return False
 
 
-# ======================== Функция добавления урока в БД из календаря ========================
+# ======================== Функция добавления урока в БД из календаря
 def add_lesson_data_to_db(username: str, last_name: str, phone: str, email: str, selected_date: str, time: str):
     """Функция добавления урока из календаря в БД"""
     with Session() as session:
@@ -87,13 +86,15 @@ def add_lesson_data_to_db(username: str, last_name: str, phone: str, email: str,
                             # Имя пользователя
                             LessonsDaysSql.username == username,
                             # Дата занятия
-                            LessonsDaysSql.selected_date == datetime.strptime(selected_date, "%Y-%m-%d").date(),
+                            LessonsDaysSql.selected_date == datetime.strptime(selected_date,
+                                                                              "%Y-%m-%d"
+                                                                              ).date(),
                             # Почта
                             LessonsDaysSql.email == email,
                             # Время урока
                             LessonsDaysSql.time == time
-                            )
-                    ).first()
+                    )
+            ).first()
 
             # Если нет такого урока в БД, то создаем запись!
             if not lesson_exists:
@@ -116,12 +117,16 @@ def add_lesson_data_to_db(username: str, last_name: str, phone: str, email: str,
                 return False  # Такой урок уже существует
         except Exception as e:
             session.rollback()
-            print("Ошибка при добавлении урока в базу данных:", e)
-            return {"error": str(e)}  # Все типы ошибок (возврат)
+            print("Ошибка при добавлении урока в базу данных:",
+                  e
+                  )
+            return {
+                    "error": str(e)
+            }  # Все типы ошибок (возврат)
 
 
-# ======================== Функция выбора уроков по заданному месяцу (ПРОСТО ДАТА И СТАТУС УРОКА)
-def lesson_dates_for_the_month_db(date: str):
+# ======================== Функция выбора уроков по заданному месяцу (ПРОСТО ДАТА)
+def lesson_dates_for_the_month_db_backend(date: str):
     """Функция выбора уроков по заданному месяцу (ПРОСТО ДАТА И СТАТУС УРОКА)"""
     try:
         # Преобразуем строку в объект даты и получаем год и месяц
@@ -129,7 +134,9 @@ def lesson_dates_for_the_month_db(date: str):
         year = date_obj.year
         month = str('0' + str(date_obj.month) if len(str(date_obj.month)) == 1 else date_obj.month)
     except Exception as e:
-        return 422, {"error": str(e)}  # Все типы ошибок (возврат)
+        return 422, {
+                "error": str(e)
+        }  # Все типы ошибок (возврат)
 
     # Создаем словарь для хранения результатов
     results_dict = dict()
@@ -141,7 +148,7 @@ def lesson_dates_for_the_month_db(date: str):
             lessons = session.query(LessonsDaysSql).filter(
                     extract('year', LessonsDaysSql.selected_date) == year,
                     extract('month', LessonsDaysSql.selected_date) == month
-                    ).all()
+            ).all()
 
             # Заполняем словарь результатами запроса
             for lesson in lessons:
@@ -156,10 +163,58 @@ def lesson_dates_for_the_month_db(date: str):
                 return 404, "Not found"
 
         except Exception as e:
-            return 500, {"error": str(e)}  # Все типы ошибок (возврат)
+            return 500, {"error": str(e)}  # Все типы ошибок
 
 
-# ======================== Функция получение уроков из БД на определенный месяц (ПОЛНЫЕ ДАННЫЕ ЗАПИСИ) двумерный список ========================
+def lesson_dates_for_the_month_db_frontend(date_month: str):
+    try:
+        # Преобразуем строку в объект даты и получаем год и месяц
+        date_obj = datetime.strptime(date_month, "%Y-%m-%d").date()
+        year = date_obj.year
+        month = str('0' + str(date_obj.month) if len(str(date_obj.month)) == 1 else date_obj.month)
+    except Exception as e:
+        return 422, {"error": str(e)}  # Все типы ошибок
+
+    # Создаем словарь для хранения результатов
+    result_dict = {}
+
+    # Выполняем запрос к базе данных
+    with Session() as session:
+        try:
+            # Выполняем запрос для выборки данных за указанный месяц
+            lessons = session.query(LessonsDaysSql.selected_date, LessonsDaysSql.time).filter(
+                    extract('year', LessonsDaysSql.selected_date) == year,
+                    extract('month', LessonsDaysSql.selected_date) == month
+            ).all()
+
+            # Заполняем словарь
+            for lesson in lessons:
+                date_str = lesson.selected_date.strftime('%Y-%m-%d')
+                time_slot = int(lesson.time)  # Считываем время записи урока
+
+                if date_str not in result_dict:
+                    result_dict[date_str] = []
+                result_dict[date_str].append(time_slot)
+
+            # Сортируем временные слоты внутри каждого дня
+            for time_slots in result_dict.values():
+                time_slots.sort()
+
+            # Преобразуем словарь в отсортированный список по датам
+            result_list = []
+            for date_str in sorted(result_dict.keys()):
+                result_list.append({"date": date_str, "lessons": result_dict[date_str]})
+
+            if len(result_list) >= 1:
+                return 200, result_list
+            else:
+                return 404, "Not found"
+
+        except Exception as e:
+            return 500, {"error": str(e)}
+
+
+# ======================== Функция получение занятий на определенный месяц (ПОЛНЫЕ ДАННЫЕ ЗАПИСИ)
 def get_lessons_for_month(date_in: str):
     """
     Получение уроков из БД на определенный месяц (полные данные записи)
@@ -181,7 +236,7 @@ def get_lessons_for_month(date_in: str):
             query = session.query(LessonsDaysSql).filter(
                     extract('year', LessonsDaysSql.selected_date) == search_date.year,
                     extract('month', LessonsDaysSql.selected_date) == search_date.month
-                    ).order_by(LessonsDaysSql.selected_date)
+            ).order_by(LessonsDaysSql.selected_date)
 
             search_data_month = []
             lessons_dict = {}
@@ -201,8 +256,8 @@ def get_lessons_for_month(date_in: str):
                             'selectedDate': lesson_date,
                             'selectedTime': lesson.time,
                             'confirmed': lesson.confirmed
-                            }
-                            )
+                    }
+                    )
                 else:
                     # Создаем новую запись для данной даты
                     lessons_dict[lesson_date] = {
@@ -217,8 +272,8 @@ def get_lessons_for_month(date_in: str):
                                     'selectedDate': lesson_date,
                                     'selectedTime': lesson.time,
                                     'confirmed': lesson.confirmed
-                                    }]
-                            }
+                            }]
+                    }
                     # Увеличиваем значение переменной id_counter перед следующей итерацией
                     id_counter += 1
 
@@ -229,7 +284,7 @@ def get_lessons_for_month(date_in: str):
 
         if len(search_data_month) == 0:
             print(len(search_data_month))
-            return 404, str("Not found")
+            return 404, False
         elif len(search_data_month) > 0:
             print(len(search_data_month))
             return 200, search_data_month
@@ -238,7 +293,8 @@ def get_lessons_for_month(date_in: str):
         return 500, str(e)
 
 
-# ======================== Функция получение уроков из БД на определенный месяц (ПОЛНЫЕ ДАННЫЕ ЗАПИСИ) одномерный список ========================
+# ======================== Функция получение уроков из БД на определенный месяц
+# ======================== (ПОЛНЫЕ ДАННЫЕ ЗАПИСИ) одномерный список
 def get_lessons_for_month_one_dimensional_list(date_in: str):
     """Получение уроков из БД на определенный месяц
 
@@ -247,7 +303,9 @@ def get_lessons_for_month_one_dimensional_list(date_in: str):
     """
 
     try:
-        year, month, _ = map(int, date_in.split('-'))  # Вытягиваем год и месяц
+        year, month, _ = map(int,
+                             date_in.split('-')
+                             )  # Вытягиваем год и месяц
     except Exception as e:
         return 422, str(e)
 
@@ -257,7 +315,7 @@ def get_lessons_for_month_one_dimensional_list(date_in: str):
             lessons = session.query(LessonsDaysSql).filter(
                     extract('year', LessonsDaysSql.selected_date) == year,
                     extract('month', LessonsDaysSql.selected_date) == month
-                    ).all()
+            ).all()
 
             # Формируем список уроков в требуемом формате
             lessons_list = []
@@ -271,7 +329,7 @@ def get_lessons_for_month_one_dimensional_list(date_in: str):
                         "selected_date": lesson.selected_date.strftime("%Y-%m-%d"),
                         "time": lesson.time,
                         "confirmed": lesson.confirmed
-                        }
+                }
                 lessons_list.append(lesson_data)
 
             lessons_list_sorted = sorted(lessons_list, key=lambda x: x["selected_date"])
@@ -284,7 +342,7 @@ def get_lessons_for_month_one_dimensional_list(date_in: str):
         return 500, str(e)
 
 
-# ======================== Функция сохранение данных пользователя в базе данных. (Регистрация) ========================
+# ======================== Функция сохранение данных пользователя в базе данных. (Регистрация)
 def save_user_registration(username: str, email: str, hashed_password: str) -> tuple:
     """Сохранение данных нового пользователя в базе данных."""
     # Подключаемся к базе данных и открываем сессию
@@ -335,7 +393,7 @@ def sqlalchemy_obj_to_dict(obj) -> Dict:
     return obj_dict
 
 
-# ======================== Функция поиска пользователя в БД ========================
+# ======================== Функция поиска пользователя в БД
 def search_user_database(username: str) -> Union[UsersSql, None] | dict:
     """
     Функция поиска пользователя в БД
@@ -351,11 +409,12 @@ def search_user_database(username: str) -> Union[UsersSql, None] | dict:
             else:
                 return None
         except Exception as e:
-            print("Ошибка БД:", e)
+            print("Ошибка БД:", str(e))
             return {"error": str(e)}
 
 
-# ======================== Функция получение списка всех уроков из БД на конкретный день определенного месяца (полные данные записи) ========================
+# ======================== Функция получение списка всех уроков из БД на конкретный день определенного месяца
+# ======================== (полные данные записи)
 def get_lessons_for_day(date: str):
     """Получение уроков из БД на конкретный день определенного месяца
     :param date: str (2024-01-20)
@@ -363,17 +422,17 @@ def get_lessons_for_day(date: str):
     # Проверка даты
     try:
         year, month, day = map(int, date.split('-'))  # Вытягиваем год и месяц
-        # print(f"{year}/{month}/{day}")
     except Exception as e:
         return 422, str(e)
 
     try:
         with Session() as session:
             # Выполнение запроса к базе данных
-            lessons = session.query(LessonsDaysSql).filter(extract('year', LessonsDaysSql.selected_date) == year,
-                                                           extract('month', LessonsDaysSql.selected_date) == month,
-                                                           extract('day', LessonsDaysSql.selected_date) == day
-                                                           ).all()
+            lessons = session.query(LessonsDaysSql).filter(
+                    extract('year', LessonsDaysSql.selected_date) == year,
+                    extract('month', LessonsDaysSql.selected_date) == month,
+                    extract('day', LessonsDaysSql.selected_date) == day
+            ).all()
 
             # Формируем список уроков в требуемом формате
             lessons_list = []
@@ -387,7 +446,7 @@ def get_lessons_for_day(date: str):
                         "selected_date": lesson.selected_date.strftime("%Y-%m-%d"),
                         "selectedTime": lesson.time,
                         "confirmed": lesson.confirmed
-                        }
+                }
                 lessons_list.append(lesson_data)
 
             lessons_list_sorted = sorted(lessons_list, key=lambda x: x["id"])
@@ -400,7 +459,8 @@ def get_lessons_for_day(date: str):
         return 500, str(e)
 
 
-# ======================== Функция подтверждения урока пользователю, меняет метку статуса урока на True (одобрено) в БД ========================
+# ======================== Функция подтверждения урока пользователю,
+# ======================== меняет метку статуса урока на True (одобрено) в БД
 def change_lesson_status_db(lesson_id: int) -> tuple:
     """Функция подтверждения урока пользователю.
     Изменяет метку статуса урока на True (одобрено) В БД
@@ -420,20 +480,17 @@ def change_lesson_status_db(lesson_id: int) -> tuple:
 
             # Изменяем метку статуса урока на True (одобрено)
             lesson.confirmed = True
-
             # Сохраняем изменения в базе данных
             session.commit()
-
             # Возвращаем True, чтобы указать успешное выполнение операции
             return 200, True
 
-    except Exception as e:  # Обработка ошибок
-        # Откатываем изменения в случае возникновения другой ошибки
-        session.rollback()
+    except Exception as e:
+        session.rollback()  # Откатываем изменения в случае возникновения ошибки
         return 500, str(e)
 
 
-# ======================== Функция удаления записи об уроке конкретного пользователя ========================
+# ======================== Функция удаления записи об уроке конкретного пользователя
 def delete_lesson_db(lesson_id: int) -> tuple:
     """Функция удаления записи об уроке конкретного пользователя.
 
@@ -445,14 +502,13 @@ def delete_lesson_db(lesson_id: int) -> tuple:
         with Session() as session:
             # Получаем запись урока по идентификатору
             lesson = session.query(LessonsDaysSql).filter(LessonsDaysSql.id == lesson_id).first()
-
+            print("lesson--------", lesson)
             # Если запись не найдена, возвращаем ошибку
             if not lesson:
                 return 404, False
 
             # Удаляем найденную запись
             session.delete(lesson)
-
             # Сохраняем изменения в базе данных
             session.commit()
 
@@ -462,4 +518,66 @@ def delete_lesson_db(lesson_id: int) -> tuple:
     except Exception as e:
         # Откатываем изменения в случае возникновения ошибки
         session.rollback()
+        return 500, str(e)
+
+
+# ======================== Функция изменения данных записи урока
+def change_lesson_data_db(lesson_id: int, data: dict) -> tuple:
+    """Функция изменения данных записи урока
+
+    :param lesson_id: Идентификатор урока, который требуется изменить
+    :param data: Словарь с данными
+    :return: True, если операция выполнена успешно, False в противном случае
+    """
+    try:
+        with Session() as session:
+            # Получаем урок по его идентификатору
+            lesson_change = session.query(LessonsDaysSql).filter(LessonsDaysSql.id == lesson_id).first()
+
+            # Если урок не найден
+            if not lesson_change:
+                return 404, False
+
+            # Изменяем данные
+            for key, value in data.items():
+                if value is not None:
+                    if key == 'selected_date':  # Проверка, если ключ - дата
+                        try:
+                            value = datetime.strptime(value, "%Y-%m-%d").date()
+                        except ValueError:
+                            return 400, f"Invalid date format for '{key}': {value}"
+                    setattr(lesson_change, key, value)
+
+                # Сохраняем изменения в базе данных
+                session.commit()
+
+            # Возвращаем True, чтобы указать успешное выполнение операции
+            return 200, True
+
+    except Exception as e:  # Обработка ошибок
+        # Откатываем изменения в случае возникновения другой ошибки
+        session.rollback()
+        return 500, str(e)
+
+
+# ======================== Функция получения данных записи урока по id
+def get_lesson_data_db(lesson_id: int) -> tuple:
+    """
+    Функция получения данных записи урока по id
+
+    :param lesson_id: Идентификатор урока для получения
+    :return dict: Данные урока
+    """
+    try:
+        with Session() as session:
+            # Получаем урок по его идентификатору
+            lesson_data = session.query(LessonsDaysSql).filter(LessonsDaysSql.id == lesson_id).first()
+
+            # Если урок не найден
+            if not lesson_data:
+                return 404, False
+
+            return 200, lesson_data
+
+    except Exception as e:  # Обработка ошибок
         return 500, str(e)

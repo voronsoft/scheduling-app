@@ -1,7 +1,7 @@
 from datetime import datetime
 from fastapi import Request
 
-from api_fast_api.models.models_sql import get_lessons_for_day, lesson_dates_for_the_month_db
+from api_fast_api.models.models_sql import get_lessons_for_day
 
 
 # ======================== Функция генерации карточек уроков пользователей

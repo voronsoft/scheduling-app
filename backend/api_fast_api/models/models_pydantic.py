@@ -65,3 +65,15 @@ class UserInDBPydantic(UserPydantic):
 class DateModelPydantic(BaseModel):
     """Проверка даты (2024-1-24)"""
     date: str
+
+
+# -------------- Модель данных изменения полей записи урока
+class UpdateLessonDataPydantic(BaseModel):
+    """Модель данных изменения полей записи урока"""
+    username: Optional[str] = None
+    last_name: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[EmailStr] = None
+    selected_date: Optional[str] = None
+    time: Optional[str] = None
+    confirmed: Optional[bool] = None
