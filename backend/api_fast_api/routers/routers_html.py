@@ -6,10 +6,11 @@ from fastapi.templating import Jinja2Templates
 from api_fast_api.auth.authentication import validate_token
 from api_fast_api.config import TEMPLATES_FOLDER_PATH
 from api_fast_api.func.csrf_functions import generate_csrf_token, checking_csrf_token
-from api_fast_api.func.functions import generate_calendar, date_at_the_time_the_function_was_called
-from api_fast_api.models.models_sql import (lesson_dates_for_the_month_db_backend, change_lesson_status_db,
-                                            delete_lesson_db, get_lessons_for_month_one_dimensional_list
-                                            )
+from api_fast_api.func.functions import date_at_the_time_the_function_was_called, async_generate_calendar
+from api_fast_api.models.asinc_models import (async_lesson_dates_for_the_month_db_backend,
+                                              async_get_lessons_for_month_one_dimensional_list,
+                                              async_change_lesson_status_db, async_delete_lesson_db
+                                              )
 from api_fast_api.routers.routes_admin import login_for_access_token
 
 # Создаем экземпляр APIRouter с префиксом
@@ -44,17 +45,23 @@ async def html_index_get(request: Request):
 
             # Получаем дату в момент вызова функции
             crnt_date = date_at_the_time_the_function_was_called()
+            print("111======= ",crnt_date)
 
             # Получаем список зарезервированных дат из БД на текущий месяц
-            lst_date_lesns = lesson_dates_for_the_month_db_backend(crnt_date)[1]
+            # lst_date_lesns = lesson_dates_for_the_month_db_backend(crnt_date)[1]
+            lst_date_lesns = await async_lesson_dates_for_the_month_db_backend(crnt_date)
+            lst_date_lesns = lst_date_lesns[1]
+            print("444lst_date_lesns", lst_date_lesns)
+
 
             # Получаем дату для генерации календаря (дата формируется на момент вызова кода)
             year, month, _ = map(int, crnt_date.split("-"))
             # Генерируем календарь передав: 1 список занятий / 2 год / 3 месяц
-            calendar = generate_calendar(lst_date_lesns, year, month)
+            calendar = await async_generate_calendar(lst_date_lesns, year, month)
 
             # Получаем список занятий на месяц с полными данными в одномерный словарь
-            _, list_data_lessons = get_lessons_for_month_one_dimensional_list(crnt_date)
+            # _, list_data_lessons = get_lessons_for_month_one_dimensional_list(crnt_date)
+            _, list_data_lessons = await async_get_lessons_for_month_one_dimensional_list(crnt_date)
 
             response = templates.TemplateResponse(request=request,
                                                   name="index.html",
@@ -186,7 +193,7 @@ async def change_lesson_status_backend(request: Request, response: Response):
     print("lesson_id=======lesson_id", lesson_id)
 
     # Вызываем функцию для изменения статуса урока
-    sts, result = change_lesson_status_db(lesson_id)
+    sts, result = await async_change_lesson_status_db(lesson_id)
 
     # Проверяем результат выполнения функции
     if sts == 200:
@@ -214,7 +221,7 @@ async def deleting_a_lesson_backend(request: Request, response: Response):
     print("delete-lesson=======delete-lesson", lesson_id)
 
     # Вызываем функцию для удаления записи урока
-    sts, result = delete_lesson_db(lesson_id)
+    sts, result = await async_delete_lesson_db(lesson_id)
 
     # Проверяем результат выполнения функции
     if sts == 200:

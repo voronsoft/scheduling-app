@@ -1,5 +1,6 @@
 import uvicorn
-from api_fast_api.models.models_sql import create_database
+import asyncio
+from api_fast_api.models.asinc_models import async_create_database
 from api_fast_api.func.create_project_structure_file import create_project_structure
 
 if __name__ == "__main__":
@@ -8,7 +9,10 @@ if __name__ == "__main__":
     print("Структура проекта успешно сохранена в файле.")
 
     # Создаем базу данных перед запуском приложения
-    create_database()
+    # create_database()
+
+    # Создаем базу данных перед запуском приложения
+    asyncio.run(async_create_database())
 
     # Запускаем приложение по заданному адресу.
     uvicorn.run("api_fast_api:app", host="127.0.0.10", port=8888)

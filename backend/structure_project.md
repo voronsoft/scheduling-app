@@ -8,6 +8,7 @@ backend/
 │   ├── config.py
 │   ├── db_api/
 │   │   ├── api_data.db
+│   │   ├── async_api_data.db
 │   │   
 │   ├── func/
 │   │   ├── create_project_structure_file.py
@@ -15,6 +16,7 @@ backend/
 │   │   ├── functions.py
 │   │   
 │   ├── models/
+│   │   ├── asinc_models.py
 │   │   ├── models_pydantic.py
 │   │   ├── models_sql.py
 │   │   

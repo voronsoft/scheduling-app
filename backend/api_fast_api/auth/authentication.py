@@ -7,7 +7,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 
 from api_fast_api.config import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
-from api_fast_api.models.models_sql import sqlalchemy_obj_to_dict, search_user_database
+from api_fast_api.models.asinc_models import search_user_database, sqlalchemy_obj_to_dict
 from api_fast_api.models.models_pydantic import UserInDBPydantic, TokenDataPydantic, UserPydantic
 
 # Схема аутентификации OAuth2.
