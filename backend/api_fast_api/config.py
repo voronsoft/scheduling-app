@@ -18,9 +18,6 @@ ROOT_DIR = ...
 # Получаем абсолютный путь к базовой папке проекта
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-# Подключение к базе данных SQLite
-SQLALCHEMY_DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db_api', 'api_data.db')
-
 # Подключение к АССИНХРОННОЙ базе данных SQLite
 ASYNC_SQLALCHEMY_DATABASE_URL = 'sqlite+aiosqlite:///' + os.path.join(BASE_DIR, 'db_api', 'async_api_data.db')
 

@@ -1,4 +1,3 @@
-import asyncio
 import calendar
 import uuid
 from datetime import datetime
@@ -14,9 +13,11 @@ from api_fast_api.config import ASYNC_SQLALCHEMY_DATABASE_URL
 # Создаем экземпляр класса Engine для соединения с базой данных
 engine = create_async_engine(ASYNC_SQLALCHEMY_DATABASE_URL, echo=False)
 # Создаем сессию для взаимодействия с базой данных
-Session = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
+Session = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)  # type: ignore
 # Создаем экземпляр базового класса
 Base = declarative_base()
+
+
 # ===================================================
 
 # Модель зарегистрированных пользователей
@@ -155,8 +156,8 @@ async def async_lesson_dates_for_the_month_db_backend(date: str):
         async with session.begin():
             try:
                 statement = select(LessonsDaysSql).where(
-                        extract('year', LessonsDaysSql.selected_date) == year,
-                        extract('month', LessonsDaysSql.selected_date) == month
+                        extract('year', LessonsDaysSql.selected_date) == year,  # type: ignore
+                        extract('month', LessonsDaysSql.selected_date) == month  # type: ignore
                 )
                 result = await session.execute(statement)
                 lessons = result.scalars().all()
@@ -197,8 +198,8 @@ async def async_lesson_dates_for_the_month_db_frontend(date_month: str):
             try:
                 # Выполняем запрос для выборки данных за указанный месяц
                 statement = select(LessonsDaysSql.selected_date, LessonsDaysSql.time).where(
-                        extract('year', LessonsDaysSql.selected_date) == year,
-                        extract('month', LessonsDaysSql.selected_date) == month
+                        extract('year', LessonsDaysSql.selected_date) == year,  # type: ignore
+                        extract('month', LessonsDaysSql.selected_date) == month  # type: ignore
                 )
                 result = await session.execute(statement)
                 lessons = result.fetchall()
@@ -252,14 +253,13 @@ async def async_get_lessons_for_month(date_in: str):
                 search_date = datetime.strptime(date_in, '%Y-%m-%d')
                 # Формируем запрос, выбирая записи, у которых год и месяц совпадают с заданной датой
                 statement = select(LessonsDaysSql).where(
-                        extract('year', LessonsDaysSql.selected_date) == search_date.year,
-                        extract('month', LessonsDaysSql.selected_date) == search_date.month
+                        extract('year', LessonsDaysSql.selected_date) == search_date.year,  # type: ignore
+                        extract('month', LessonsDaysSql.selected_date) == search_date.month  # type: ignore
                 ).order_by(LessonsDaysSql.selected_date)
 
                 result = await session.execute(statement)
                 lessons = result.scalars().all()
 
-                search_data_month = []
                 lessons_dict = {}
                 id_counter = 1  # Установим начальное значение для переменной id_counter
 
@@ -378,7 +378,7 @@ async def async_save_user_registration(username: str, email: str, hashed_passwor
                 return 409, False
 
             # Проверяем, существует ли уже пользователь с таким email
-            statement = select(UsersSql).where(UsersSql.email == email)
+            statement = select(UsersSql).where(UsersSql.email == email)  # type: ignore
             result = await session.execute(statement)
             existing_user = result.scalars().first()
 
@@ -502,7 +502,7 @@ async def async_change_lesson_status_db(lesson_id: int) -> tuple:
     async with Session() as session:
         try:
             # Получаем урок по его идентификатору
-            statement = select(LessonsDaysSql).where(LessonsDaysSql.id == lesson_id)
+            statement = select(LessonsDaysSql).where(LessonsDaysSql.id == lesson_id)  # type: ignore
             result = await session.execute(statement)
             lesson = result.scalars().first()
 
@@ -533,7 +533,7 @@ async def async_delete_lesson_db(lesson_id: int) -> tuple:
     async with Session() as session:
         try:
             # Получаем запись урока по идентификатору
-            statement = select(LessonsDaysSql).where(LessonsDaysSql.id == lesson_id)
+            statement = select(LessonsDaysSql).where(LessonsDaysSql.id == lesson_id)  # type: ignore
             result = await session.execute(statement)
             lesson = result.scalars().first()
             print("lesson--------", lesson)
@@ -565,7 +565,7 @@ async def async_change_lesson_data_db(lesson_id: int, data: dict) -> tuple:
     async with Session() as session:
         try:
             # Получаем урок по его идентификатору
-            statement = select(LessonsDaysSql).where(LessonsDaysSql.id == lesson_id)
+            statement = select(LessonsDaysSql).where(LessonsDaysSql.id == lesson_id)  # type: ignore
             result = await session.execute(statement)
             lesson_change = result.scalars().first()
 
@@ -606,7 +606,7 @@ async def async_get_lesson_data_db(lesson_id: int) -> tuple:
     async with Session() as session:
         try:
             # Получаем урок по его идентификатору
-            statement = select(LessonsDaysSql).where(LessonsDaysSql.id == lesson_id)
+            statement = select(LessonsDaysSql).where(LessonsDaysSql.id == lesson_id)  # type: ignore
             result = await session.execute(statement)
             lesson_data = result.scalars().first()
 
@@ -618,6 +618,3 @@ async def async_get_lesson_data_db(lesson_id: int) -> tuple:
 
         except Exception as e:  # Обработка ошибок
             return 500, str(e)
-
-
-
