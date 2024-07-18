@@ -10,10 +10,12 @@ from sqlalchemy_utils import database_exists
 
 from api_fast_api.config import ASYNC_SQLALCHEMY_DATABASE_URL
 
-# Создаем экземпляр класса Engine для соединения с базой данных
+# Создаем асинхронный движок для асинхронных операций
 engine = create_async_engine(ASYNC_SQLALCHEMY_DATABASE_URL, echo=False)
-# Создаем сессию для взаимодействия с базой данных
+# Создаем асинхронную сессию для взаимодействия с базой данных
 Session = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)  # type: ignore
+# Создаем синхронную сессию для взаимодействия с базой данных
+Session_sinc = sessionmaker(bind=engine)
 # Создаем экземпляр базового класса
 Base = declarative_base()
 
@@ -404,6 +406,7 @@ async def async_save_user_registration(username: str, email: str, hashed_passwor
             return 500, str(e)
 
 
+# TODO сделать всю цепочку функций асинхронными
 # ======================== Функция преобразования объекта SQLAlchemy в словарь.
 def sqlalchemy_obj_to_dict(obj) -> Dict:
     """
@@ -418,6 +421,7 @@ def sqlalchemy_obj_to_dict(obj) -> Dict:
     return obj_dict
 
 
+# TODO сделать всю цепочку функций асинхронными
 # ======================== Функция поиска пользователя в БД
 def search_user_database(username: str) -> Union[UsersSql, None] | dict:
     """
@@ -426,7 +430,7 @@ def search_user_database(username: str) -> Union[UsersSql, None] | dict:
     - Принимает имя пользователя тип str
     - Возвращает объект SQLAlchemy или None
     """
-    with Session() as session:
+    with Session_sinc() as session:
         try:
             user = session.query(UsersSql).filter(UsersSql.username == username).first()
             if user:
