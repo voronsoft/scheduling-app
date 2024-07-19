@@ -45,14 +45,11 @@ async def html_index_get(request: Request):
 
             # Получаем дату в момент вызова функции
             crnt_date = date_at_the_time_the_function_was_called()
-            print("111======= ",crnt_date)
 
             # Получаем список зарезервированных дат из БД на текущий месяц
             # lst_date_lesns = lesson_dates_for_the_month_db_backend(crnt_date)[1]
             lst_date_lesns = await async_lesson_dates_for_the_month_db_backend(crnt_date)
             lst_date_lesns = lst_date_lesns[1]
-            print("444lst_date_lesns", lst_date_lesns)
-
 
             # Получаем дату для генерации календаря (дата формируется на момент вызова кода)
             year, month, _ = map(int, crnt_date.split("-"))

@@ -14,8 +14,6 @@ from api_fast_api.config import ASYNC_SQLALCHEMY_DATABASE_URL
 engine = create_async_engine(ASYNC_SQLALCHEMY_DATABASE_URL, echo=False)
 # Создаем асинхронную сессию для взаимодействия с базой данных
 Session = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)  # type: ignore
-# Создаем синхронную сессию для взаимодействия с базой данных
-Session_sinc = sessionmaker(bind=engine)
 # Создаем экземпляр базового класса
 Base = declarative_base()
 
@@ -163,7 +161,6 @@ async def async_lesson_dates_for_the_month_db_backend(date: str):
                 )
                 result = await session.execute(statement)
                 lessons = result.scalars().all()
-                print("222lessons", lessons)
 
                 # Заполняем словарь результатами запроса
                 for lesson in lessons:
@@ -171,7 +168,6 @@ async def async_lesson_dates_for_the_month_db_backend(date: str):
 
                 # Сортируем по возрастанию
                 results_dict_sorted = dict(sorted(results_dict.items()))
-                print("333results_dict_sorted", results_dict_sorted)
 
                 if len(results_dict_sorted) >= 1:
                     return 200, results_dict_sorted
@@ -404,42 +400,6 @@ async def async_save_user_registration(username: str, email: str, hashed_passwor
             await session.rollback()
             # Возвращаем код ошибки и False в случае других исключений
             return 500, str(e)
-
-
-# TODO сделать всю цепочку функций асинхронными
-# ======================== Функция преобразования объекта SQLAlchemy в словарь.
-def sqlalchemy_obj_to_dict(obj) -> Dict:
-    """
-    Преобразование объекта SQLAlchemy в словарь.
-
-    - Принимает объект SQLAlchemy
-    - Возвращает словарь с данными полей из модели таблицы
-    """
-    obj_dict = attributes.instance_dict(obj)
-    # Удаляем ключ '_sa_instance_state' из словаря
-    obj_dict.pop('_sa_instance_state')
-    return obj_dict
-
-
-# TODO сделать всю цепочку функций асинхронными
-# ======================== Функция поиска пользователя в БД
-def search_user_database(username: str) -> Union[UsersSql, None] | dict:
-    """
-    Функция поиска пользователя в БД
-
-    - Принимает имя пользователя тип str
-    - Возвращает объект SQLAlchemy или None
-    """
-    with Session_sinc() as session:
-        try:
-            user = session.query(UsersSql).filter(UsersSql.username == username).first()
-            if user:
-                return user
-            else:
-                return None
-        except Exception as e:
-            print("Ошибка БД:", str(e))
-            return {"error": str(e)}
 
 
 # ======================== Функция получение списка всех уроков из БД на конкретный день определенного месяца

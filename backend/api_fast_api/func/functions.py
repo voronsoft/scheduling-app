@@ -17,7 +17,7 @@ async def async_generating_user_lesson_cards(in_users_data_list):
 
     # Проходимся по каждому словарю с данными пользователя
     for user in in_users_data_list:
-        print("666 ", user)
+
         # Создаем HTML-разметку карточки
         card_content = f"""
             <div class="card {'text-bg-success' if user['confirmed'] else 'text-bg-danger'} mt-3"">
@@ -54,7 +54,7 @@ async def async_generate_calendar(date_dict: dict, year: int, month: int) -> str
     :param month: int
     :return: str(html cod)
     """
-    print("444a",date_dict)
+
     # Определяем первый день месяца
     first_day_of_month = datetime(year, month, 1)
 
@@ -98,7 +98,7 @@ async def async_generate_calendar(date_dict: dict, year: int, month: int) -> str
         if current_day.strftime('%Y-%m-%d') in date_dict:
             # Получаем данные об уроке/уроках
             sts, lessons = await async_get_lessons_for_day(current_day.strftime('%Y-%m-%d'))
-            print("555lessons", lessons)
+
             # Генерируем карточки уроков пользователей
             get_card_html = await async_generating_user_lesson_cards(lessons)
             bg_style = ""

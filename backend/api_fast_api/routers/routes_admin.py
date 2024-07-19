@@ -299,8 +299,6 @@ async def get_lessons_for_a_month(date_y_m_d: str, response: Response, token: An
     - 500: {"detail": error description}
     """
 
-    print("token: ", token)
-
     if not validate_token(str(token)):
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return {'message': 'Not authenticated'}

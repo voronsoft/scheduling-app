@@ -7,7 +7,6 @@ backend/
 │   │   
 │   ├── config.py
 │   ├── db_api/
-│   │   ├── api_data.db
 │   │   ├── async_api_data.db
 │   │   
 │   ├── func/
@@ -18,6 +17,7 @@ backend/
 │   ├── models/
 │   │   ├── asinc_models.py
 │   │   ├── models_pydantic.py
+│   │   ├── models_sql.py
 │   │   
 │   ├── routers/
 │   │   ├── routers_html.py
