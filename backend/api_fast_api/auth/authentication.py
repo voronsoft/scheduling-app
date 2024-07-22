@@ -1,3 +1,6 @@
+import asyncio
+from functools import wraps
+
 import bcrypt
 from typing import Annotated
 from jose import JWTError, jwt
@@ -16,6 +19,21 @@ from api_fast_api.models.models_pydantic import UserInDBPydantic, TokenDataPydan
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api_admin/authorization")
 
 
+# ======================== Функция декоратор для выполнения синхронных функций
+def async_decorator(func):
+    """
+    Декоратор для выполнения синхронной функции асинхронно.
+    """
+
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(None, func, *args, **kwargs)
+        return result
+
+    return wrapper
+
+
 # ======================== Функция для получения пользователя из базы данных по имени пользователя.
 def get_user(username: str):
     """Функция для получения пользователя из базы данных по имени пользователя."""
@@ -29,11 +47,12 @@ def get_user(username: str):
 
 
 # ======================== Функция аутентификация пользователя.
+@async_decorator
 def authenticate_user(username: str, password: str):
     """
     Функция для аутентификации пользователя.
-    :param username: str
-    :param password: str
+    :param username: - str
+    :param password: - str
     :return:
     """
     user = get_user(username)  # Ищем пользователя в БД
@@ -45,8 +64,9 @@ def authenticate_user(username: str, password: str):
 
 
 # ======================== Функция для создания JWT-токена.
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
+async def create_access_token(data: dict, expires_delta: timedelta | None = None):
     """Функция для создания JWT-токена доступа."""
+    print("====data", data)
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
@@ -54,6 +74,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    print("====encoded_jwt", encoded_jwt)
     return encoded_jwt
 
 
@@ -61,9 +82,9 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     """Функция для получения текущего пользователя на основе JWT-токена."""
     credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -123,16 +144,14 @@ def verify_password(plain_password, hashed_password) -> bool:
 
 
 # ======================== Функция для хеширования пароля (шифрование пароля)
-def get_password_hash(password: str) -> str:
+@async_decorator
+def get_password_hash(password: str):
     """
     Функция для хеширования пароля (шифрование пароля)
 
     - Принимает str
-    - Возвращает str хешированный пароль (hashed password)
+    - Возвращает хешированный пароль (hashed password)
     """
-    # Генерируем соль для усиления хэша
     salt = bcrypt.gensalt()
-    # Хэшируем пароль с использованием соли
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-    # Возвращаем хэшированный пароль как строку
     return hashed_password.decode('utf-8')

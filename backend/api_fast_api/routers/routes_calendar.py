@@ -40,10 +40,10 @@ async def receiving_data_calendar(lesson_data: ReceivingDataFromCalendarPydantic
 
     """
     status_code = await async_add_lesson_data_to_db(lesson_data.name, lesson_data.surname,
-                                              lesson_data.phone, lesson_data.email,
-                                              lesson_data.selectedDate,
-                                              lesson_data.time
-                                              )
+                                                    lesson_data.phone, lesson_data.email,
+                                                    lesson_data.selectedDate,
+                                                    lesson_data.time
+                                                    )
 
     if status_code is True:
         response.status_code = status.HTTP_201_CREATED

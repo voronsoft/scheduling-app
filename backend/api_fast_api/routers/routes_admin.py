@@ -59,8 +59,11 @@ async def register_user(user_data: RegistrationUserPydantic, response: Response,
     # Используем get_secret_value() для получения значения пароля в понятном читаемом виде.
     password = user_data.password.get_secret_value()
 
+    # # Хешируем полученный пароль из запроса на регистрацию
+    # hashed_password = get_password_hash(password)
     # Хешируем полученный пароль из запроса на регистрацию
-    hashed_password = get_password_hash(password)
+    hashed_password = await get_password_hash(password)  # Вызов асинхронной функции
+    print("=====hashed_password", hashed_password)
 
     # Передаем данные в функцию для записи нового пользователя в БД
     sts, result = await async_save_user_registration(username, email, hashed_password)
@@ -114,14 +117,14 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     - 500: {"error": description error}
 
     """
-    user = authenticate_user(form_data.username, form_data.password)
+    user = await authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="Incorrect username or password",
                             headers={"WWW-Authenticate": "Bearer"}, )
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"sub": user.username}, expires_delta=access_token_expires)
+    access_token = await create_access_token(data={"sub": user.username}, expires_delta=access_token_expires)
     return TokenPydantic(access_token=access_token, token_type="bearer")
 
 
