@@ -369,7 +369,7 @@ async def async_save_user_registration(username: str, email: str, hashed_passwor
             # Проверяем, сколько пользователей уже зарегистрировано
             user_count_result = await session.execute(select(func.count(UsersSql.id)))
             user_count = user_count_result.scalar()
-            print("asinc_user_count", user_count)
+            print("async_user_count", user_count)
 
             # Если количество пользователей превышает 2, возвращаем отказ в доступе
             if user_count >= 2:
@@ -582,3 +582,40 @@ async def async_get_lesson_data_db(lesson_id: int) -> tuple:
 
         except Exception as e:  # Обработка ошибок
             return 500, str(e)
+
+
+# ======================== Функция преобразования объекта SQLAlchemy в словарь.
+async def sqlalchemy_obj_to_dict(obj) -> Dict:
+    """
+    Преобразование объекта SQLAlchemy в словарь.
+
+    - Принимает объект SQLAlchemy
+    - Возвращает словарь с данными полей из модели таблицы
+    """
+    obj_dict = attributes.instance_dict(obj)
+    # Удаляем ключ '_sa_instance_state' из словаря
+    obj_dict.pop('_sa_instance_state')
+    return obj_dict
+
+
+# ======================== Функция поиска пользователя в БД
+async def search_user_database(username: str) -> Union[UsersSql, None] | dict:
+    """
+    Функция поиска пользователя в БД
+
+    - Принимает имя пользователя тип str
+    - Возвращает объект SQLAlchemy или None
+    """
+    async with Session() as session:
+        try:
+            statement = select(UsersSql).where(UsersSql.username == username)  # type: ignore
+            result = await session.execute(statement)
+            user = result.scalars().first()
+
+            if user:
+                return user
+            else:
+                return None
+        except Exception as e:
+            print("Ошибка БД:", str(e))
+            return {"error": str(e)}

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Response, status
-from api_fast_api.models.asinc_models import async_add_lesson_data_to_db
+from api_fast_api.models.async_models import async_add_lesson_data_to_db
 from api_fast_api.models.models_pydantic import ReceivingDataFromCalendarPydantic
 
 # Создаем экземпляр APIRouter с префиксом

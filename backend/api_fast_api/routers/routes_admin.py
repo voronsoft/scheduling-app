@@ -8,20 +8,19 @@ from api_fast_api.config import ACCESS_TOKEN_EXPIRE_MINUTES
 from api_fast_api.auth.authentication import (create_access_token, authenticate_user, get_password_hash, oauth2_scheme,
                                               validate_token
                                               )
-from api_fast_api.models.asinc_models import (async_change_lesson_data_db, async_get_lesson_data_db,
+from api_fast_api.models.async_models import (async_change_lesson_data_db, async_get_lesson_data_db,
                                               async_delete_lesson_db, async_get_lessons_for_month,
                                               async_lesson_dates_for_the_month_db_frontend,
                                               async_lesson_dates_for_the_month_db_backend, async_save_user_registration
                                               )
 from api_fast_api.models.models_pydantic import RegistrationUserPydantic, TokenPydantic, UpdateLessonDataPydantic
 
-
 router_admin = APIRouter(prefix="/api_admin")  # Создаем экземпляр APIRouter с префиксом
 tags_metadata_admin = [{"name": "ADMINpanel", "description": "Маршруты админ панели"}, ]
 
 
 # ======================== Маршрут регистрации пользователя ========================
-@router_admin.post("/registration", include_in_schema=True, tags=["ADMINpanel"])
+@router_admin.post("/registration", include_in_schema=False, tags=["ADMINpanel"])
 async def register_user(user_data: RegistrationUserPydantic, response: Response, request: Request):
     """
     **Метод POST**

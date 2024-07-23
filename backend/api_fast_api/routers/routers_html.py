@@ -7,7 +7,7 @@ from api_fast_api.auth.authentication import validate_token
 from api_fast_api.config import TEMPLATES_FOLDER_PATH
 from api_fast_api.func.csrf_functions import generate_csrf_token, checking_csrf_token
 from api_fast_api.func.functions import date_at_the_time_the_function_was_called, async_generate_calendar
-from api_fast_api.models.asinc_models import (async_lesson_dates_for_the_month_db_backend,
+from api_fast_api.models.async_models import (async_lesson_dates_for_the_month_db_backend,
                                               async_get_lessons_for_month_one_dimensional_list,
                                               async_change_lesson_status_db, async_delete_lesson_db
                                               )
@@ -204,6 +204,7 @@ async def change_lesson_status_backend(request: Request, response: Response):
     elif sts == 500:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'message': result}
+
 
 # ======================== Маршрут УДАЛЕНИЯ ЗАПИСИ О УРОКЕ =========================
 # TODO добавить документацию

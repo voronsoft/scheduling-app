@@ -1,6 +1,6 @@
 import uvicorn
 import asyncio
-from api_fast_api.models.asinc_models import async_create_database
+from api_fast_api.models.async_models import async_create_database
 from api_fast_api.func.create_project_structure_file import create_project_structure
 
 if __name__ == "__main__":

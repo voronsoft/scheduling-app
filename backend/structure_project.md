@@ -15,9 +15,8 @@ backend/
 │   │   ├── functions.py
 │   │   
 │   ├── models/
-│   │   ├── asinc_models.py
+│   │   ├── async_models.py
 │   │   ├── models_pydantic.py
-│   │   ├── models_sql.py
 │   │   
 │   ├── routers/
 │   │   ├── routers_html.py

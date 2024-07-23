@@ -10,7 +10,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 
 from api_fast_api.config import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
-from api_fast_api.models.models_sql import search_user_database, sqlalchemy_obj_to_dict
+from api_fast_api.models.async_models import search_user_database, sqlalchemy_obj_to_dict
 from api_fast_api.models.models_pydantic import UserInDBPydantic, TokenDataPydantic, UserPydantic
 
 # Схема аутентификации OAuth2.
@@ -19,46 +19,48 @@ from api_fast_api.models.models_pydantic import UserInDBPydantic, TokenDataPydan
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api_admin/authorization")
 
 
-# ======================== Функция декоратор для выполнения синхронных функций
-def async_decorator(func):
-    """
-    Декоратор для выполнения синхронной функции асинхронно.
-    """
-
-    @wraps(func)
-    async def wrapper(*args, **kwargs):
-        loop = asyncio.get_event_loop()
-        result = await loop.run_in_executor(None, func, *args, **kwargs)
-        return result
-
-    return wrapper
-
-
 # ======================== Функция для получения пользователя из базы данных по имени пользователя.
-def get_user(username: str):
+async def get_user(username: str):
     """Функция для получения пользователя из базы данных по имени пользователя."""
     # Ищем пользователя в БД
-    user = search_user_database(username=username)
+    user = await search_user_database(username=username)
 
     if user:
         # Преобразуем объект user в словарь и передаем его в конструктор UserInDBPydantic
-        user_dict = sqlalchemy_obj_to_dict(user)
+        user_dict = await sqlalchemy_obj_to_dict(user)
         return UserInDBPydantic(**user_dict)
 
 
+# ======================== Функция для проверки пароля.
+async def verify_password(plain_password, hashed_password) -> bool:
+    """
+    Функция для проверки пароля.
+
+    - plain_password - это не хэшированный (сырой) пароль
+    - hashed_password - это хэшированный пароль из БД
+
+    Вернет:
+
+    - True пароли совпадают
+    - False пароли не совпадают
+    """
+    # Сравниваем хэшированный пароль из базы данных с хэшем введённым пользователем
+    result = bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    return result
+
+
 # ======================== Функция аутентификация пользователя.
-@async_decorator
-def authenticate_user(username: str, password: str):
+async def authenticate_user(username: str, password: str):
     """
     Функция для аутентификации пользователя.
     :param username: - str
     :param password: - str
     :return:
     """
-    user = get_user(username)  # Ищем пользователя в БД
+    user = await get_user(username)  # Ищем пользователя в БД
     if not user:
         return False
-    if not verify_password(password, user.hashed_password):
+    if not await verify_password(password, user.hashed_password):
         return False
     return user
 
@@ -125,27 +127,8 @@ def validate_token(token: str) -> bool:
     return False
 
 
-# ======================== Функция для проверки пароля.
-def verify_password(plain_password, hashed_password) -> bool:
-    """
-    Функция для проверки пароля.
-
-    - plain_password - это не хэшированный (сырой) пароль
-    - hashed_password - это хэшированный пароль из БД
-
-    Вернет:
-
-    - True пароли совпадают
-    - False пароли не совпадают
-    """
-    # Сравниваем хэшированный пароль из базы данных с хэшем введённым пользователем
-    result = bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
-    return result
-
-
 # ======================== Функция для хеширования пароля (шифрование пароля)
-@async_decorator
-def get_password_hash(password: str):
+async def get_password_hash(password: str):
     """
     Функция для хеширования пароля (шифрование пароля)
 

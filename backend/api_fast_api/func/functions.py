@@ -1,7 +1,7 @@
 from datetime import datetime
 from fastapi import Request
 
-from api_fast_api.models.asinc_models import async_get_lessons_for_day
+from api_fast_api.models.async_models import async_get_lessons_for_day
 
 
 # ======================== Функция генерации карточек уроков пользователей
