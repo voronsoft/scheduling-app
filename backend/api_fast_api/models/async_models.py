@@ -76,15 +76,18 @@ async def async_create_database():
                     logger_debug.debug("as_Все необходимые таблицы уже существуют.")
                 else:
                     missing_tables = expected_tables - set(existing_tables)
-                    print(f"as_Некоторые таблицы отсутствуют в базе данных: {missing_tables}")
+                    print(f"Некоторые таблицы отсутствуют в базе данных: {missing_tables}")
+                    logger_debug.error(f"Некоторые таблицы отсутствуют в базе данных: {missing_tables}")
 
                     # Создаем отсутствующие таблицы
                     async with engine.begin() as conn:
                         for table_name in missing_tables:
                             table = Base.metadata.tables[table_name]
                             await conn.run_sync(table.create)
-                            print(f"as_Таблица {table_name} создана успешно.")
+                            print(f"Таблица {table_name} создана успешно.")
+                            logger_debug.debug(f"Таблица {table_name} создана успешно.")
                     print("Таблицы которые отсутствуют добавлены.")
+                    logger_debug.debug("Таблицы которые отсутствуют добавлены.")
                     return True
 
 
@@ -111,7 +114,6 @@ async def async_add_lesson_data_to_db(username: str,
 
                 result = await session.execute(statement)
                 lesson_exists = result.scalar()
-                print('lesson_exists', lesson_exists)
 
                 # Если нет такого урока в БД, то создаем запись
                 if not lesson_exists:
@@ -128,13 +130,16 @@ async def async_add_lesson_data_to_db(username: str,
                     session.add(new_lesson)
                     await session.commit()
                     print("Урок успешно добавлен в базу данных.")
+                    logger_debug.debug("Урок успешно добавлен в базу данных.")
                     return True  # Добавлено в БД
                 else:
                     print("Урок на эту дату уже занят.")
+                    logger_debug.debug("Урок на эту дату уже занят.")
                     return False  # Такой урок уже существует
             except Exception as e:
                 await session.rollback()
-                print("Ошибка при добавлении урока в базу данных:", e)
+                print("Ошибка при добавлении урока в базу данных:", str(e))
+                logger_debug.exception(f"Ошибка при добавлении урока в базу данных: {str(e)}")
                 return {"error": str(e)}  # Возврат ошибки
 
 
@@ -147,6 +152,7 @@ async def async_lesson_dates_for_the_month_db_backend(date: str):
         year = date_obj.year
         month = date_obj.month
     except Exception as e:
+        logger_debug.exception(f"error: {str(e)}")
         return 422, {"error": str(e)}  # Все типы ошибок (возврат)
 
     # Создаем словарь для хранения результатов
@@ -176,6 +182,7 @@ async def async_lesson_dates_for_the_month_db_backend(date: str):
                     return 404, "Not found"
 
             except Exception as e:
+                logger_debug.exception(f"error: {str(e)}")
                 return 500, {"error": str(e)}  # Все типы ошибок
 
 
@@ -186,6 +193,7 @@ async def async_lesson_dates_for_the_month_db_frontend(date_month: str):
         year = date_obj.year
         month = date_obj.month
     except Exception as e:
+        logger_debug.exception(f"error: {str(e)}")
         return 422, {"error": str(e)}  # Все типы ошибок
 
     # Создаем словарь для хранения результатов
@@ -202,7 +210,6 @@ async def async_lesson_dates_for_the_month_db_frontend(date_month: str):
                 )
                 result = await session.execute(statement)
                 lessons = result.fetchall()
-                print("lessons_all ", lessons)
 
                 # Заполняем словарь
                 for lesson in lessons:
@@ -228,7 +235,8 @@ async def async_lesson_dates_for_the_month_db_frontend(date_month: str):
                     return 404, "Not found"
 
             except Exception as e:
-                return 500, {"111error": str(e)}
+                logger_debug.exception(f"error: {str(e)}")
+                return 500, {"error": str(e)}
 
 
 # ======================== Функция получение занятий на определенный месяц (ПОЛНЫЕ ДАННЫЕ ЗАПИСИ)
@@ -243,6 +251,7 @@ async def async_get_lessons_for_month(date_in: str):
     try:
         year, month, _ = map(int, date_in.split('-'))  # Вытягиваем год и месяц
     except Exception as e:
+        logger_debug.exception(f"error: {str(e)}")
         return 422, str(e)
 
     async with Session() as session:
@@ -308,6 +317,7 @@ async def async_get_lessons_for_month(date_in: str):
                     return 200, search_data_month
 
             except Exception as e:
+                logger_debug.exception(f"error: {str(e)}")
                 return 500, str(e)
 
 
@@ -323,6 +333,7 @@ async def async_get_lessons_for_month_one_dimensional_list(date_in: str):
     try:
         year, month, _ = map(int, date_in.split('-'))  # Вытягиваем год и месяц
     except Exception as e:
+        logger_debug.exception(f"error: {str(e)}")
         return 422, str(e)
 
     try:
@@ -358,6 +369,7 @@ async def async_get_lessons_for_month_one_dimensional_list(date_in: str):
         elif len(lessons_list) > 0:
             return 200, lessons_list_sorted
     except Exception as e:
+        logger_debug.exception(f"error: {str(e)}")
         return 500, str(e)
 
 
@@ -370,7 +382,6 @@ async def async_save_user_registration(username: str, email: str, hashed_passwor
             # Проверяем, сколько пользователей уже зарегистрировано
             user_count_result = await session.execute(select(func.count(UsersSql.id)))
             user_count = user_count_result.scalar()
-            print("async_user_count", user_count)
 
             # Если количество пользователей превышает 2, возвращаем отказ в доступе
             if user_count >= 2:
@@ -397,6 +408,7 @@ async def async_save_user_registration(username: str, email: str, hashed_passwor
             return 201, True
 
         except Exception as e:
+            logger_debug.exception(f"error: {str(e)}")
             # Откатываем изменения в случае возникновения другой ошибки
             await session.rollback()
             # Возвращаем код ошибки и False в случае других исключений
@@ -413,6 +425,7 @@ async def async_get_lessons_for_day(date: str):
     try:
         year, month, day = map(int, date.split('-'))  # Вытягиваем год и месяц
     except Exception as e:
+        logger_debug.exception(f"error: {str(e)}")
         return 422, str(e)
 
     # Выполняем запрос к базе данных
@@ -450,6 +463,7 @@ async def async_get_lessons_for_day(date: str):
                 elif len(lessons_list) > 0:
                     return 200, lessons_list_sorted
             except Exception as e:  # Обработка ошибок
+                logger_debug.exception(f"error: {str(e)}")
                 return 500, str(e)
 
 
@@ -462,8 +476,6 @@ async def async_change_lesson_status_db(lesson_id: int) -> tuple:
     :param lesson_id: Идентификатор урока, который требуется подтвердить
     :return: True, если операция выполнена успешно, False в противном случае
     """
-    print("change_lesson_status_db", lesson_id)
-
     async with Session() as session:
         try:
             # Получаем урок по его идентификатору
@@ -483,6 +495,7 @@ async def async_change_lesson_status_db(lesson_id: int) -> tuple:
             return 200, True
 
         except Exception as e:
+            logger_debug.exception(f"error: {str(e)}")
             await session.rollback()  # Откатываем изменения в случае возникновения ошибки
             return 500, str(e)
 
@@ -494,14 +507,14 @@ async def async_delete_lesson_db(lesson_id: int) -> tuple:
     :param lesson_id: Словарь с данными пользователя, содержащий user_id и lesson_id
     :return: Кортеж (статусный код, сообщение об успешности операции)
     """
-    print("(async_delete_lesson_db)Пришел запрос на удаление записи", lesson_id)
+    print("Пришел запрос на удаление записи", lesson_id)
+    logger_debug.debug(f"Пришел запрос на удаление записи {lesson_id}")
     async with Session() as session:
         try:
             # Получаем запись урока по идентификатору
             statement = select(LessonsDaysSql).where(LessonsDaysSql.id == lesson_id)  # type: ignore
             result = await session.execute(statement)
             lesson = result.scalars().first()
-            print("lesson--------", lesson)
             # Если запись не найдена, возвращаем ошибку
             if not lesson:
                 return 404, False
@@ -515,6 +528,7 @@ async def async_delete_lesson_db(lesson_id: int) -> tuple:
             return 200, True
 
         except Exception as e:
+            logger_debug.exception(f"error: {str(e)}")
             await session.rollback()  # Откатываем изменения в случае возникновения ошибки
             return 500, str(e)
 
@@ -545,6 +559,7 @@ async def async_change_lesson_data_db(lesson_id: int, data: dict) -> tuple:
                         try:
                             value = datetime.strptime(value, "%Y-%m-%d").date()
                         except ValueError:
+                            logger_debug.exception(f"error: {f"Invalid date format for '{key}': {value}"}")
                             return 400, f"Invalid date format for '{key}': {value}"
                     setattr(lesson_change, key, value)
 
@@ -552,9 +567,11 @@ async def async_change_lesson_data_db(lesson_id: int, data: dict) -> tuple:
                 await session.commit()
 
             # Возвращаем True, чтобы указать успешное выполнение операции
+            logger_debug.debug(f"Данные урока {lesson_id} изменены")
             return 200, True
 
         except Exception as e:  # Обработка ошибок
+            logger_debug.exception(f"error: {str(e)}")
             # Откатываем изменения в случае возникновения другой ошибки
             await session.rollback()
             return 500, str(e)
@@ -582,6 +599,7 @@ async def async_get_lesson_data_db(lesson_id: int) -> tuple:
             return 200, lesson_data
 
         except Exception as e:  # Обработка ошибок
+            logger_debug.exception(f"error: {str(e)}")
             return 500, str(e)
 
 
@@ -619,4 +637,6 @@ async def search_user_database(username: str) -> Union[UsersSql, None] | dict:
                 return None
         except Exception as e:
             print("Ошибка БД:", str(e))
+            logger_debug.exception(f"error: {str(e)}")
+
             return {"error": str(e)}

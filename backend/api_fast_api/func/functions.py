@@ -39,8 +39,8 @@ async def async_generating_user_lesson_cards(in_users_data_list):
             
         """
         cards += card_content
+
     # Возвращаем список карточек
-    # print(cards)
     return cards
 
 

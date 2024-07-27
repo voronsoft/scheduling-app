@@ -39,7 +39,3 @@ ALGORITHM = os.environ.get('ALGORITHM')
 LOG_DATA_PATH = os.path.join(BASE_DIR, 'logs_data')
 # \scheduling-app\backend\api_fast_api\logs_data
 # ============ Логи ===========
-
-
-if __name__ == "__main__":
-    print(LOG_DATA_PATH)

@@ -62,7 +62,6 @@ async def register_user(user_data: RegistrationUserPydantic, response: Response,
     # hashed_password = get_password_hash(password)
     # Хешируем полученный пароль из запроса на регистрацию
     hashed_password = await get_password_hash(password)  # Вызов асинхронной функции
-    print("=====hashed_password", hashed_password)
 
     # Передаем данные в функцию для записи нового пользователя в БД
     sts, result = await async_save_user_registration(username, email, hashed_password)
@@ -340,8 +339,6 @@ async def deleting_a_lesson_frontend(lesson_id: int, response: Response, token: 
     - 404 {'message': 'Not found'}
     - 500 {'message': 'Error server'}
     """
-    print("token: ", token)
-
     if not validate_token(str(token)):
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return {'message': 'Not authenticated'}
@@ -405,7 +402,6 @@ async def change_lesson_data(lesson_id: int,
         return {'message': 'Not authenticated'}
 
     request_data = dict(lesson_data)  # Получаем данные JSON из запроса
-    print("request_data: ", request_data)
 
     # Вызываем функцию для изменения данных урока
     sts, result = await async_change_lesson_data_db(lesson_id, request_data)

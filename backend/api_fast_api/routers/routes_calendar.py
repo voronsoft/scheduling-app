@@ -53,5 +53,4 @@ async def receiving_data_calendar(lesson_data: ReceivingDataFromCalendarPydantic
         return {"message": "This lesson already exists!"}
     elif isinstance(status_code, dict):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        print("status_code", status_code)
         return status_code

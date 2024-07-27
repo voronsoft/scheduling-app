@@ -10,6 +10,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 
 from api_fast_api.config import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
+from api_fast_api.logger_project.logger__app import logger_debug
 from api_fast_api.models.async_models import search_user_database, sqlalchemy_obj_to_dict
 from api_fast_api.models.models_pydantic import UserInDBPydantic, TokenDataPydantic, UserPydantic
 
@@ -68,7 +69,6 @@ async def authenticate_user(username: str, password: str):
 # ======================== Функция для создания JWT-токена.
 async def create_access_token(data: dict, expires_delta: timedelta | None = None):
     """Функция для создания JWT-токена доступа."""
-    print("====data", data)
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
@@ -76,7 +76,6 @@ async def create_access_token(data: dict, expires_delta: timedelta | None = None
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    print("====encoded_jwt", encoded_jwt)
     return encoded_jwt
 
 
@@ -118,11 +117,10 @@ def validate_token(token: str) -> bool:
         # В данном примере мы просто проверяем, что в токене есть поле 'sub'
         # Это может быть более сложная проверка в реальном приложении
         if 'sub' in payload:
-            print("====================")
-            print("Авторизован пользователь: ", payload.get('sub'))
-            print("====================")
+            logger_debug.debug(f"Авторизован пользователь: {payload.get('sub')}")
             return True
     except JWTError:
+        logger_debug.exception("Токен недействительный")
         return False
     return False
 
