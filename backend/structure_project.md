@@ -14,6 +14,15 @@ backend/
 │   │   ├── csrf_functions.py
 │   │   ├── functions.py
 │   │   
+│   ├── logger_project/
+│   │   ├── logger_config.py
+│   │   ├── logger__app.py
+│   │   
+│   ├── logs_data/
+│   │   ├── debug.log
+│   │   ├── error.log
+│   │   ├── warning.log
+│   │   
 │   ├── models/
 │   │   ├── async_models.py
 │   │   ├── models_pydantic.py

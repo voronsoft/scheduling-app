@@ -9,6 +9,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base, attributes
 from sqlalchemy_utils import database_exists
 
 from api_fast_api.config import ASYNC_SQLALCHEMY_DATABASE_URL
+from api_fast_api.logger_project.logger__app import logger_debug
 
 # Создаем асинхронный движок для асинхронных операций
 engine = create_async_engine(ASYNC_SQLALCHEMY_DATABASE_URL, echo=False)
@@ -57,10 +58,10 @@ async def async_create_database():
                 # Создаем базу данных
                 async with engine.begin() as conn:
                     await conn.run_sync(Base.metadata.create_all)
-                print("as_База данных и таблицы успешно созданы.")
+                logger_debug.debug("as_База данных и таблицы успешно созданы.")
                 return True
             else:
-                print("as_База данных уже существует.")
+                logger_debug.debug("База данных уже существует.")
                 # Проверяем существующие таблицы
                 async with engine.connect() as conn:
                     # Получаем все таблицы которые есть в БД
@@ -72,7 +73,7 @@ async def async_create_database():
                 # Сравниваем наличие таблиц существующих и запланированных
                 # При необходимости создаем те что отсутствуют в БД
                 if set(existing_tables) == expected_tables:
-                    print("as_Все необходимые таблицы уже существуют.")
+                    logger_debug.debug("as_Все необходимые таблицы уже существуют.")
                 else:
                     missing_tables = expected_tables - set(existing_tables)
                     print(f"as_Некоторые таблицы отсутствуют в базе данных: {missing_tables}")

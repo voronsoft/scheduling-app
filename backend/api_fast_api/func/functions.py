@@ -199,4 +199,3 @@ def date_at_the_time_the_function_was_called():
     """
     date = datetime.now().date()
     return str(date)
-
