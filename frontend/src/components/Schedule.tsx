@@ -47,6 +47,7 @@ const Schedule = () => {
   const [year, setYear] = useState(currentYear);
   const [selectedDate, setSelectedDate] = useState("← Select a date"); // Состояние для выбранной даты
   const [lessons, setLessons] = useState();
+  const [lessonsError, setLessonsError] = useState("");
 
   const currentMonthName = months[month];
   const firstDayOfMonth = new Date(year, month, 1).getDay();
@@ -89,8 +90,10 @@ const Schedule = () => {
           setLessons(lessonsFromServer);
           console.log(lessons);
         }
-      } catch(e) {
+      } catch(e:any) {
         console.log(e);
+        console.log(lessonsError);
+        setLessonsError(e);
       }
     }
 
@@ -101,8 +104,7 @@ const Schedule = () => {
     setSelectedDate(`${year}-${month + 1}-${day}`); // Форматирование даты в формат "гггг-мм-дд"
   };
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
-   // console.log(data);
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {;
 
     try {
       const response = await fetch(
@@ -134,6 +136,7 @@ const Schedule = () => {
       });
     }
   };
+
 
   return (
     <div className="md:grid grid-cols-2">

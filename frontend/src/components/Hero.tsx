@@ -2,14 +2,9 @@ import { heroSection } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import Modal from "./Modal";
-import { useState } from "react";
 
 const Hero = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  function closeModal () {
-    setIsOpen(!isOpen)
-  }
+
   return (
     <div className="flex flex-col justify-center items-center relative">
       <div className="flex flex-col md:flex-row md:items-center md:justify-center max-w-[1440px] gap-5 md:gap-0 my-10 px-4 md:px-10 lg:px-32 z-10">
@@ -68,11 +63,7 @@ const Hero = () => {
           </div>
         </div>
         <div className="self-start">          
-          <Link to="/english-teacher-website/admin">Log In</Link> | Log Out
-          <div>
-            <button onClick={() => setIsOpen(!isOpen)}>Open Modal</button>
-            <Modal open={isOpen} onCloseClick={closeModal}/>
-          </div>          
+          <Link to="/english-teacher-website/login">Log In</Link> | Log Out       
         </div>
       </div>
       <div className="top-0 right-0 absolute hero-bkg">

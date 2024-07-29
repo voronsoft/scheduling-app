@@ -196,7 +196,7 @@ export const lessons: {
 export const june  = [
   {
     id: 1,
-    date: '2024-6-28',
+    date: '2024-7-28',
     lessons: [
       {
         id: 1,
@@ -204,7 +204,7 @@ export const june  = [
         firstName: "Hongjoong",
         lastName: "Kim",
         phone: "89111111111",
-        selectedDate: "2024-6-28",
+        selectedDate: "2024-7-28",
         selectedTime: "15:00",
         confirmed: true,
       },
@@ -214,7 +214,7 @@ export const june  = [
         firstName: "San",
         lastName: "Choi",
         phone: "89112222222",
-        selectedDate: "2024-6-28",
+        selectedDate: "2024-7-28",
         selectedTime: "17:00",
         confirmed: true,
       },
@@ -222,7 +222,7 @@ export const june  = [
   },
   {
     id: 2,
-    date: "2024-6-29",
+    date: "2024-7-29",
     lessons: [
       {
         id: 1,
@@ -230,7 +230,7 @@ export const june  = [
         firstName: "Wooyoung",
         lastName: "Jung",
         phone: "89117777777",
-        selectedDate: "2024-6-29",
+        selectedDate: "2024-7-29",
         selectedTime: "18:00",
         confirmed: true,
       },
@@ -238,7 +238,7 @@ export const june  = [
   },
   {
     id: 3,
-    date: "2024-6-30",
+    date: "2024-7-30",
     lessons: [
       {
         id: 1,
@@ -246,7 +246,7 @@ export const june  = [
         firstName: "Felix",
         lastName: "Lee",
         phone: "89115555555",
-        selectedDate: "2024-6-30",
+        selectedDate: "2024-7-30",
         selectedTime: "16:00",
         confirmed: false,
       },
@@ -256,7 +256,7 @@ export const june  = [
         firstName: "Hyunjin",
         lastName: "Hwang",
         phone: "89110000000",
-        selectedDate: "2024-6-30",
+        selectedDate: "2024-7-30",
         selectedTime: "17:00",
         confirmed: true,
       },
