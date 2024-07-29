@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from api_fast_api.routers.routers_html import router_html
-from api_fast_api.models.models_sql import create_database
 from api_fast_api.routers.routes_admin import router_admin
 from api_fast_api.config import STATIC_FOLDER_PATH, ORIGINS, SECRET_KEY
 from api_fast_api.routers.routes_calendar import router_calendar

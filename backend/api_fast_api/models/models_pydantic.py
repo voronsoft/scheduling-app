@@ -12,7 +12,7 @@ class ReceivingDataFromCalendarPydantic(BaseModel):
     surname: str = Field(..., description="Last name of the applicant", example="Last")
     phone: str = Field(..., description="Only numbers", example="123456789")
     email: EmailStr = Field(..., description="Email address of the applicant")
-    selectedDate: str = Field(..., description="Selected date in the format YYYY-MM-DD", example="2024-05-20")
+    selectedDate: str = Field(..., description="Selected date in the format YYYY-MM-DD", example="2024-07-01")
     time: str = Field(..., description="Time of the lesson", example=14)
     # confirmed: bool = Field(..., description="lesson status", example=False)
 

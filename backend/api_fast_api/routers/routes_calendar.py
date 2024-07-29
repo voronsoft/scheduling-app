@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Response, status
-from api_fast_api.models.models_sql import add_lesson_data_to_db
+from api_fast_api.models.async_models import async_add_lesson_data_to_db
 from api_fast_api.models.models_pydantic import ReceivingDataFromCalendarPydantic
 
 # Создаем экземпляр APIRouter с префиксом
@@ -23,7 +23,7 @@ async def receiving_data_calendar(lesson_data: ReceivingDataFromCalendarPydantic
                 "surname": "Last",
                 "phone": "123456789",
                 "email": "user@example.com",
-                "selectedDate": "2024-05-14",
+                "selectedDate": "2024-07-01",
                 "time": 14
             }
 
@@ -39,19 +39,18 @@ async def receiving_data_calendar(lesson_data: ReceivingDataFromCalendarPydantic
     - 500: {"message": description error}
 
     """
-    status_code = add_lesson_data_to_db(lesson_data.name, lesson_data.surname,
-                                        lesson_data.phone, lesson_data.email,
-                                        lesson_data.selectedDate,
-                                        lesson_data.time
-                                        )
+    status_code = await async_add_lesson_data_to_db(lesson_data.name, lesson_data.surname,
+                                                    lesson_data.phone, lesson_data.email,
+                                                    lesson_data.selectedDate,
+                                                    lesson_data.time
+                                                    )
 
     if status_code is True:
         response.status_code = status.HTTP_201_CREATED
-        return {"message": "Application accepted!"}
+        return {"message": "Lesson accepted!"}
     elif status_code is False:
         response.status_code = status.HTTP_409_CONFLICT
         return {"message": "This lesson already exists!"}
     elif isinstance(status_code, dict):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        print("status_code", status_code)
         return status_code

@@ -7,16 +7,25 @@ backend/
 │   │   
 │   ├── config.py
 │   ├── db_api/
-│   │   ├── api_data.db
+│   │   ├── async_api_data.db
 │   │   
 │   ├── func/
 │   │   ├── create_project_structure_file.py
 │   │   ├── csrf_functions.py
 │   │   ├── functions.py
 │   │   
+│   ├── logger_project/
+│   │   ├── logger_config.py
+│   │   ├── logger__app.py
+│   │   
+│   ├── logs_data/
+│   │   ├── debug.log
+│   │   ├── error.log
+│   │   ├── warning.log
+│   │   
 │   ├── models/
+│   │   ├── async_models.py
 │   │   ├── models_pydantic.py
-│   │   ├── models_sql.py
 │   │   
 │   ├── routers/
 │   │   ├── routers_html.py

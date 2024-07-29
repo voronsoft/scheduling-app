@@ -19,7 +19,10 @@ ROOT_DIR = ...
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Подключение к базе данных SQLite
-SQLALCHEMY_DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db_api', 'api_data.db')
+SQLALCHEMY_DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db_api', 'async_api_data.db')
+
+# Подключение к АССИНХРОННОЙ базе данных SQLite
+ASYNC_SQLALCHEMY_DATABASE_URL = 'sqlite+aiosqlite:///' + os.path.join(BASE_DIR, 'db_api', 'async_api_data.db')
 
 # Путь к папке статических файлов static
 STATIC_FOLDER_PATH = os.path.join(BASE_DIR, 'static')
@@ -30,3 +33,9 @@ TEMPLATES_FOLDER_PATH = os.path.join(BASE_DIR, 'templates')
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 # Алгоритм кодирования
 ALGORITHM = os.environ.get('ALGORITHM')
+
+# ============ Логи ===========
+# Путь к папке с логами
+LOG_DATA_PATH = os.path.join(BASE_DIR, 'logs_data')
+# \scheduling-app\backend\api_fast_api\logs_data
+# ============ Логи ===========

@@ -1,11 +1,11 @@
 from datetime import datetime
 from fastapi import Request
 
-from api_fast_api.models.models_sql import get_lessons_for_day
+from api_fast_api.models.async_models import async_get_lessons_for_day
 
 
 # ======================== Функция генерации карточек уроков пользователей
-def generating_user_lesson_cards(in_users_data_list):
+async def async_generating_user_lesson_cards(in_users_data_list):
     """Функция генерации карточек уроков пользователей
 
     :param in_users_data_list (list[dict,])
@@ -17,6 +17,7 @@ def generating_user_lesson_cards(in_users_data_list):
 
     # Проходимся по каждому словарю с данными пользователя
     for user in in_users_data_list:
+
         # Создаем HTML-разметку карточки
         card_content = f"""
             <div class="card {'text-bg-success' if user['confirmed'] else 'text-bg-danger'} mt-3"">
@@ -38,14 +39,14 @@ def generating_user_lesson_cards(in_users_data_list):
             
         """
         cards += card_content
+
     # Возвращаем список карточек
-    # print(cards)
     return cards
 
 
 # TODO нужно продумать логику если в одном дне несколько записей...как красить фон и так далее
 # ======================== Функция для текущего года и текущего месяца.
-def generate_calendar(date_dict: dict, year: int, month: int) -> str:
+async def async_generate_calendar(date_dict: dict, year: int, month: int) -> str:
     """
     Функция генерации календаря по датам которые зарезервированы под уроки
     :param date_dict: {'2024-05-12': True, '2024-05-13': False, '2024-05-22': True}
@@ -53,6 +54,7 @@ def generate_calendar(date_dict: dict, year: int, month: int) -> str:
     :param month: int
     :return: str(html cod)
     """
+
     # Определяем первый день месяца
     first_day_of_month = datetime(year, month, 1)
 
@@ -95,9 +97,10 @@ def generate_calendar(date_dict: dict, year: int, month: int) -> str:
         # Если дата есть в списке
         if current_day.strftime('%Y-%m-%d') in date_dict:
             # Получаем данные об уроке/уроках
-            sts, lessons = get_lessons_for_day(current_day.strftime('%Y-%m-%d'))
+            sts, lessons = await async_get_lessons_for_day(current_day.strftime('%Y-%m-%d'))
+
             # Генерируем карточки уроков пользователей
-            get_card_html = generating_user_lesson_cards(lessons)
+            get_card_html = await async_generating_user_lesson_cards(lessons)
             bg_style = ""
             # Проверяем значение метки (одобрено:True, ожидает:False)
             if date_dict[current_day.strftime('%Y-%m-%d')] is True:
@@ -163,9 +166,7 @@ def current_date() -> tuple:
     # Получаем текущий месяц
     current_month = now.month
 
-    # Получаем текущую дату в формате "ГГГГ-ММ-ДД"
-    # current_date = now.strftime("%Y-%m-%d")
-    # print(type(current_year), type(current_month))
+    # Возвращаем текущую дату в формате "ГГГГ-ММ-ДД"
     return current_year, current_month
 
 

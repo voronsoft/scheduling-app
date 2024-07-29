@@ -6,10 +6,12 @@ from fastapi.templating import Jinja2Templates
 from api_fast_api.auth.authentication import validate_token
 from api_fast_api.config import TEMPLATES_FOLDER_PATH
 from api_fast_api.func.csrf_functions import generate_csrf_token, checking_csrf_token
-from api_fast_api.func.functions import generate_calendar, date_at_the_time_the_function_was_called
-from api_fast_api.models.models_sql import (lesson_dates_for_the_month_db_backend, change_lesson_status_db,
-                                            delete_lesson_db, get_lessons_for_month_one_dimensional_list
-                                            )
+from api_fast_api.func.functions import date_at_the_time_the_function_was_called, async_generate_calendar
+from api_fast_api.logger_project.logger__app import logger_debug
+from api_fast_api.models.async_models import (async_lesson_dates_for_the_month_db_backend,
+                                              async_get_lessons_for_month_one_dimensional_list,
+                                              async_change_lesson_status_db, async_delete_lesson_db
+                                              )
 from api_fast_api.routers.routes_admin import login_for_access_token
 
 # Создаем экземпляр APIRouter с префиксом
@@ -25,17 +27,20 @@ templates = Jinja2Templates(directory=TEMPLATES_FOLDER_PATH)
 async def html_index_get(request: Request):
     """ В разработке !!! """
     print("Пришел запрос в /admin GET")
+    logger_debug.debug("Пришел запрос в /admin GET")
 
     # Проверяем есть ли JWT токен в сессии
     if "jwt_token" in request.session:
-        print("Раздел - Проверяем есть ли JWT токен в сессии")
+        print("Проверяем есть ли JWT токен в сессии")
+        logger_debug.debug("Проверяем есть ли JWT токен в сессии")
         # Извлекаем данные из сессии
         jwt_data = request.session["jwt_token"]
         access_token = jwt_data.get("access_token")
         token_type = jwt_data.get("token_type")
         # Проверка jwt токена и метода шифрования
         if token_type == "bearer" and validate_token(access_token):
-            print("Раздел - Проверка jwt токена и метода шифрования")
+            print("Проверка jwt токена и метода шифрования")
+            logger_debug.debug("Проверка jwt токена и метода шифрования")
             # Сохраняем JWT токен и тип токена в сессии
             request.session["jwt_token"] = {"token_type": token_type, "access_token": access_token}
 
@@ -46,15 +51,18 @@ async def html_index_get(request: Request):
             crnt_date = date_at_the_time_the_function_was_called()
 
             # Получаем список зарезервированных дат из БД на текущий месяц
-            lst_date_lesns = lesson_dates_for_the_month_db_backend(crnt_date)[1]
+            # lst_date_lesns = lesson_dates_for_the_month_db_backend(crnt_date)[1]
+            lst_date_lesns = await async_lesson_dates_for_the_month_db_backend(crnt_date)
+            lst_date_lesns = lst_date_lesns[1]
 
             # Получаем дату для генерации календаря (дата формируется на момент вызова кода)
             year, month, _ = map(int, crnt_date.split("-"))
             # Генерируем календарь передав: 1 список занятий / 2 год / 3 месяц
-            calendar = generate_calendar(lst_date_lesns, year, month)
+            calendar = await async_generate_calendar(lst_date_lesns, year, month)
 
             # Получаем список занятий на месяц с полными данными в одномерный словарь
-            _, list_data_lessons = get_lessons_for_month_one_dimensional_list(crnt_date)
+            # _, list_data_lessons = get_lessons_for_month_one_dimensional_list(crnt_date)
+            _, list_data_lessons = await async_get_lessons_for_month_one_dimensional_list(crnt_date)
 
             response = templates.TemplateResponse(request=request,
                                                   name="index.html",
@@ -65,18 +73,20 @@ async def html_index_get(request: Request):
                                                           "list_data_lessons": list_data_lessons,
                                                   }
                                                   )
-            print("Раздел - Этап вывода шаблона")
+
             return response
 
         # Если токен найден, но не прошел проверку (допустим прошлый токен или подделка)
         # перенаправляем пользователя на страницу авторизации.
         else:
             print("Раздел - Токен не прошел проверку !!!")
+            logger_debug.debug("Раздел - Токен не прошел проверку !!!")
             return await html_login_get(request, error_message="Токен не прошел проверку !!!")
 
     else:
         # Если токен отсутствует, перенаправляем пользователя на страницу авторизации
         print("JWT не найден перенаправляем в /login")
+        logger_debug.debug("JWT не найден перенаправляем в /login")
         # Перенаправляем в /admin
         return RedirectResponse(url="/login", status_code=303)
 
@@ -90,6 +100,7 @@ async def html_login_get(request: Request, error_message: str = None):
     """
     error_message = error_message
     print("Пришел запрос в login GET")
+    logger_debug.debug("Пришел запрос в login GET")
     title = "Login user"
     # Генерируем CSRF токен
     csrf_token = generate_csrf_token()
@@ -120,25 +131,28 @@ async def html_login_post(request: Request,
     POST - Маршрут проверки пользователя и получение токена
     """
     print("Пришел запрос в login POST")
-
+    logger_debug.debug("Пришел запрос в login POST")
     # Получаем CSRF токен из сессии
     session_csrf_token = request.session.get("csrf_token")
 
     # Если хоть один из токенов None обнуляем оба токена
     if (not session_csrf_token and csrf_token) or (session_csrf_token and not csrf_token):
         print("Один из токенов был пуст ОШИБКА !!!")
+        logger_debug.debug("Один из токенов был пуст ОШИБКА !!!")
         # Очищаем оба токена
         request.session.pop("csrf_token", None)
         csrf_token = None
     # Если CSRF токены не совпадают, перенаправляем пользователя на страницу авторизации.
     elif not checking_csrf_token(session_csrf_token, csrf_token):
         print("CSRF токены НЕ СОВПАДАЮТ ОШИБКА !!!")
+        logger_debug.debug("CSRF токены НЕ СОВПАДАЮТ ОШИБКА !!!")
         # Очищаем оба токена
         request.session.pop("csrf_token", None)
         csrf_token = None
     # Если CSRF токен прошел проверку, создаем(получаем) JWT токен
     else:
         print("Токены CSRF совпадают")
+        logger_debug.debug("Токены CSRF совпадают")
         # Очищаем токены CSRF после проверки, предотвращая повторное использование
         request.session.pop("csrf_token", None)
         csrf_token = None
@@ -159,6 +173,7 @@ async def html_login_post(request: Request,
 
         except Exception as e:
             print("!! ОШИБКА JWT недействителен: ", str(e))
+            logger_debug.exception(f"!! ОШИБКА JWT недействителен: {str(e)}")
             return await html_login_get(request, error_message="Неверное имя пользователя или пароль")
 
     return RedirectResponse(url="/login", status_code=303)
@@ -183,10 +198,9 @@ async def change_lesson_status_backend(request: Request, response: Response):
     """
     request_body = await request.json()  # Получаем данные JSON из запроса
     lesson_id = request_body.get('lesson_id')  # Получаем значение lesson_id
-    print("lesson_id=======lesson_id", lesson_id)
 
     # Вызываем функцию для изменения статуса урока
-    sts, result = change_lesson_status_db(lesson_id)
+    sts, result = await async_change_lesson_status_db(lesson_id)
 
     # Проверяем результат выполнения функции
     if sts == 200:
@@ -201,6 +215,7 @@ async def change_lesson_status_backend(request: Request, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'message': result}
 
+
 # ======================== Маршрут УДАЛЕНИЯ ЗАПИСИ О УРОКЕ =========================
 # TODO добавить документацию
 @router_html.delete("/delete-lesson_backend", include_in_schema=False, tags=["ADMINpanelHTML"])
@@ -211,10 +226,9 @@ async def deleting_a_lesson_backend(request: Request, response: Response):
 
     request_body = await request.json()  # Получаем данные JSON из запроса
     lesson_id = request_body.get('lesson_id')  # Получаем значение lesson_id
-    print("delete-lesson=======delete-lesson", lesson_id)
 
     # Вызываем функцию для удаления записи урока
-    sts, result = delete_lesson_db(lesson_id)
+    sts, result = await async_delete_lesson_db(lesson_id)
 
     # Проверяем результат выполнения функции
     if sts == 200:
