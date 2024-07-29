@@ -145,7 +145,7 @@ async def async_add_lesson_data_to_db(username: str,
 
 # ======================== Функция выбора уроков по заданному месяцу (ПРОСТО ДАТА)
 async def async_lesson_dates_for_the_month_db_backend(date: str):
-    """Функция выбора уроков по заданному месяцу (ПРОСТО ДАТА И СТАТУС УРОКА)"""
+    """Функция выбора уроков по заданному месяцу (ПРОСТО ДАТА И СТАТУС УРОКА) для бекенд админчасти"""
     try:
         # Преобразуем строку в объект даты и получаем год и месяц
         date_obj = datetime.strptime(date, "%Y-%m-%d").date()
@@ -187,14 +187,15 @@ async def async_lesson_dates_for_the_month_db_backend(date: str):
 
 
 async def async_lesson_dates_for_the_month_db_frontend(date_month: str):
+    """Функция выбора уроков по заданному месяцу (ПРОСТО ДАТА И СТАТУС УРОКА) для фронтенд админчасти"""
     try:
         # Преобразуем строку в объект даты и получаем год и месяц
         date_obj = datetime.strptime(date_month, "%Y-%m-%d").date()
         year = date_obj.year
         month = date_obj.month
     except Exception as e:
-        logger_debug.exception(f"error: {str(e)}")
-        return 422, {"error": str(e)}  # Все типы ошибок
+        logger_debug.error(f"error - Incorrect date format: {str(e)}")
+        return 422, {"error": "Incorrect date format"}  # Все типы ошибок
 
     # Создаем словарь для хранения результатов
     result_dict = {}
@@ -251,7 +252,7 @@ async def async_get_lessons_for_month(date_in: str):
     try:
         year, month, _ = map(int, date_in.split('-'))  # Вытягиваем год и месяц
     except Exception as e:
-        logger_debug.exception(f"error: {str(e)}")
+        logger_debug.exception(f"error - Incorrect date format: {str(e)}")
         return 422, str(e)
 
     async with Session() as session:
@@ -333,7 +334,7 @@ async def async_get_lessons_for_month_one_dimensional_list(date_in: str):
     try:
         year, month, _ = map(int, date_in.split('-'))  # Вытягиваем год и месяц
     except Exception as e:
-        logger_debug.exception(f"error: {str(e)}")
+        logger_debug.exception(f"error - Incorrect date format: {str(e)}")
         return 422, str(e)
 
     try:

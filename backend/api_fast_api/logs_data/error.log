@@ -1,0 +1,26 @@
+--- ERROR | 2024-07-28 19:01:51,707 | error: time data '2020' does not match format '%Y-%m-%d' | Filename:async_models.py Func:def async_lesson_dates_for_the_month_db_frontend
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\models\async_models.py", line 192, in async_lesson_dates_for_the_month_db_frontend
+    date_obj = datetime.strptime(date_month, "%Y-%m-%d").date()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\python312\Lib\_strptime.py", line 554, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\python312\Lib\_strptime.py", line 333, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '2020' does not match format '%Y-%m-%d'
+--- ERROR | 2024-07-28 19:03:42,556 | error - Incorrect date format: time data '2020' does not match format '%Y-%m-%d' | Filename:async_models.py Func:def async_lesson_dates_for_the_month_db_frontend
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\models\async_models.py", line 192, in async_lesson_dates_for_the_month_db_frontend
+    date_obj = datetime.strptime(date_month, "%Y-%m-%d").date()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\python312\Lib\_strptime.py", line 554, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\python312\Lib\_strptime.py", line 333, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '2020' does not match format '%Y-%m-%d'
+--- ERROR | 2024-07-28 19:06:56,402 | error - Incorrect date format: unconverted data remains: 0 | Filename:async_models.py Func:def async_lesson_dates_for_the_month_db_frontend
+
+--- ERROR | 2024-07-28 19:08:04,817 | error - Incorrect date format: unconverted data remains: 0 | Filename:async_models.py Func:def async_lesson_dates_for_the_month_db_frontend
+
