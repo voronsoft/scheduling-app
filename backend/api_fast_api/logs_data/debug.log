@@ -1,60 +1,32 @@
---- DEBUG | (2024-07-28 19:00:28,595) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+--- DEBUG | (2024-07-30 14:44:25,840) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
 
---- DEBUG | (2024-07-28 19:00:28,597) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+--- DEBUG | (2024-07-30 14:44:25,842) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
 
---- DEBUG | (2024-07-28 19:00:28,601) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+--- DEBUG | (2024-07-30 14:44:25,851) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
 
---- DEBUG | (2024-07-28 19:00:28,602) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+--- DEBUG | (2024-07-30 14:44:25,852) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
 
---- ERROR | (2024-07-28 19:01:51,707) | Filename:async_models.py | Func:def async_lesson_dates_for_the_month_db_frontend | error: time data '2020' does not match format '%Y-%m-%d'
-Traceback (most recent call last):
-  File "C:\scheduling-app\backend\api_fast_api\models\async_models.py", line 192, in async_lesson_dates_for_the_month_db_frontend
-    date_obj = datetime.strptime(date_month, "%Y-%m-%d").date()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\python312\Lib\_strptime.py", line 554, in _strptime_datetime
-    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
-                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\python312\Lib\_strptime.py", line 333, in _strptime
-    raise ValueError("time data %r does not match format %r" %
-ValueError: time data '2020' does not match format '%Y-%m-%d'
---- DEBUG | (2024-07-28 19:03:39,349) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+--- DEBUG | (2024-07-30 14:44:49,101) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
 
---- DEBUG | (2024-07-28 19:03:39,352) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+--- DEBUG | (2024-07-30 14:44:49,103) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
 
---- DEBUG | (2024-07-28 19:03:39,359) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+--- DEBUG | (2024-07-30 14:44:49,106) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
 
---- DEBUG | (2024-07-28 19:03:39,359) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+--- DEBUG | (2024-07-30 14:44:49,106) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
 
---- ERROR | (2024-07-28 19:03:42,556) | Filename:async_models.py | Func:def async_lesson_dates_for_the_month_db_frontend | error - Incorrect date format: time data '2020' does not match format '%Y-%m-%d'
-Traceback (most recent call last):
-  File "C:\scheduling-app\backend\api_fast_api\models\async_models.py", line 192, in async_lesson_dates_for_the_month_db_frontend
-    date_obj = datetime.strptime(date_month, "%Y-%m-%d").date()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\python312\Lib\_strptime.py", line 554, in _strptime_datetime
-    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
-                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\python312\Lib\_strptime.py", line 333, in _strptime
-    raise ValueError("time data %r does not match format %r" %
-ValueError: time data '2020' does not match format '%Y-%m-%d'
---- DEBUG | (2024-07-28 19:04:49,960) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+--- DEBUG | (2024-07-30 14:59:36,603) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
 
---- DEBUG | (2024-07-28 19:06:50,012) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+--- DEBUG | (2024-07-30 14:59:36,604) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
 
---- DEBUG | (2024-07-28 19:06:50,014) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+--- DEBUG | (2024-07-30 14:59:36,608) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
 
---- DEBUG | (2024-07-28 19:06:50,018) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+--- DEBUG | (2024-07-30 14:59:36,609) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
 
---- DEBUG | (2024-07-28 19:06:50,019) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+--- DEBUG | (2024-07-30 15:08:39,656) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
 
---- ERROR | (2024-07-28 19:06:56,402) | Filename:async_models.py | Func:def async_lesson_dates_for_the_month_db_frontend | error - Incorrect date format: unconverted data remains: 0
+--- DEBUG | (2024-07-30 15:08:39,658) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
 
---- ERROR | (2024-07-28 19:08:04,817) | Filename:async_models.py | Func:def async_lesson_dates_for_the_month_db_frontend | error - Incorrect date format: unconverted data remains: 0
+--- DEBUG | (2024-07-30 15:08:39,662) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
 
---- DEBUG | (2024-07-28 19:09:42,953) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
-
---- DEBUG | (2024-07-28 19:09:42,955) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
-
---- DEBUG | (2024-07-28 19:09:42,958) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
-
---- DEBUG | (2024-07-28 19:09:42,958) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+--- DEBUG | (2024-07-30 15:08:39,663) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
 

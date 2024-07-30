@@ -1,0 +1,4 @@
+Заметки
+Собрать контейнер - docker-compose up --build -d
+Остановить контейнер - docker-compose down
+Проверь логи контейнера - docker-compose logs -f
