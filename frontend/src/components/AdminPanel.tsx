@@ -64,6 +64,7 @@ const AdminPanel = observer(() => {
         console.log(data.length);
         if (data.length > 0) {
           //setCurrentMonthLessons(data);
+          store.isCurrentMonthLessons = true;
           store.currentMonthLessons = data;
         } 
       } catch (e: any) {
@@ -74,7 +75,7 @@ const AdminPanel = observer(() => {
       }
     }
     getCurrentMonthLessons();
-  }, [])
+  }, [currentMonth])
 
     
     if (isLoading) {
@@ -141,7 +142,8 @@ const AdminPanel = observer(() => {
           <Link to="/english-teacher-website" className="cursor-pointer text-white">
           Return to home page
           </Link>
-          <table>
+          <div className="arrows"></div>
+          {store.isCurrentMonthLessons ? <table>
             <thead>
               <tr>
                 <th className="w-[150px] h-[100px] text-center text-black">Date</th>
@@ -173,8 +175,8 @@ const AdminPanel = observer(() => {
                   ))}              
                 </Fragment>
               ))}  
-            </tbody>                  
-          </table>
+            </tbody> 
+          </table> : <div>No Lessons Booked for this month</div>}
         </div>      
       </section>
     );

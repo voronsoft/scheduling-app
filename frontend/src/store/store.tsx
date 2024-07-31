@@ -25,6 +25,7 @@ export class AdminStore {
     }
 
     currentMonthLessons:month[] = june;
+    isCurrentMonthLessons:boolean = false;
 
     token: string = '';
 }
