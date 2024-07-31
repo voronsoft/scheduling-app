@@ -22,3 +22,14 @@ http://adress_backend/api_admin/registration
 
 **4. Если токен получен отправляем пользователя на главную страницу админ-панели**
 В запросе так же должен присутствовать заголовок с данными о токене.
+
+**Перечень ендпоинтов требующих заголовок авторизации с токеном:**
+```code
+/api_admin/get_lessons_for_a_month/{date_y_m_d}
+
+/api_admin/delete_lesson_frontend/{lesson_id}
+
+/api_admin/change_lesson_data/{lesson_id}
+
+/api_admin/get_lesson_data/{lesson_id}
+```

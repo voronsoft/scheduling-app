@@ -1,88 +1,32 @@
---- DEBUG | 2024-07-28 00:45:40,251 | Filename:run_fapi.py | Структура проекта успешно сохранена в файле.
+--- DEBUG | (2024-07-30 14:44:25,840) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
 
---- DEBUG | 2024-07-28 00:45:40,253 | Filename:async_models.py | База данных уже существует.
+--- DEBUG | (2024-07-30 14:44:25,842) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
 
---- DEBUG | 2024-07-28 00:45:40,257 | Filename:async_models.py | as_Все необходимые таблицы уже существуют.
+--- DEBUG | (2024-07-30 14:44:25,851) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
 
---- DEBUG | 2024-07-28 00:45:40,257 | Filename:run_fapi.py | Проект запущен !
+--- DEBUG | (2024-07-30 14:44:25,852) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
 
---- DEBUG | 2024-07-28 00:47:25,193 | Filename:run_fapi.py | Структура проекта успешно сохранена в файле.
+--- DEBUG | (2024-07-30 14:44:49,101) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
 
---- DEBUG | 2024-07-28 00:47:25,194 | Filename:async_models.py | База данных уже существует.
+--- DEBUG | (2024-07-30 14:44:49,103) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
 
---- DEBUG | 2024-07-28 00:47:25,200 | Filename:async_models.py | as_Все необходимые таблицы уже существуют.
+--- DEBUG | (2024-07-30 14:44:49,106) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
 
---- DEBUG | 2024-07-28 00:47:25,201 | Filename:run_fapi.py | Проект запущен !
+--- DEBUG | (2024-07-30 14:44:49,106) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
 
---- DEBUG | 2024-07-28 01:49:00,038 | Filename:run_fapi.py | Структура проекта успешно сохранена в файле.
+--- DEBUG | (2024-07-30 14:59:36,603) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
 
---- DEBUG | 2024-07-28 01:49:00,040 | Filename:async_models.py | База данных уже существует.
+--- DEBUG | (2024-07-30 14:59:36,604) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
 
---- DEBUG | 2024-07-28 01:49:00,042 | Filename:async_models.py | as_Все необходимые таблицы уже существуют.
+--- DEBUG | (2024-07-30 14:59:36,608) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
 
---- DEBUG | 2024-07-28 01:49:00,043 | Filename:run_fapi.py | Проект запущен !
+--- DEBUG | (2024-07-30 14:59:36,609) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
 
---- DEBUG | 2024-07-28 01:49:12,567 | Filename:routers_html.py | Пришел запрос в /admin GET
+--- DEBUG | (2024-07-30 15:08:39,656) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
 
---- DEBUG | 2024-07-28 01:49:12,567 | Filename:routers_html.py | JWT не найден перенаправляем в /login
+--- DEBUG | (2024-07-30 15:08:39,658) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
 
---- DEBUG | 2024-07-28 01:49:12,572 | Filename:routers_html.py | Пришел запрос в login GET
+--- DEBUG | (2024-07-30 15:08:39,662) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
 
---- DEBUG | 2024-07-28 01:50:02,200 | Filename:routers_html.py | Пришел запрос в login POST
-
---- DEBUG | 2024-07-28 01:50:02,201 | Filename:routers_html.py | Токены CSRF совпадают
-
---- DEBUG | 2024-07-28 01:50:02,450 | Filename:routers_html.py | Пришел запрос в /admin GET
-
---- DEBUG | 2024-07-28 01:50:02,450 | Filename:routers_html.py | Проверяем есть ли JWT токен в сессии
-
---- DEBUG | 2024-07-28 01:50:02,450 | Filename:authentication.py | Авторизован пользователь: front@front.front
-
---- DEBUG | 2024-07-28 01:50:02,450 | Filename:routers_html.py | Проверка jwt токена и метода шифрования
-
---- DEBUG | 2024-07-28 01:50:35,925 | Filename:routers_html.py | Пришел запрос в /admin GET
-
---- DEBUG | 2024-07-28 01:50:35,925 | Filename:routers_html.py | Проверяем есть ли JWT токен в сессии
-
---- DEBUG | 2024-07-28 01:50:35,926 | Filename:authentication.py | Авторизован пользователь: front@front.front
-
---- DEBUG | 2024-07-28 01:50:35,926 | Filename:routers_html.py | Проверка jwt токена и метода шифрования
-
---- DEBUG | 2024-07-28 01:51:29,337 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:51:33,801 | Filename:async_models.py | Урок на эту дату уже занят.
-
---- DEBUG | 2024-07-28 01:51:48,205 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:51:55,359 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:52:02,362 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:52:14,245 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:52:24,780 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:52:30,078 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:52:34,503 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:52:40,817 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:52:45,807 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:53:04,941 | Filename:async_models.py | Урок успешно добавлен в базу данных.
-
---- DEBUG | 2024-07-28 01:54:13,923 | Filename:authentication.py | Авторизован пользователь: front@front.front
-
---- DEBUG | 2024-07-28 01:59:04,127 | Filename:run_fapi.py | Структура проекта успешно сохранена в файле.
-
---- DEBUG | 2024-07-28 01:59:04,128 | Filename:async_models.py | База данных уже существует.
-
---- DEBUG | 2024-07-28 01:59:04,131 | Filename:async_models.py | as_Все необходимые таблицы уже существуют.
-
---- DEBUG | 2024-07-28 01:59:04,132 | Filename:run_fapi.py | Проект запущен !
-
---- DEBUG | 2024-07-28 01:59:30,256 | Filename:authentication.py | Авторизован пользователь: front@front.front
-
---- DEBUG | 2024-07-28 01:59:30,272 | Filename:async_models.py | Данные урока 20 изменены
+--- DEBUG | (2024-07-30 15:08:39,663) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
 

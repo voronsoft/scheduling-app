@@ -36,10 +36,11 @@ class ErrorFilter(logging.Filter):
 logger_config = {
         # Версия конфигурации логгера
         'version': 1,
-        # ФОРМАТЕРЫ логов
+        # ФОРМАТЕРЫ логов (види вывода сообщений)
         'formatters': {
                 'verbose_debug': {
-                        'format': '--- {levelname} | {asctime} | Filename:{filename} | {message}\n',
+                        'format': '--- {levelname} | ({asctime}) | Filename:{filename} | Func:def {funcName} | {'
+                                  'message}\n',
                         'style': '{',
                 },
                 'verbose_error': {
@@ -60,7 +61,6 @@ logger_config = {
                         'formatter': 'verbose_debug',
                         'filename': os.path.join(LOG_DATA_PATH, 'debug.log'),
                         'encoding': 'utf-8',
-                        'filters': ['debug_filter'],
                         'maxBytes': 1024 * 1024,  # Максимальный размер файла (1 мегабайт)
                         'backupCount': 1,  # Количество ротируемых файлов
                 },

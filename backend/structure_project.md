@@ -1,5 +1,6 @@
 ```markdown
 backend/
+├── .dockerignore
 ├── .env
 ├── api_fast_api/
 │   ├── auth/
@@ -57,10 +58,14 @@ backend/
 │   │   
 │   ├── __init__.py
 │   
-├── frontend_structure_administrative_part.md
+├── docker-compose.yml
+├── Dockerfile
+├── notes_frontend_structure_administrative_part.md
 ├── notes_project.txt
+├── notes_projec_docker.txt
 ├── requirements.txt
 ├── run_fapi.py
+├── run_fapi_docker.py
 ├── structure_project.md
 
 ```

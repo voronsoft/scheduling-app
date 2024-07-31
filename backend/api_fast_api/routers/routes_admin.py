@@ -8,6 +8,7 @@ from api_fast_api.config import ACCESS_TOKEN_EXPIRE_MINUTES
 from api_fast_api.auth.authentication import (create_access_token, authenticate_user, get_password_hash, oauth2_scheme,
                                               validate_token
                                               )
+from api_fast_api.logger_project.logger__app import logger_debug
 from api_fast_api.models.async_models import (async_change_lesson_data_db, async_get_lesson_data_db,
                                               async_delete_lesson_db, async_get_lessons_for_month,
                                               async_lesson_dates_for_the_month_db_frontend,
@@ -66,12 +67,15 @@ async def register_user(user_data: RegistrationUserPydantic, response: Response,
     # Передаем данные в функцию для записи нового пользователя в БД
     sts, result = await async_save_user_registration(username, email, hashed_password)
     if sts == 201:
+        logger_debug.debug("The user has successfully registered!")
         response.status_code = status.HTTP_201_CREATED
         return {"message": "The user has successfully registered!"}
     elif sts == 409:
         response.status_code = status.HTTP_409_CONFLICT
+        logger_debug.debug("A user with this email already exists! / The user limit is limited!")
         return {"message": "A user with this email already exists! / The user limit is limited!"}
     elif sts == 500:
+        logger_debug.exception(f"error: {result}")
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {"Error": result}
 
@@ -117,12 +121,14 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     """
     user = await authenticate_user(form_data.username, form_data.password)
     if not user:
+        logger_debug.error("Incorrect username or password")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="Incorrect username or password",
                             headers={"WWW-Authenticate": "Bearer"}, )
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = await create_access_token(data={"sub": user.username}, expires_delta=access_token_expires)
+    logger_debug.debug("Пользователь прошел авторизацию.")
     return TokenPydantic(access_token=access_token, token_type="bearer")
 
 
@@ -214,6 +220,7 @@ async def get_lesson_dates_for_the_month_frontend(date_month: str, response: Res
     sts, result = await async_lesson_dates_for_the_month_db_frontend(date_month)
 
     if sts == 200:
+        logger_debug.debug("Запрос для получения дат на месяц ОК")
         response.status_code = status.HTTP_200_OK
         return result
     elif sts == 404:
@@ -223,6 +230,7 @@ async def get_lesson_dates_for_the_month_frontend(date_month: str, response: Res
         response.status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
         return result
     elif sts == 500:
+        logger_debug.exception(f"error: {result}")
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return result
 
