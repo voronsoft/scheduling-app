@@ -176,7 +176,8 @@ const AdminPanel = observer(() => {
                 </Fragment>
               ))}  
             </tbody> 
-          </table> : <div>No Lessons Booked for this month</div>}
+            </table> : <div>No Lessons Booked for this month</div>
+          }
         </div>      
       </section>
     );
