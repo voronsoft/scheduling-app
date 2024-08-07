@@ -19,15 +19,29 @@ interface month {
     lessons:lesson[],
 }
 
+interface month {
+    id: number,
+    date: string,
+    lessons:lesson[],
+}
+
 export class AdminStore {
     constructor() {
         makeAutoObservable(this);
     }
 
     currentMonthLessons:month[] = june;
+
     isCurrentMonthLessons:boolean = false;
 
+    setIsCurrentMonthLessonsToTrue = () => {this.isCurrentMonthLessons = true};
+
+    setCurrentMonthLessons = (data:month[]) => {this.currentMonthLessons = data};
+
     token: string = '';
+    setToken = (newToken:string) => {
+        this.token = newToken;
+    }
 }
 
 export const AdminStoreContext = createContext<AdminStore | null>(null);

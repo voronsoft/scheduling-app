@@ -1,7 +1,6 @@
 //import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useAdminStore } from "../store/store";
 import { observer } from "mobx-react-lite";
 
 type FormFields = {
@@ -17,7 +16,6 @@ type ResponseToken = {
 const GET_TOKEN_URL = `/api_admin/authorization`;
 
 export const ModalPage = observer(() => {
-  const store = useAdminStore();
   const {
     register,
     reset,
@@ -25,7 +23,7 @@ export const ModalPage = observer(() => {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
-  //const [token, setToken] = useState('');
+  
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
@@ -48,8 +46,12 @@ export const ModalPage = observer(() => {
         console.log("Request accepted by server");
         const tokenData = (await response.json()) as ResponseToken;
         console.log("token data received");
-        store.token = tokenData.access_token;
+        
+        //store.token = tokenData.access_token;
+        localStorage.setItem("token", tokenData.access_token);
+
         console.log("token stored");
+        
         //setToken(tokenData.access_token)
         // Очистить значения ввода в форме
         reset();
@@ -67,6 +69,7 @@ export const ModalPage = observer(() => {
       });
     } 
   };
+
 
   return  (
     <>

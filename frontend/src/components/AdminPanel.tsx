@@ -1,19 +1,18 @@
 import { Link } from "react-router-dom";
-//import { june } from "../constants";
 import { Fragment } from "react/jsx-runtime";
 import { useEffect, useState } from "react";
 import { useAdminStore } from "../store/store";
 import { observer } from "mobx-react-lite";
 
 
-const currentDate = new Date();
-const currentMonth = currentDate.getMonth() + 1;
-const currentYear = currentDate.getFullYear();
-const today = currentDate.getDate();
-const currentDay = `${currentYear}-${currentMonth}-${today}`
+const date = new Date();
+/* const currentMonth = date.getMonth() + 1;
+const currentYear = date.getFullYear();
+const today = date.getDate(); */
+//const currentDate = `${currentYear}-${currentMonth}-${today}`;
 
 
-const getCurrentMonthLessonsUrl = `/api_admin/get_lessons_for_a_month/${currentDay}`;
+//const getCurrentMonthLessonsUrl = `/api_admin/get_lessons_for_a_month/${currentDate}`;
 //const getCurrentMonthLessonsUrl = `/api_admin/get_lessons_for_a_month/2024-6-01`;
 
 interface lesson {
@@ -33,26 +32,44 @@ interface month {
   lessons:lesson[],
 }
 
-//Запрос на бэк на получение данных об уроках на месяц
 const AdminPanel = observer(() => {
   const store = useAdminStore();
+
+  const currentYear = date.getFullYear();
+  const currentMonth = date.getMonth() + 1;
+  const currentDay = date.getDate();
+
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-    //устанавливаю состояние для "текущего месяца". При получении ответа от сервера, сюда будет подставляться инфа от сервера
-  //const [currentMonthLessons, setCurrentMonthLessons] = useState<month[]>(june);
+  const [selectedYear, setSelectedYear]  = useState(currentYear);
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+  const [selectedDay, setSelectedDay] = useState(currentDay);
 
-  const token = store.token;
+  const token = localStorage.getItem("token");
 
-  const confirmLesson = (dayId:number, lessonId:number) => {
-    console.log(dayId);
-    console.log(lessonId);
+
+
+  const getPrevMonth = () => {
+    const prevMonth = selectedMonth - 1;
+    setSelectedMonth(prevMonth);
+  }
+
+  const getNextMonth = () => {
+    const nextMonth = selectedMonth + 1;
+    setSelectedMonth(nextMonth);
+  }  
+  
+  const confirmLesson = (dayID:number, lessonID:number) => {
+    console.log(dayID);
+    console.log(lessonID);
   }
 
   useEffect(()=>{
-    const getCurrentMonthLessons = async () => {
+    const getLessonsForProvidedDate = async () => {
       setIsLoading(true);
+      console.log(store.token);
       try {
-        const request = new Request(getCurrentMonthLessonsUrl, {
+        const request = new Request(`/api_admin/get_lessons_for_a_month/${selectedYear}-${selectedMonth}-${selectedDay}`, {
           method: "GET",
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -60,12 +77,10 @@ const AdminPanel = observer(() => {
         })
         const response = await fetch(request)
         const data = await response.json() as month[];
-        console.log(data);
-        console.log(data.length);
+
         if (data.length > 0) {
-          //setCurrentMonthLessons(data);
-          store.isCurrentMonthLessons = true;
-          store.currentMonthLessons = data;
+          store.setIsCurrentMonthLessonsToTrue();
+          store.setCurrentMonthLessons(data);
         } 
       } catch (e: any) {
         console.error("Request error:", e);
@@ -74,8 +89,8 @@ const AdminPanel = observer(() => {
         setIsLoading(false);
       }
     }
-    getCurrentMonthLessons();
-  }, [currentMonth])
+    getLessonsForProvidedDate();
+  }, [selectedDay, selectedMonth, selectedYear])
 
     
     if (isLoading) {
@@ -142,7 +157,10 @@ const AdminPanel = observer(() => {
           <Link to="/english-teacher-website" className="cursor-pointer text-white">
           Return to home page
           </Link>
-          <div className="arrows"></div>
+          <div className="arrows flex gap-3">
+            <button onClick={()=>{getPrevMonth()}}>Back</button>
+            <button onClick={()=>{getNextMonth()}}>Forward</button>
+          </div>
           {store.isCurrentMonthLessons ? <table>
             <thead>
               <tr>
