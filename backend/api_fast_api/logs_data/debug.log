@@ -1,40 +1,800 @@
---- DEBUG | (2024-07-30 14:44:25,840) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+--- DEBUG | (2024-07-31 18:19:15,117) | Filename:routes_admin.py | Func:def login_for_access_token | Пользователь прошел авторизацию.
 
---- DEBUG | (2024-07-30 14:44:25,842) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+--- DEBUG | (2024-07-31 18:19:15,148) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
 
---- DEBUG | (2024-07-30 14:44:25,851) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+--- DEBUG | (2024-07-31 18:19:15,164) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
 
---- DEBUG | (2024-07-30 14:44:25,852) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5hZG1pbiIsImV4cCI6MTcyMjQ0Mjc1NX0.pWG0VfK4trx1B7WtXwuH019GDczfkStHvUMAji3_r5Q",
+    "token_type": "bearer"
+}
+--- ERROR | (2024-07-31 18:21:29,255) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
 
---- DEBUG | (2024-07-30 14:44:49,101) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+During handling of the above exception, another exception occurred:
 
---- DEBUG | (2024-07-30 14:44:49,103) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
 
---- DEBUG | (2024-07-30 14:44:49,106) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+During handling of the above exception, another exception occurred:
 
---- DEBUG | (2024-07-30 14:44:49,106) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 18:21:29,262) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
 
---- DEBUG | (2024-07-30 14:59:36,603) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+During handling of the above exception, another exception occurred:
 
---- DEBUG | (2024-07-30 14:59:36,604) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
 
---- DEBUG | (2024-07-30 14:59:36,608) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+During handling of the above exception, another exception occurred:
 
---- DEBUG | (2024-07-30 14:59:36,609) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- DEBUG | (2024-07-31 18:24:06,048) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
 
---- DEBUG | (2024-07-30 15:08:39,656) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+--- DEBUG | (2024-07-31 18:24:06,049) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
 
---- DEBUG | (2024-07-30 15:08:39,658) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+--- DEBUG | (2024-07-31 18:24:06,053) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
 
---- DEBUG | (2024-07-30 15:08:39,662) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+--- DEBUG | (2024-07-31 18:24:06,053) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
 
---- DEBUG | (2024-07-30 15:08:39,663) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+--- ERROR | (2024-07-31 18:24:12,817) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
 
---- DEBUG | 2024-07-31 13:54:43,872 | Filename:run_fapi.py | Структура проекта успешно сохранена в файле.
+During handling of the above exception, another exception occurred:
 
---- DEBUG | 2024-07-31 13:54:43,877 | Filename:async_models.py | База данных уже существует.
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
 
---- DEBUG | 2024-07-31 13:54:43,889 | Filename:async_models.py | as_Все необходимые таблицы уже существуют.
+During handling of the above exception, another exception occurred:
 
---- DEBUG | 2024-07-31 13:54:43,891 | Filename:run_fapi.py | Проект запущен !
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 117, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 18:24:12,826) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
 
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 117, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- DEBUG | (2024-07-31 18:25:18,681) | Filename:routes_admin.py | Func:def login_for_access_token | Пользователь прошел авторизацию.
+
+--- DEBUG | (2024-07-31 18:25:18,699) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-07-31 18:25:18,709) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- ERROR | (2024-07-31 18:25:36,638) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 117, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 18:25:36,650) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 117, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 18:33:16,358) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 117, in validate_token
+    # В данном примере мы просто проверяем, что в токене есть поле 'sub'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 18:33:21,986) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 117, in validate_token
+    # В данном примере мы просто проверяем, что в токене есть поле 'sub'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 18:33:22,002) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 117, in validate_token
+    # В данном примере мы просто проверяем, что в токене есть поле 'sub'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- DEBUG | (2024-07-31 18:37:34,928) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 18:37:45,637) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+
+--- DEBUG | (2024-07-31 18:37:45,638) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+
+--- DEBUG | (2024-07-31 18:37:45,642) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+
+--- DEBUG | (2024-07-31 18:37:45,642) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+
+--- DEBUG | (2024-07-31 18:37:52,276) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 18:37:52,283) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 18:38:26,622) | Filename:routers_html.py | Func:def html_index_get | Пришел запрос в /admin GET
+
+--- DEBUG | (2024-07-31 18:38:26,623) | Filename:routers_html.py | Func:def html_index_get | JWT не найден перенаправляем в /login
+
+--- DEBUG | (2024-07-31 18:38:26,627) | Filename:routers_html.py | Func:def html_login_get | Пришел запрос в login GET
+
+--- DEBUG | (2024-07-31 18:39:10,252) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 18:39:35,586) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 18:39:35,592) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 18:44:58,298) | Filename:routes_admin.py | Func:def login_for_access_token | Пользователь прошел авторизацию.
+
+--- DEBUG | (2024-07-31 18:44:58,314) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-07-31 18:44:58,322) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- ERROR | (2024-07-31 18:45:33,838) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 18:45:33,849) | Filename:authentication.py | Func:def validate_token | Токен недействительный
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- DEBUG | (2024-07-31 18:49:28,939) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+
+--- DEBUG | (2024-07-31 18:49:28,940) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+
+--- DEBUG | (2024-07-31 18:49:28,944) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+
+--- DEBUG | (2024-07-31 18:49:28,945) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+
+--- DEBUG | (2024-07-31 18:49:33,288) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 18:49:33,296) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 18:50:02,776) | Filename:routes_admin.py | Func:def login_for_access_token | Пользователь прошел авторизацию.
+
+--- DEBUG | (2024-07-31 18:50:02,796) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-07-31 18:50:02,803) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- ERROR | (2024-07-31 18:50:54,439) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 18:50:54,458) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- DEBUG | (2024-07-31 18:51:35,961) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 18:51:35,967) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 18:52:19,061) | Filename:routes_admin.py | Func:def login_for_access_token | Пользователь прошел авторизацию.
+
+--- DEBUG | (2024-07-31 18:52:19,080) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-07-31 18:52:19,087) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-07-31 18:53:07,905) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-07-31 18:53:16,625) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-07-31 18:53:16,649) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-07-31 18:53:20,426) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-07-31 18:53:20,450) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- ERROR | (2024-07-31 18:53:49,433) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 18:53:51,164) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 18:53:51,176) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 19:00:03,369) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- DEBUG | (2024-07-31 19:00:12,958) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 19:00:12,964) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-07-31 19:00:43,265) | Filename:routes_admin.py | Func:def login_for_access_token | Пользователь прошел авторизацию.
+
+--- DEBUG | (2024-07-31 19:00:43,283) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-07-31 19:00:43,293) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- ERROR | (2024-07-31 19:02:54,853) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 19:02:54,868) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 19:06:22,118) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 19:36:24,034) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 19:36:24,039) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 20:15:03,039) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments
+--- ERROR | (2024-07-31 20:15:03,059) | Filename:authentication.py | Func:def validate_token | Токен недействительный- 
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 176, in _load
+    signing_input, crypto_segment = jwt.rsplit(b".", 1)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 142, in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 70, in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jws.py", line 180, in _load
+    raise JWSError("Not enough segments")
+jose.exceptions.JWSError: Not enough segments
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\scheduling-app\backend\api_fast_api\auth\authentication.py", line 116, in validate_token
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
+    raise JWTError(e)
+jose.exceptions.JWTError: Not enough segments

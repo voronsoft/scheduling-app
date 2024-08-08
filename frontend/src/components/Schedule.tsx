@@ -12,7 +12,7 @@ type FormFields = {
   time: string;
 };
 
-const getCurrentMonthLessonsUrl = `/api_admin/lesson_dates_for_the_month`;
+const getCurrentMonthLessonsUrl = `/api_admin/lesson_dates_for_the_month_frontend`;
 
 const Schedule = () => {
   const {
