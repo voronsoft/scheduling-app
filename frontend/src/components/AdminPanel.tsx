@@ -14,7 +14,7 @@ const currentDay = `${currentYear}-${currentMonth}-${today}`
 
 
 const getCurrentMonthLessonsUrl = `/api_admin/get_lessons_for_a_month/${currentDay}`;
-//const getCurrentMonthLessonsUrl = `/api_admin/get_lessons_for_a_month/2024-7-01`;
+//const getCurrentMonthLessonsUrl = `/api_admin/get_lessons_for_a_month/2024-6-01`;
 
 interface lesson {
   id: number,
@@ -38,11 +38,10 @@ const AdminPanel = observer(() => {
   const store = useAdminStore();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  //устанавливаю состояние для "текущего месяца". При получении ответа от сервера, сюда будет подставляться инфа от сервера
+    //устанавливаю состояние для "текущего месяца". При получении ответа от сервера, сюда будет подставляться инфа от сервера
   //const [currentMonthLessons, setCurrentMonthLessons] = useState<month[]>(june);
 
   const token = store.token;
-  console.log('ТОКЕН', store.token)
 
   const confirmLesson = (dayId:number, lessonId:number) => {
     console.log(dayId);
@@ -57,7 +56,6 @@ const AdminPanel = observer(() => {
           method: "GET",
           headers: {
             'Authorization': `Bearer ${token}`,
-            // 'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5hZG1pbiIsImV4cCI6MTcyMjQ0NDczOX0.SXyfzvsIgI7NK5wJSXl_qspacs4P1DZAJEKQALz3tTc`,
           }
         })
         const response = await fetch(request)
