@@ -6,14 +6,6 @@ import { observer } from "mobx-react-lite";
 
 
 const date = new Date();
-/* const currentMonth = date.getMonth() + 1;
-const currentYear = date.getFullYear();
-const today = date.getDate(); */
-//const currentDate = `${currentYear}-${currentMonth}-${today}`;
-
-
-//const getCurrentMonthLessonsUrl = `/api_admin/get_lessons_for_a_month/${currentDate}`;
-//const getCurrentMonthLessonsUrl = `/api_admin/get_lessons_for_a_month/2024-6-01`;
 
 interface lesson {
   id: number,
@@ -49,14 +41,14 @@ const AdminPanel = observer(() => {
 
 
 
-  const getPrevMonth = () => {
-    const prevMonth = selectedMonth - 1;
-    setSelectedMonth(prevMonth);
+  const getPrevMonth = (value:number) => {
+    console.log(value);
   }
 
-  const getNextMonth = () => {
-    const nextMonth = selectedMonth + 1;
+  const getNextMonth = (value:number) => {
+    const nextMonth = value + 1;
     setSelectedMonth(nextMonth);
+    console.log(selectedMonth);
   }  
   
   const confirmLesson = (dayID:number, lessonID:number) => {
@@ -67,7 +59,6 @@ const AdminPanel = observer(() => {
   useEffect(()=>{
     const getLessonsForProvidedDate = async () => {
       setIsLoading(true);
-      console.log(store.token);
       try {
         const request = new Request(`/api_admin/get_lessons_for_a_month/${selectedYear}-${selectedMonth}-${selectedDay}`, {
           method: "GET",
@@ -158,8 +149,8 @@ const AdminPanel = observer(() => {
           Return to home page
           </Link>
           <div className="arrows flex gap-3">
-            <button onClick={()=>{getPrevMonth()}}>Back</button>
-            <button onClick={()=>{getNextMonth()}}>Forward</button>
+            <button onClick={()=>{getPrevMonth(currentMonth)}}>Back</button>
+            <button onClick={()=>{getNextMonth(currentMonth)}}>Forward</button>
           </div>
           {store.isCurrentMonthLessons ? <table>
             <thead>

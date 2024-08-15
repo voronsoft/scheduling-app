@@ -4,9 +4,9 @@ import Hero from "./Hero";
 import Contacts from "./Contacts";
 import Reviews from "./Reviews";
 import Teaching from "./Teaching";
-import Calendar from "./Calendar";
+import SchedulingComponent from "./SchedulingComponent";
 import Footer from "./Footer";
-import Schedule from "./Schedule";
+import Schedule from "./ScheduleWrapper";
 import FormInput from "./FormInput";
 import AdminPanel from "./AdminPanel";
 import Modal from "./Modal";
@@ -19,7 +19,7 @@ export {
   Teaching,
   Footer,
   Hero,
-  Calendar,
+  SchedulingComponent,
   Schedule,
   AdminPanel,
   FormInput,

@@ -196,7 +196,7 @@ export const lessons: {
 export const june  = [
   {
     id: 1,
-    date: '2024-7-28',
+    date: '2024-8-28',
     lessons: [
       {
         id: 1,
@@ -214,7 +214,7 @@ export const june  = [
         firstName: "San",
         lastName: "Choi",
         phone: "89112222222",
-        selectedDate: "2024-7-28",
+        selectedDate: "2024-8-28",
         selectedTime: "17:00",
         confirmed: true,
       },
@@ -222,7 +222,7 @@ export const june  = [
   },
   {
     id: 2,
-    date: "2024-7-29",
+    date: "2024-8-29",
     lessons: [
       {
         id: 1,
@@ -238,7 +238,7 @@ export const june  = [
   },
   {
     id: 3,
-    date: "2024-7-30",
+    date: "2024-8-30",
     lessons: [
       {
         id: 1,
@@ -263,22 +263,3 @@ export const june  = [
     ],
   },
 ];
-/* 
-const lessonsForJune = [
-  {
-    date: "2024-06-25",
-    lessons: [ 8, 9 ],//если частично занят день, то приходят только те уроки, которые забронированы.
-  },
-  {
-    date: "2024-06-26",
-    lessons: [ 10, 11 ],
-  },
-  {
-    date: "2024-06-27",
-    lessons: [], //пустой массив, если день свободен полностью
-  },
-  {
-    date: "2024-06-28",
-    lessons: [ 9, 10, 11, 12 ],//день занят полностью, и на фронте он вообще не будет доступен для записи
-  },
-] */
