@@ -6,7 +6,7 @@ import {
   Teaching,
   Footer,
   Hero,
-  Calendar,
+  SchedulingComponent,
 } from "../components";
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
         <Reviews />
         <Contacts />
         <Teaching />
-        <Calendar />
+        <SchedulingComponent />
       </main>
       <footer>
         <Footer />
