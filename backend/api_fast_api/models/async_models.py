@@ -200,6 +200,9 @@ async def async_lesson_dates_for_the_month_db_frontend(date_month: str):
     # Создаем словарь для хранения результатов
     result_dict = {}
 
+    # Счетчик для генерации id
+    counter = 1
+
     # Выполняем запрос к базе данных
     async with Session() as session:
         async with session.begin():
@@ -219,16 +222,20 @@ async def async_lesson_dates_for_the_month_db_frontend(date_month: str):
 
                     if date_str not in result_dict:
                         result_dict[date_str] = []
-                    result_dict[date_str].append(time_slot)
-
-                # Сортируем временные слоты внутри каждого дня
-                for time_slots in result_dict.values():
-                    time_slots.sort()
+                    result_dict[date_str].append({"time_slot": time_slot})
 
                 # Преобразуем словарь в отсортированный список по датам
                 result_list = []
+
                 for date_str in sorted(result_dict.keys()):
-                    result_list.append({"date": date_str, "lessons": result_dict[date_str]})
+                    sorted_lessons = sorted(result_dict[date_str], key=lambda x: x["time_slot"])
+                    lessons_data = {
+                            "id": counter,  # Используем счетчик для id
+                            "date": date_str,
+                            "lessons": [lesson["time_slot"] for lesson in sorted_lessons],
+                    }
+                    result_list.append(lessons_data)
+                    counter += 1  # Увеличиваем счетчик для следующего объекта
 
                 if len(result_list) >= 1:
                     return 200, result_list
