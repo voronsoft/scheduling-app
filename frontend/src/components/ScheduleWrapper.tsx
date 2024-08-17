@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAdminStore } from "../store/store";
 import { observer } from "mobx-react-lite";
@@ -13,8 +13,6 @@ type FormFields = {
   selectedDate: string;
   time: string;
 };
-
-const getCurrentMonthLessonsUrl = `/api_admin/lesson_dates_for_the_month_frontend`;
 
 const ScheduleWrapper = observer(() => {
   //Включаем стор

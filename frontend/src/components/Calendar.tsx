@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAdminStore } from "../store/store";
 import { observer } from "mobx-react-lite";
-import { june } from "../constants";
-
-const getCurrentMonthLessonsUrl = `/api_admin/lesson_dates_for_the_month_frontend`;
+//import { june } from "../constants";
 
 const Calendar = observer(() => {
   const store = useAdminStore();
@@ -16,7 +14,6 @@ const Calendar = observer(() => {
 
   const [month, setMonth] = useState(currentMonth);
   const [year, setYear] = useState(currentYear);
-  //const [selectedDate, setSelectedDate] = useState("← Select a date"); // Состояние для выбранной даты
 
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
@@ -41,14 +38,10 @@ const Calendar = observer(() => {
   //Создаем календарь
   const calendarData = store.createCalendar(firstDayOfMonth, totalDaysInMonth);
 
+  //запрос уроков на месяц
   useEffect(() => {
-    try {
-      store.fetchLessons(getCurrentMonthLessonsUrl);
-      console.log(store.lessons);
-    } catch (e: any) {
-      console.log(e);
-    }
-  }, []);
+    store.loadLessons();
+  }, [month, year]);
 
   return (
     <div className="calendar">
@@ -56,9 +49,11 @@ const Calendar = observer(() => {
         <button
           onClick={() => {
             setMonth(month - 1);
+            store.substractMonth(month, year);
             if (month == 0) {
               setMonth(11);
               setYear(year - 1);
+              store.substractYear(year);
             }
           }}
         >
@@ -67,9 +62,11 @@ const Calendar = observer(() => {
         <button
           onClick={() => {
             setMonth(month + 1);
+            store.addMonth(month, year);
             if (month == 11) {
               setMonth(0);
               setYear(year + 1);
+              store.addYear(year);
             }
           }}
         >
@@ -103,8 +100,8 @@ const Calendar = observer(() => {
               <tr>
                 {week.map((day) => {
                   const currentFullDate = `${year}-${month + 1}-${day}`;
-                  const isDayBooked = june.some(
-                    (element) => element.date === currentFullDate
+                  const isDayBooked = store.currentMonthLessons.some(
+                    (element) => element.date == currentFullDate
                   );
 
                   return (
