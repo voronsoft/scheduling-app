@@ -798,3 +798,49 @@ Traceback (most recent call last):
   File "C:\scheduling-app\backend\.venv\Lib\site-packages\jose\jwt.py", line 144, in decode
     raise JWTError(e)
 jose.exceptions.JWTError: Not enough segments
+--- DEBUG | (2024-08-17 18:33:43,118) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+
+--- DEBUG | (2024-08-17 18:33:43,120) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+
+--- DEBUG | (2024-08-17 18:33:43,124) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+
+--- DEBUG | (2024-08-17 18:33:43,125) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+
+--- DEBUG | (2024-08-17 18:34:24,092) | Filename:routes_admin.py | Func:def get_lesson_dates_for_the_month_frontend | Запрос для получения дат на месяц ОК
+
+--- DEBUG | (2024-08-17 19:24:01,226) | Filename:run_fapi.py | Func:def <module> | Структура проекта успешно сохранена в файле.
+
+--- DEBUG | (2024-08-17 19:24:01,227) | Filename:async_models.py | Func:def async_create_database | База данных уже существует.
+
+--- DEBUG | (2024-08-17 19:24:01,231) | Filename:async_models.py | Func:def async_create_database | as_Все необходимые таблицы уже существуют.
+
+--- DEBUG | (2024-08-17 19:24:01,232) | Filename:run_fapi.py | Func:def <module> | Проект запущен !
+
+--- DEBUG | (2024-08-17 19:25:35,965) | Filename:routers_html.py | Func:def html_index_get | Пришел запрос в /admin GET
+
+--- DEBUG | (2024-08-17 19:25:35,965) | Filename:routers_html.py | Func:def html_index_get | JWT не найден перенаправляем в /login
+
+--- DEBUG | (2024-08-17 19:25:35,969) | Filename:routers_html.py | Func:def html_login_get | Пришел запрос в login GET
+
+--- DEBUG | (2024-08-17 19:25:57,787) | Filename:routers_html.py | Func:def html_login_post | Пришел запрос в login POST
+
+--- DEBUG | (2024-08-17 19:25:57,787) | Filename:routers_html.py | Func:def html_login_post | Токены CSRF совпадают
+
+--- DEBUG | (2024-08-17 19:25:58,013) | Filename:routes_admin.py | Func:def login_for_access_token | Пользователь прошел авторизацию.
+
+--- DEBUG | (2024-08-17 19:25:58,017) | Filename:routers_html.py | Func:def html_index_get | Пришел запрос в /admin GET
+
+--- DEBUG | (2024-08-17 19:25:58,017) | Filename:routers_html.py | Func:def html_index_get | Проверяем есть ли JWT токен в сессии
+
+--- DEBUG | (2024-08-17 19:25:58,018) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-08-17 19:25:58,018) | Filename:routers_html.py | Func:def html_index_get | Проверка jwt токена и метода шифрования
+
+--- DEBUG | (2024-08-17 19:26:47,055) | Filename:routes_admin.py | Func:def login_for_access_token | Пользователь прошел авторизацию.
+
+--- DEBUG | (2024-08-17 19:27:07,805) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-08-17 19:27:26,101) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
+--- DEBUG | (2024-08-17 19:27:36,668) | Filename:authentication.py | Func:def validate_token | Авторизован пользователь: admin@admin.admin
+
